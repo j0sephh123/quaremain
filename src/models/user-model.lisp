@@ -1,21 +1,19 @@
+;; Copyright 2020 Momozor
+
+;; Licensed under the Apache License, Version 2.0 (the "License");
+;; you may not use this file except in compliance with the License.
+;; You may obtain a copy of the License at
+
+;; http://www.apache.org/licenses/LICENSE-2.0
+
+;; Unless required by applicable law or agreed to in writing, software
+;; distributed under the License is distributed on an "AS IS" BASIS,
+;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+;; See the License for the specific language governing permissions and
+;; limitations under the License.
+
 (in-package :cl-user)
 (defpackage quaremain.models.user-model
-  (:use :cl)
-  (:import-from :quaremain.db
-                :db
-                :with-connection)
-  (:import-from :datafly
-                :execute
-                :retrieve-one)
-  (:import-from :sxql
-                :create-table))
-(in-package :quaremain.models.user-model)
+  (:use :cl))
+  (in-package :quaremain.models.user-model)
 
-
-(defun create-user-table ()
-  (with-connection (db)
-    (execute
-     (create-table (:user :if-not-exists t)
-         ((id :type 'integer :primary-key t)
-          (username :type 'string :not-null t)
-          (email :type 'string :not-null t))))))
