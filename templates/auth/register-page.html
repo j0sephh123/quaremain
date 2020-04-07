@@ -1,8 +1,8 @@
 {% extends "layouts/default.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
-<form method="POST" action="/auth/login">
+<form method="POST" action="/auth/register">
     <label>Email address </label>
     <br>
     <input type="text" name="email-address">
@@ -11,6 +11,6 @@
     <br>
     <input type="password" name="password">
     <br>
-    <button type="submit">Login</button>
+    <button type="submit">Register</button>
 </form>
 {% endblock %}

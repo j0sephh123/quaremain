@@ -40,6 +40,13 @@
   (render #p"about.html"))
 
 ;; Authentications.
+
+(defroute "/auth/register-page" ()
+  (render #p"auth/register-page.html"))
+
+(defroute ("/auth/register" :method :POST) ()
+  nil)
+
 (defroute "/auth/login-page" ()
   (render #p"auth/login-page.html"))
 

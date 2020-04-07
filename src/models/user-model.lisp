@@ -15,5 +15,8 @@
 (in-package :cl-user)
 (defpackage quaremain.models.user-model
   (:use :cl))
-  (in-package :quaremain.models.user-model)
+(in-package :quaremain.models.user-model)
+
+(defun create-new-user (email-address password register-date)
+  nil)
 
