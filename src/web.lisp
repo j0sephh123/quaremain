@@ -43,6 +43,9 @@
 (defroute "/auth/login-page" ()
   (render #p"auth/login-page.html"))
 
+(defroute ("/auth/login" :method :POST) ()
+  nil)
+
 (defroute ("/auth/logout" :method :POST) ()
   (render #p"index.html"))
 
