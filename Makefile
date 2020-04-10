@@ -33,6 +33,6 @@ uninstall:
 	rmdir $(DESTDIR)/var
 	rmdir $(DESTDIR)
 
-clean: $(EXECUTABLE) var/$(EXECUTABLE).db
+clean:
 	rm -f $(EXECUTABLE)
 	rm -f var/$(EXECUTABLE).db

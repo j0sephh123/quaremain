@@ -17,9 +17,11 @@
   (:use :cl
         :caveman2
         :quaremain.config
-        :quaremain.view
-        :quaremain.db
-        :sxql)
+        :quaremain.view)
+  (:import-from :mito
+                :deftable)
+  (:import-from :quaremain.db
+                :migrate-model)
   (:export :*web*))
 (in-package :quaremain.web)
 
@@ -29,10 +31,16 @@
 (defvar *web* (make-instance '<web>))
 (clear-routing-rules *web*)
 
+(deftable stock ()
+  ((title :col-type (:varchar 255))
+   (description :col-type :text)
+   (amount :col-type (:integer 10000))))
+
 ;;; Routing rules.
 
 ;; Root pages.
 (defroute "/" ()
+  (migrate-model 'stock)
   (render #p"index.html"))
 
 (defroute "/about" ()
