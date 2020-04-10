@@ -1,3 +1,6 @@
+quaremain_server
+quaremain
+patch/
 *.patch
 *.fasl
 *.dx32fsl

@@ -19,7 +19,7 @@
                 :config-env-var
                 :defconfig)
   (:export :config
-           :*application-root*
+           :absolute-path
            :*static-directory*
            :*template-directory*
            :appenv
@@ -29,9 +29,13 @@
 
 (setf (config-env-var) "APP_ENV")
 
-(defparameter *application-root*   (asdf:system-source-directory :quaremain))
-(defparameter *static-directory*   (merge-pathnames #P"static/" *application-root*))
-(defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
+(defun absolute-path (pathname-string)
+  (uiop:unix-namestring
+   (uiop:merge-pathnames*
+    (uiop:parse-unix-namestring pathname-string))))
+
+(defparameter *static-directory* (pathname (absolute-path "static/")))
+(defparameter *template-directory* (pathname (absolute-path "templates/")))
 
 (defconfig |development|
     '(:debug t))
