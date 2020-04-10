@@ -1,4 +1,4 @@
-;; Copyright 2020 Momozor
+;; Copyright (C) 2020 Momozor
 
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
         :quaremain.config
         :quaremain.view
         :quaremain.db
-        :datafly
         :sxql)
   (:export :*web*))
 (in-package :quaremain.web)
@@ -39,22 +38,6 @@
 (defroute "/about" ()
   (render #p"about.html"))
 
-;; Authentications.
-
-(defroute "/auth/register-page" ()
-  (render #p"auth/register-page.html"))
-
-(defroute ("/auth/register" :method :POST) ()
-  nil)
-
-(defroute "/auth/login-page" ()
-  (render #p"auth/login-page.html"))
-
-(defroute ("/auth/login" :method :POST) ()
-  nil)
-
-(defroute ("/auth/logout" :method :POST) ()
-  (render #p"index.html"))
 
 ;;; Error pages.
 

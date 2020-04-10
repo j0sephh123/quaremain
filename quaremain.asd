@@ -13,24 +13,20 @@
                "djula"
 
                ;; JSON.
-               "datafly"
+               "cl-json"
 
                ;; For ORM.
-               "mito"                 
+               "mito"
+
+               ;; For SQL tracing.
+               "datafly"
 
                ;; Logging.
-               "log4cl"
-
-               ;; Email access.
-               "cl-smtp")
+               "log4cl")
   :components ((:module "src"
                         :components
                         ((:file "main" :depends-on ("config" "view" "db"))
-                         (:file "web" :depends-on ("view"
-                                                   "models/user-model"
-                                                   "models/stock-model"))
-                         (:file "models/user-model" :depends-on ("db"))
-                         (:file "models/stock-model" :depends-on ("db"))
+                         (:file "web" :depends-on ("view"))
                          (:file "view" :depends-on ("config"))
                          (:file "db" :depends-on ("config"))
                          (:file "config"))))

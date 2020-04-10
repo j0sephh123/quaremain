@@ -14,9 +14,32 @@
 
 (in-package :cl-user)
 (defpackage quaremain.db
-  (:use :cl :mito)
-  (:import-from :quaremain.config
-                :config))
+  (:use :cl)
+  (:import-from :cl-dbi
+                :connect-cached
+                :disconnect)
+  (:import-from :mito
+                :connect-toplevel
+                :deftable
+                :table-definition
+                :execute-sql
+                :ensure-table-exists
+                :*connection*))
 (in-package :quaremain.db)
 
 
+(defun db ()
+  (connect-cached
+   :sqlite3
+   :database-name "var/quaremain.db"))
+
+(defmacro with-connection (connection &body body)
+  "Database connection wrapper."
+  `(let ((*connection* ,connection))
+     (unwind-protect (progn ,@body)
+       (disconnect *connection*))))
+
+(defun create-table (table-class)
+  "Create new table from schema."
+  (with-connection (db)
+    (ensure-table-exists table-class)))

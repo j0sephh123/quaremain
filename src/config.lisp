@@ -1,4 +1,4 @@
-;; Copyright 2020 Momozor
+;; Copyright (C) 2020 Momozor
 
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
@@ -33,21 +33,13 @@
 (defparameter *static-directory*   (merge-pathnames #P"static/" *application-root*))
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
-(defconfig :common
-    `(:databases ((:maindb :sqlite3 :database-name
-                           ,(merge-pathnames #P"var/database.sqlite3"
-                                             *application-root*)))))
-
 (defconfig |development|
     '(:debug t))
 
 (defconfig |test|
     '(:debug t))
 
-(defconfig |server-production|
-    '(:debug nil))
-
-(defconfig |desktop-production|
+(defconfig |production|
     '(:debug nil))
 
 (defun config (&optional key)
