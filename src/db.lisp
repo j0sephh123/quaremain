@@ -18,12 +18,7 @@
   (:import-from :cl-dbi
                 :connect-cached
                 :disconnect)
-  (:import-from :mito
-                :connect-toplevel
-                :deftable
-                :table-definition
-                :execute-sql
-                :ensure-table-exists
+  (:import-from :datafly
                 :*connection*))
 (in-package :quaremain.db)
 

@@ -18,19 +18,6 @@
         :caveman2
         :quaremain.config
         :quaremain.view)
-  (:import-from :mito
-                :deftable
-                :insert-dao
-                :create-dao
-                :object-id
-                :find-dao
-                :retrieve-dao
-                :select-dao
-                :save-dao
-                :delete-dao
-                :delete-by-values
-                :count-dao
-                :ensure-table-exists)
   (:import-from :quaremain.db
                 :with-connection
                 :db)
@@ -44,22 +31,31 @@
 (defvar *web* (make-instance '<web>))
 (clear-routing-rules *web*)
 
-(deftable food ()
-  ((title :col-type (:varchar 255))
-   (email :col-type (or :text :null))
-   (amount :col-type (:integer 10000))
-   (cost-per-package :col-type :float)
-   (calories-per-package :col-type :integer)))
+(defparameter *food-model*
+  (sxql:create-table (:food :if-not-exists t)
+      ((id :type 'integer :primary-key t :auto-increment t)
+       (name :type 'text :not-null t)
+       (description :type 'text)
+       (amount :type 'integer :not-null t)
+       (cost-per-package :type 'real :not-null t)
+       (calories-per-package :type 'integer :not-null t))))
 
-(deftable water ()
-  ((title :col-type (:varchar 255))
-   (description :col-type (or :text :null))
-   (amount :col-type (:integer 10000))
-   (cost-per-package :col-type :float)))
+(defparameter *water-model*
+  (sxql:create-table (:water :if-not-exists t)
+      ((id :type 'integer :primary-key t :auto-increment t)
+       (name :type 'text :not-null t)
+       (description :type 'text)
+       (amount :type 'integer :not-null t)
+       (cost-per-package :type 'real :not-null t))))
+
 
 (defun migrate-models ()
+  "Returns list of nils if operations succeed."
   (with-connection (db)
-    (mapcar #'ensure-table-exists '(food water))))
+    (mapcar (lambda (model)
+              (datafly:execute model))
+            (list *food-model*
+                  *water-model*))))
 
 
 ;;; Routing rules.
