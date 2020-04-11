@@ -31,16 +31,17 @@
 (defvar *web* (make-instance '<web>))
 (clear-routing-rules *web*)
 
-(deftable stock ()
-  ((title :col-type (:varchar 255))
+(deftable food ()
+  ((title :col-type (:varchar 255))   
    (description :col-type :text)
-   (amount :col-type (:integer 10000))))
+   (amount :col-type (:integer 10000))
+   (calories-per-package :col-type (:integer 9999999))))
 
 ;;; Routing rules.
 
 ;; Root pages.
 (defroute "/" ()
-  (migrate-model 'stock)
+  (migrate-model 'food)
   (render #p"index.html"))
 
 (defroute "/about" ()
