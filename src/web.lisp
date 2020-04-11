@@ -19,8 +19,20 @@
         :quaremain.config
         :quaremain.view)
   (:import-from :mito
-                :deftable)
+                :deftable
+                :insert-dao
+                :create-dao
+                :object-id
+                :find-dao
+                :retrieve-dao
+                :select-dao
+                :save-dao
+                :delete-dao
+                :delete-by-values
+                :count-dao)
   (:import-from :quaremain.db
+                :with-connection
+                :db
                 :migrate-model)
   (:export :*web*))
 (in-package :quaremain.web)
@@ -47,6 +59,7 @@
 (defun migrate-models ()
   (migrate-model 'food)
   (migrate-model 'water))
+
 
 ;;; Routing rules.
 

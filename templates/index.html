@@ -18,19 +18,15 @@
         <th>Amount</th>
         <th>Total Potential Calories</th>
     </tr>
+
+    {% for food in food_list %}
     <tr>
-        <td>1</td>
-        <td>Slim Jim (small)</td>
-        <td>Easy snacks</td>
-        <td>17</td>
-        <td>8200</td>
+        <td>{{ food.id }}</td>
+        <td>{{ food.title }}</td>
+        <td>{{ food.description }}</td>
+        <td>{{ food.amount }}</td>
+        <td>{{ food.cost_per_package }}</td>
     </tr>
-    <tr>
-        <td>2</td>
-        <td>Raynold's Salted Cashews (small)</td>
-        <td>Easy snacks</td>
-        <td>128</td>
-        <td>17200</td>
-    </tr>
+    {% endfor %}
 </table>
 {% endblock %}
