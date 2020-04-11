@@ -8,6 +8,7 @@ all: $(EXECUTABLE).asd
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE))" \
                 --eval "(asdf:make :$(EXECUTABLE))" \
 		--eval "(uiop:quit)"
+	cp bin/$(EXECUTABLE) .
 
 install: $(EXECUTABLE)
 	mkdir -p $(DESTDIR)/var
