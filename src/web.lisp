@@ -66,7 +66,17 @@
 (defroute "/" ()
   "By default, shows list of current accumulated stocks."
   (migrate-models)
-  (render #p"index.html"))
+  (render #p"index.html"
+          '(:food-list ((:id 1
+                         :title "tuna"
+                         :amount 92
+                         :cost-per-package 83.2
+                         :calories-per-package 2321)
+                        (:id 2
+                         :title "soup"
+                         :amount 2
+                         :cost-per-package 12.1
+                         :calories-per-package 321)))))
 
 (defroute "/about" ()
   (render #p"about.html"))
