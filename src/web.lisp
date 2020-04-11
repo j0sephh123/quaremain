@@ -35,13 +35,24 @@
   ((title :col-type (:varchar 255))   
    (description :col-type :text)
    (amount :col-type (:integer 10000))
-   (calories-per-package :col-type (:integer 9999999))))
+   (cost-per-package :col-type :float)
+   (calories-per-package :col-type :integer)))
+
+(deftable water ()
+  ((title :col-type (:varchar 255))
+   (description :col-type :text)
+   (amount :col-type (:integer 10000))
+   (cost-per-package :col-type :float)))
+
+(defun migrate-models ()
+  (migrate-model 'food)
+  (migrate-model 'water))
 
 ;;; Routing rules.
 
-;; Root pages.
 (defroute "/" ()
-  (migrate-model 'food)
+  "By default, shows list of current accumulated stocks."
+  (migrate-models)
   (render #p"index.html"))
 
 (defroute "/about" ()
