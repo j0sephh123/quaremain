@@ -72,22 +72,19 @@
       (sxql:insert-into ,model-table
         (sxql:set= ,@body)))))
 
+(defun get-all-from-model (model-table)
+  (with-connection (db)
+    (datafly:retrieve-all
+     (sxql:select :*
+       (sxql:from model-table)))))
+
 
 ;;; Routing rules.
 
 (defroute "/" ()
   "By default, shows list of current accumulated stocks."
   (render #p"index.html"
-          '(:food-list ((:id 1
-                         :title "tuna"
-                         :amount 92
-                         :cost-per-package 83.2
-                         :calories-per-package 2321)
-                        (:id 2
-                         :title "soup"
-                         :amount 2
-                         :cost-per-package 12.1
-                         :calories-per-package 321)))))
+          `(:food-list ,(get-all-from-model :food))))
 
 (defroute "/about" ()
   (render #p"about.html"))
