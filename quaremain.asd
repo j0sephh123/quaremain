@@ -17,7 +17,10 @@
                  "datafly"
 
                  ;; Logging.
-                 "log4cl")
+                 "log4cl"
+
+                 ;; Deploying.
+                 "deploy")
     :components ((:module "src"
                           :components
                           ((:file "main" :depends-on ("config" "view" "db"))
