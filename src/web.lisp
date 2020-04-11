@@ -78,13 +78,21 @@
      (sxql:select :*
        (sxql:from model-table)))))
 
+(defun sum-all-from-model (model-table)
+  (let ((original (get-all-from-model model-table)))
+    (loop for item in original
+       do (setf (getf item :cost-per-package)
+                (* (getf item :amount)
+                   (getf item :cost-per-package))))
+    original))
+
 
 ;;; Routing rules.
 
 (defroute "/" ()
   "By default, shows list of current accumulated stocks."
   (render #p"index.html"
-          `(:food-list ,(get-all-from-model :food))))
+          `(:food-list ,(sum-all-from-model :food))))
 
 (defroute "/about" ()
   (render #p"about.html"))
