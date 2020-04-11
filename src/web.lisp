@@ -32,15 +32,15 @@
 (clear-routing-rules *web*)
 
 (deftable food ()
-  ((title :col-type (:varchar 255))   
-   (description :col-type :text)
+  ((title :col-type (:varchar 255))
+   (email :col-type (or :text :null))
    (amount :col-type (:integer 10000))
    (cost-per-package :col-type :float)
    (calories-per-package :col-type :integer)))
 
 (deftable water ()
   ((title :col-type (:varchar 255))
-   (description :col-type :text)
+   (description :col-type (or :text :null))
    (amount :col-type (:integer 10000))
    (cost-per-package :col-type :float)))
 
