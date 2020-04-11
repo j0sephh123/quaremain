@@ -29,12 +29,13 @@
                 :save-dao
                 :delete-dao
                 :delete-by-values
-                :count-dao)
+                :count-dao
+                :ensure-table-exists)
   (:import-from :quaremain.db
                 :with-connection
-                :db
-                :migrate-model)
-  (:export :*web*))
+                :db)
+  (:export :*web*
+           :migrate-models))
 (in-package :quaremain.web)
 
 ;;; Application.
@@ -57,15 +58,14 @@
    (cost-per-package :col-type :float)))
 
 (defun migrate-models ()
-  (migrate-model 'food)
-  (migrate-model 'water))
+  (with-connection (db)
+    (mapcar #'ensure-table-exists '(food water))))
 
 
 ;;; Routing rules.
 
 (defroute "/" ()
   "By default, shows list of current accumulated stocks."
-  (migrate-models)
   (render #p"index.html"
           '(:food-list ((:id 1
                          :title "tuna"

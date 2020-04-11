@@ -24,8 +24,7 @@
                 :table-definition
                 :execute-sql
                 :ensure-table-exists
-                :*connection*)
-  (:export :migrate-model))
+                :*connection*))
 (in-package :quaremain.db)
 
 
@@ -39,8 +38,3 @@
   `(let ((*connection* ,connection))
      (unwind-protect (progn ,@body)
        (disconnect *connection*))))
-
-(defun migrate-model (table-class)
-  "Create new table from schema."
-  (with-connection (db)
-    (ensure-table-exists table-class)))
