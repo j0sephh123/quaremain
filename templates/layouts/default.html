@@ -3,12 +3,13 @@
     <head>
         <meta charset="utf-8">
         <title>{% block title %}{% endblock %} | Quaremain</title>
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css">
     </head>
 
     <body>
-        <div id="main">
-            {% block content %}{% endblock %}
-        </div>
+      {% block content %}{% endblock %}
+      <script src="/js/jquery.min.js"></script>
+      <script src="/js/bootstrap.min.js"></script>
     </body>
 </html>
