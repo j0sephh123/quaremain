@@ -50,6 +50,6 @@ Momozor <skelic3@gmail.com>
 This software is released under the MIT license.
 Please see COPYING file for more details.
 
-For JQuery and Bootstrap code licenses, see 
-COPYING.bootstrap and COPYING.jquery in 
+For JQuery, Bootstrap, and Sweetalert code licenses, see 
+COPYING.jquery, COPYING.bootstrap, and COPYING.sweetalert in 
 static/js directory.
