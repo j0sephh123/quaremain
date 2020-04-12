@@ -1,0 +1,46 @@
+* Quaremain
+
+A desktop application to manage your basic survival resources for the future on Linux.
+
+
+** Version
+
+0.1.0
+
+
+** Building
+
+Dependencies
+
+OpenSUSE Tumbleweed (as in 2020/04/12)
+
+For server
+- sbcl
+- quicklisp (manually install and download)
+- sqlite3-devel
+- webkit2gtk3-devel
+
+For client
+
+- gcc
+- make
+- pkg-config
+
+Build and Run
+
+  $ make & make webkit-client
+  $ ./quaremain  # for server
+  $ ./quremain-client # run this in separate process 
+
+
+** Author
+
+Momozor <skelic3@gmail.com>
+
+
+** License
+
+This software is released under the MIT license.
+Please see LICENSE file for more details.
+
+
