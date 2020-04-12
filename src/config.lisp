@@ -29,13 +29,8 @@
 
 (setf (config-env-var) "APP_ENV")
 
-(defun absolute-path (pathname-string)
-  (uiop:unix-namestring
-   (uiop:merge-pathnames*
-    (uiop:parse-unix-namestring pathname-string))))
-
-(defparameter *static-directory* (pathname (absolute-path "static/")))
-(defparameter *template-directory* (pathname (absolute-path "templates/")))
+(defparameter *static-directory* (pathname "static/"))
+(defparameter *template-directory* (pathname "templates/"))
 
 (defconfig |development|
     '(:debug t))

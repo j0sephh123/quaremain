@@ -17,11 +17,11 @@ all: $(EXECUTABLE).asd
 webkit-client: $(CLIENT_SOURCE)
 	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
 
-install: $(EXECUTABLE)
+install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
 	mkdir -p $(DESTDIR)/var
 	mkdir $(DESTDIR)/bin
 	install $(EXECUTABLE) $(DESTDIR)
-	cp app.lisp $(DESTDIR)
+	install $(CLIENT_EXECUTABLE) $(DESTDIR)/bin
 	cp -r templates $(DESTDIR)
 	cp -r static $(DESTDIR)
 	touch $(DATABASE)
@@ -32,12 +32,11 @@ install: $(EXECUTABLE)
 
 uninstall:
 	rm -rf $(DESTDIR)/templates
+	rm -rf $(DESTDIR)/bin
 	rm -rf $(DESTDIR)/static
 	rm -f $(DESTDIR)/app.lisp
 	rm -f $(DATABASE)
 	rm -f $(DESTDIR)/$(EXECUTABLE)
-	rm -f $(DESTDIR)/bin/$(EXECUTABLE)
-	rmdir $(DESTDIR)/bin
 	rmdir $(DESTDIR)/var
 	rmdir $(DESTDIR)
 
@@ -46,3 +45,18 @@ clean:
 	rm -f $(EXECUTABLE)
 	rm -f var/$(EXECUTABLE).db
 	rm -f $(CLIENT_EXECUTABLE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
