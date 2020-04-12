@@ -28,9 +28,9 @@ For client
 
 Build and Run
 
-  $ make & make webkit-client
-  $ ./quaremain  # for server
-  $ ./quremain-client # run this in separate process 
+-  $ make & make webkit-client
+-  $ ./quaremain  # for server
+-  $ ./quremain-client # run this in separate process 
 
 
 ** Author
