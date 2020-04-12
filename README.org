@@ -18,19 +18,19 @@ For server
 - sbcl
 - quicklisp (manually install and download)
 - sqlite3-devel
-- webkit2gtk3-devel
 
 For client
 
 - gcc
 - make
 - pkg-config
+- webkit2gtk3-devel
 
 Build and Run
 
 -  $ make & make webkit-client
 -  $ ./quaremain  # for server
--  $ ./quremain-client # run this in separate process 
+-  $ ./quaremain-client # run this in separate process 
 
 
 ** Contributing
@@ -38,6 +38,7 @@ Build and Run
 If you report a bug, want to discuss about features,
 asking for help, or sending new patches,
 please send an email to quaremain@freelists.org
+
 
 ** Author
 
