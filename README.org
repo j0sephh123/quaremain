@@ -47,7 +47,7 @@ Momozor <skelic3@gmail.com>
 
 ** License
 
-This software is released under the MIT license.
+This software is released under the GPL-3.0-or-later license.
 Please see COPYING file for more details.
 
 For JQuery, Bootstrap, and Sweetalert code licenses, see 
