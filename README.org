@@ -33,6 +33,12 @@ Build and Run
 -  $ ./quremain-client # run this in separate process 
 
 
+** Contributing
+
+If you report a bug, want to discuss about features,
+asking for help, or sending new patches,
+please send an email to quaremain@freelists.org
+
 ** Author
 
 Momozor <skelic3@gmail.com>
