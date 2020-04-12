@@ -1,7 +1,7 @@
 (defsystem "quaremain"
   :version "0.1.0"
   :author "Momozor"
-  :license "Apache-2.0"
+  :license "MIT"
   :depends-on ("clack"
                "lack"
                "caveman2"
@@ -39,7 +39,7 @@
 
 (defsystem "quaremain/tests"
   :author "Momozor"
-  :license "Apache-2.0"
+  :license "MIT"
   :depends-on ("quaremain"
                "rove")
   :components ((:module "tests"
