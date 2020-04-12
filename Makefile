@@ -45,18 +45,3 @@ clean:
 	rm -f $(EXECUTABLE)
 	rm -f var/$(EXECUTABLE).db
 	rm -f $(CLIENT_EXECUTABLE)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
