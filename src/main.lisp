@@ -13,6 +13,7 @@
                 :scan
                 :regex-replace)
   (:import-from :quaremain.web
+                :migrate-models
                 :*web*)
 
   (:export :start
@@ -23,36 +24,37 @@
 (defvar *handler* nil)
 
 (defun start (&rest args &key server port debug &allow-other-keys)
-(declare (ignore server port debug))
-(when *handler*
-  (restart-case (error "Server is already running.")
-    (restart-server ()
-      :report "Restart the server"
-      (stop))))
-(setf *handler*
-      (apply #'clackup 
-             (builder
-              (:static
-               :path (lambda (path)
-                       (if (ppcre:scan "^(?:/images/|/css/|/js/|/robot\\.txt$|/favicon\\.ico$)" path)
-                           path
-                           nil))
-               :root *static-directory*)
-              (if (productionp)
-                  nil
-                  :accesslog)
-              (if (getf (config) :error-log)
-                  `(:backtrace
-                    :output ,(getf (config) :error-log))
-                  nil)
-              :session
-              (if (productionp)
-                  nil
-                  (lambda (app)
-                    (lambda (env)
-                      (let ((datafly:*trace-sql* t))
-                        (funcall app env)))))
-              *web*) args)))
+  (declare (ignore server port debug))
+  (migrate-models)
+  (when *handler*
+    (restart-case (error "Server is already running.")
+      (restart-server ()
+        :report "Restart the server"
+        (stop))))
+  (setf *handler*
+        (apply #'clackup 
+               (builder
+                (:static
+                 :path (lambda (path)
+                         (if (ppcre:scan "^(?:/images/|/css/|/js/|/robot\\.txt$|/favicon\\.ico$)" path)
+                             path
+                             nil))
+                 :root *static-directory*)
+                (if (productionp)
+                    nil
+                    :accesslog)
+                (if (getf (config) :error-log)
+                    `(:backtrace
+                      :output ,(getf (config) :error-log))
+                    nil)
+                :session
+                (if (productionp)
+                    nil
+                    (lambda (app)
+                      (lambda (env)
+                        (let ((datafly:*trace-sql* t))
+                          (funcall app env)))))
+                *web*) args)))
 
 (defun stop ()
   (prog1
