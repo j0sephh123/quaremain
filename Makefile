@@ -3,12 +3,19 @@ LISP ?= sbcl
 PREFIX=/opt
 DESTDIR=$(PREFIX)/$(EXECUTABLE)
 DATABASE=$(DESTDIR)/var/$(EXECUTABLE).db
+CC=gcc
+CFLAGS=pkg-config --libs --cflags webkit2gtk-4.0
+CLIENT_SOURCE=quaremain-client.c
+CLIENT_EXECUTABLE=quaremain-client
 
 all: $(EXECUTABLE).asd
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE))" \
                 --eval "(asdf:make :$(EXECUTABLE))" \
 		--eval "(uiop:quit)"
 	cp bin/$(EXECUTABLE) .
+
+webkit-client: $(CLIENT_SOURCE)
+	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
 
 install: $(EXECUTABLE)
 	mkdir -p $(DESTDIR)/var
@@ -35,5 +42,7 @@ uninstall:
 	rmdir $(DESTDIR)
 
 clean:
+	rm -rf bin/
 	rm -f $(EXECUTABLE)
 	rm -f var/$(EXECUTABLE).db
+	rm -f $(CLIENT_EXECUTABLE)

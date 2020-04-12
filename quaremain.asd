@@ -20,6 +20,8 @@
                  "log4cl"
 
                  ;; Deploying.
+                 "cl-webkit2" ;; foreign
+                 "sqlite"  ;; foreign
                  "deploy")
     :components ((:module "src"
                           :components
