@@ -35,7 +35,7 @@ Build and Run
 
 ** Contributing
 
-If you report a bug, want to discuss about features,
+If you want to report a bug, to discuss about features,
 asking for help, or sending new patches,
 please send an email to quaremain@freelists.org
 
