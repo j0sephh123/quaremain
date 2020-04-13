@@ -40,11 +40,6 @@
 
 (defpackage quaremain.djula
   (:use :cl)
-  (:import-from :quaremain.config
-                :config
-                :appenv
-                :developmentp
-                :productionp)
   (:import-from :caveman2
                 :url-for))
 

@@ -2,8 +2,6 @@
 (defpackage quaremain
   (:use :cl)
   (:import-from :quaremain.config
-                :config
-                :productionp
                 :*static-directory*)
   (:import-from :clack
                 :clackup)
@@ -40,20 +38,7 @@
                              path
                              nil))
                  :root *static-directory*)
-                (if (productionp)
-                    nil
-                    :accesslog)
-                (if (getf (config) :error-log)
-                    `(:backtrace
-                      :output ,(getf (config) :error-log))
-                    nil)
                 :session
-                (if (productionp)
-                    nil
-                    (lambda (app)
-                      (lambda (env)
-                        (let ((datafly:*trace-sql* t))
-                          (funcall app env)))))
                 *web*) args)))
 
 (defun stop ()
