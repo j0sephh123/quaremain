@@ -19,6 +19,8 @@
                  ;; Logging.
                  "log4cl"
 
+                 ;; Deploying
+                 "deploy"
                  "lack-middleware-static"
                  "lack-middleware-session"
                  "hunchentoot"
@@ -30,8 +32,11 @@
                            (:file "view" :depends-on ("config"))
                            (:file "db" :depends-on ("config"))
                            (:file "config"))))
-    :description "Manage your basic survival stocking needs, for the future."
-    :build-operation "program-op"
+    :description "Manage your basic survival resources necessity, for the future."
+    
+
+    :defsystem-depends-on (:deploy)
+    :build-operation "deploy-op"
     :build-pathname "quaremain"
     :entry-point "quaremain:main"
     :in-order-to ((test-op (test-op "quaremain/tests"))))

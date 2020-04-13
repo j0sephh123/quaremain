@@ -16,11 +16,12 @@ all: $(EXECUTABLE).asd webkit-client
 		--eval "(uiop:quit)"
 
 	mkdir -p bin/var
-	cp $(EXECUTABLE) bin/
+	cp bin/$(EXECUTABLE) .
 	cp $(CLIENT_EXECUTABLE) bin/
 	cp dist-data/* bin/
 	cp -r static/ bin/
 	cp -r templates bin/
+	rm -f bin/libssl* # don't want any trouble with weird licensing issues
 
 webkit-client: $(CLIENT_SOURCE)
 	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
