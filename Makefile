@@ -14,19 +14,20 @@ all: $(EXECUTABLE).asd webkit-client
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE))" \
                 --eval "(asdf:make :$(EXECUTABLE))" \
 		--eval "(uiop:quit)"
-	cp bin/$(EXECUTABLE) .
+
+	mkdir -p bin/var
+	cp $(EXECUTABLE) bin/
 	cp $(CLIENT_EXECUTABLE) bin/
 	cp dist-data/* bin/
 	cp -r static/ bin/
 	cp -r templates bin/
-	mkdir -p bin/var
 
 webkit-client: $(CLIENT_SOURCE)
 	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
 
 tarball-gz: all
 	cp -r bin/ $(EXECUTABLE)-$(VERSION)
-	tar -cvzf $(EXECUTABLE)-$(VERSION).tar.gz $(EXECUTABLE)-$(VERSION)
+	tar -acf $(EXECUTABLE)-$(VERSION).tar.gz $(EXECUTABLE)-$(VERSION)
 	rm -rf $(EXECUTABLE)-$(VERSION)
 
 install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
