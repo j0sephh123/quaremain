@@ -8,11 +8,17 @@ CFLAGS=pkg-config --libs --cflags webkit2gtk-4.0
 CLIENT_SOURCE=quaremain-client.c
 CLIENT_EXECUTABLE=quaremain-client
 
-all: $(EXECUTABLE).asd
+.PHONY: webkit-client
+all: $(EXECUTABLE).asd webkit-client
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE))" \
                 --eval "(asdf:make :$(EXECUTABLE))" \
 		--eval "(uiop:quit)"
 	cp bin/$(EXECUTABLE) .
+	cp $(CLIENT_EXECUTABLE) bin/
+	cp dist-data/* bin/
+	cp -r static/ bin/
+	cp -r templates bin/
+	mkdir -p bin/var
 
 webkit-client: $(CLIENT_SOURCE)
 	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
