@@ -1,3 +1,5 @@
+.flatpak-builder/
+flatpak-development/
 quaremain-client
 quaremain_server
 quaremain

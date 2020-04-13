@@ -1,0 +1,25 @@
+{
+    "app-id": "site.momozor.quaremain",
+    "tags": ["development"],
+    "runtime" : "org.freedesktop.Platform",
+    "sdk" : "org.freedesktop.Sdk",
+    "runtime-version": "19.08",
+    "command": "site.momozor.quaremain",
+    "modules": [
+        {
+            "name": "quaremain",
+            "buildsystem": "simple",
+            "build-commands": [
+                "make",
+                "make install PREFIX=/app"
+            ],
+
+            "sources" : [
+                {
+                    "type" : "dir",
+                    "path" : "."
+                }
+            ]
+        }
+    ]
+}

@@ -21,6 +21,7 @@ all: $(EXECUTABLE).asd webkit-client
 	cp dist-data/* bin/
 	cp -r static/ bin/
 	cp -r templates bin/
+	cp -f app.lisp bin/	
 
 webkit-client: $(CLIENT_SOURCE)
 	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
@@ -35,6 +36,7 @@ install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
 	mkdir $(DESTDIR)/bin
 	install $(EXECUTABLE) $(DESTDIR)
 	install $(CLIENT_EXECUTABLE) $(DESTDIR)/bin
+	cp -f app.lisp $(DESTDIR)
 	cp -r templates $(DESTDIR)
 	cp -r static $(DESTDIR)
 	touch $(DATABASE)
@@ -47,11 +49,15 @@ uninstall:
 	rm -rf $(DESTDIR)/templates
 	rm -rf $(DESTDIR)/bin
 	rm -rf $(DESTDIR)/static
+	rm -f $(DESTDIR)/app.lisp
 	rm -f $(DATABASE)
 	rm -f $(DESTDIR)/$(EXECUTABLE)
 	rmdir $(DESTDIR)/var
 	rmdir $(DESTDIR)
 
+flatpak-development: target/release/quaremain
+	mkdir -p flatpak-development
+	flatpak-builder flatpak-development site.momozor.quaremain.json
 clean:
 	rm -rf bin/
 	rm -f $(EXECUTABLE)

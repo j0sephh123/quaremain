@@ -14,6 +14,7 @@
                  ;; For DB.
                  "sxql"
                  "datafly"
+                 "dbd-sqlite3"
 
                  ;; Logging.
                  "log4cl")
