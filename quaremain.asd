@@ -17,7 +17,10 @@
                  "dbd-sqlite3"
 
                  ;; Logging.
-                 "log4cl")
+                 "log4cl"
+
+                 "lack-middleware-static"
+                 "lack-middleware-session")
     :components ((:module "src"
                           :components
                           ((:file "main" :depends-on ("config" "view" "db" "web"))

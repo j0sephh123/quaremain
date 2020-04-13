@@ -64,5 +64,4 @@
       () (progn
            (format *error-output* "Aborting.~&")
            (stop)
-           (uiop:quit 1))))) ;; portable exit, included in ASDF, already loaded.
-;; for others, unhandled errors (we might want to do the same).
+           (uiop:quit 1)))))
