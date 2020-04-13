@@ -21,9 +21,6 @@
 
 (defvar *handler* nil)
 
-(defparameter *appfile-path*
-  (pathname "app.lisp"))
-
 (defun start (&rest args &key server port debug &allow-other-keys)
   (declare (ignore server port debug))
   (migrate-models)
@@ -33,7 +30,16 @@
         :report "Restart the server"
         (stop))))
   (setf *handler*
-        (apply #'clackup *appfile-path* args)))
+        (apply #'clackup (builder
+                          (:static
+                           :path (lambda (path)
+                                   (if (ppcre:scan "^(?:/images/|/css/|/js/|/robot\\.txt$|/favicon\\.ico$)" path)
+                                       path
+                                       nil))
+                           :root *static-directory*)
+                          :session
+                          *web*)
+               args)))
 
 
 (defun stop ()
