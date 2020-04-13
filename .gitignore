@@ -13,7 +13,7 @@ patch/
 .#*
 bin/
 
-*.tar.gz
-*.tar.zst
-*.tar.xz
-*.zip
+*tar.gz
+*tar.zst
+*tar.xz
+*zip

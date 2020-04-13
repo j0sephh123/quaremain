@@ -25,9 +25,9 @@ webkit-client: $(CLIENT_SOURCE)
 	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
 
 tarball-gz: all
-	cp -r bin/ dist/
-	tar -cvzf $(EXECUTABLE)-$(VERSION).tar.gz dist/
-	rm -rf dist/
+	cp -r bin/ $(EXECUTABLE)-$(VERSION)
+	tar -cvzf $(EXECUTABLE)-$(VERSION).tar.gz $(EXECUTABLE)-$(VERSION)
+	rm -rf $(EXECUTABLE)-$(VERSION)
 
 install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
 	mkdir -p $(DESTDIR)/var
