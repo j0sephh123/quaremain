@@ -7,8 +7,9 @@ CC=gcc
 CFLAGS=pkg-config --libs --cflags webkit2gtk-4.0
 CLIENT_SOURCE=quaremain-client.c
 CLIENT_EXECUTABLE=quaremain-client
+VERSION=0.1.0
 
-.PHONY: webkit-client
+.PHONY: webkit-client all
 all: $(EXECUTABLE).asd webkit-client
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE))" \
                 --eval "(asdf:make :$(EXECUTABLE))" \
@@ -22,6 +23,11 @@ all: $(EXECUTABLE).asd webkit-client
 
 webkit-client: $(CLIENT_SOURCE)
 	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
+
+tarball-gz: all
+	cp -r bin/ dist/
+	tar -cvzf $(EXECUTABLE)-$(VERSION).tar.gz dist/
+	rm -rf dist/
 
 install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
 	mkdir -p $(DESTDIR)/var
@@ -40,7 +46,6 @@ uninstall:
 	rm -rf $(DESTDIR)/templates
 	rm -rf $(DESTDIR)/bin
 	rm -rf $(DESTDIR)/static
-	rm -f $(DESTDIR)/app.lisp
 	rm -f $(DATABASE)
 	rm -f $(DESTDIR)/$(EXECUTABLE)
 	rmdir $(DESTDIR)/var
@@ -51,3 +56,4 @@ clean:
 	rm -f $(EXECUTABLE)
 	rm -f var/$(EXECUTABLE).db
 	rm -f $(CLIENT_EXECUTABLE)
+	rm -f $(EXECUTABLE)-$(VERSION).tar.gz

@@ -12,3 +12,8 @@ patch/
 *~
 .#*
 bin/
+
+*.tar.gz
+*.tar.zst
+*.tar.xz
+*.zip
