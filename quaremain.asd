@@ -20,7 +20,8 @@
                  "log4cl"
 
                  "lack-middleware-static"
-                 "lack-middleware-session")
+                 "lack-middleware-session"
+                 "hunchentoot")
     :components ((:module "src"
                           :components
                           ((:file "main" :depends-on ("config" "view" "db" "web"))
