@@ -39,7 +39,7 @@ opensusetumbleweed-tarball: all
 	tar -acf $(EXECUTABLE)-opensusetumbleweed-$(VERSION).tar.gz $(EXECUTABLE)-opensusetumbleweed-$(VERSION)
 	rm -rf $(EXECUTABLE)-opensusetumbleweed-$(VERSION)
 
-all-tarballs: all ubuntu20.04-tarball opensusetumbleweed-tarball
+all-tarballs: ubuntu20.04-tarball opensusetumbleweed-tarball
 
 install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
 	mkdir -p $(DESTDIR)/var
