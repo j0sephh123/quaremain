@@ -29,7 +29,12 @@ For client
 
 ##### Build and Run
 
--  `$ make`
+> By default, Quaremain uses SBCL compiler to build a small sized self-contained executable with the trade of high-memory usage. If you prefer lower memory
+usage, use CCL (Clozure implementation) to build, but with the trade off of
+big self-contained executable. This shouldn't really matter if you distribute it
+in a compressed archive.
+
+-  `$ make # by default, uses SBCL to compile. Replace with make LISP=lx86cl64 to use CCL`
 -  `$ ./quaremain  # to run the server`
 -  `$ ./quaremain-client # run this in separate process i.e via &`
 

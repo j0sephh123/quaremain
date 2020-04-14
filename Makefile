@@ -31,7 +31,7 @@ webkit-client: $(CLIENT_SOURCE)
 
 test: $(EXECUTABLE).asd
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE) :silent t)" \
-		--eval "(asdf:test-system :$(EXECUTABLE))" 2>/dev/null \
+		--eval "(asdf:test-system :$(EXECUTABLE))" \
 		--eval "(uiop:quit)"
 
 ubuntu20.04-tarball: all
