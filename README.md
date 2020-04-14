@@ -17,7 +17,7 @@ future on Linux.
 
 For server
 
-- sbcl
+- sbcl or ccl
 - quicklisp (manually install and download)
 - sqlite3-devel
 
