@@ -19,20 +19,20 @@
 
 (defparameter *food-model*
   (sxql:create-table (:food :if-not-exists t)
-      ((id :type 'integer :primary-key t)
-       (name :type 'text :not-null t)
-       (description :type 'text)
-       (amount :type 'integer :not-null t)
-       (cost-per-package :type 'real :not-null t)
-       (calories-per-package :type 'integer :not-null t))))
+                     ((id :type 'integer :primary-key t)
+                      (name :type 'text :not-null t)
+                      (description :type 'text)
+                      (amount :type 'integer :not-null t)
+                      (cost-per-package :type 'real :not-null t)
+                      (calories-per-package :type 'integer :not-null t))))
 
 (defparameter *water-model*
   (sxql:create-table (:water :if-not-exists t)
-      ((id :type 'integer :primary-key t)
-       (name :type 'text :not-null t)
-       (description :type 'text)
-       (amount :type 'integer :not-null t)
-       (cost-per-package :type 'real :not-null t))))
+                     ((id :type 'integer :primary-key t)
+                      (name :type 'text :not-null t)
+                      (description :type 'text)
+                      (amount :type 'integer :not-null t)
+                      (cost-per-package :type 'real :not-null t))))
 
 
 (defun migrate-models ()
@@ -56,21 +56,20 @@
   `(with-connection (db)
      (datafly:execute
       (sxql:insert-into ,model-table
-        (sxql:set= ,@body)))))
+                        (sxql:set= ,@body)))))
 
 (defun get-all-from-model (model-table)
   (with-connection (db)
     (datafly:retrieve-all
      (sxql:select :*
-       (sxql:from model-table)))))
+                  (sxql:from model-table)))))
 
-(defun sum-all-from-model (model-table)
-  (let ((original (get-all-from-model model-table)))
-    (loop for item in original
-       do (setf (getf item :cost-per-package)
-                (* (getf item :amount)
-                   (getf item :cost-per-package))))
-    original))
+(defun sum-model (datum)
+  (loop for item in datum
+     do (setf (getf item :cost-per-package)
+              (* (getf item :amount)
+                 (getf item :cost-per-package))))
+  datum)
 
 
 ;;; Routing rules.
@@ -78,7 +77,8 @@
 (defroute "/" ()
   "By default, shows list of current accumulated stocks."
   (render #p"index.html"
-          `(:food-list ,(sum-all-from-model :food))))
+          `(:food-list ,(sum-model
+                         (get-all-from-model :food)))))
 
 (defroute "/about" ()
   (render #p"about.html"))
