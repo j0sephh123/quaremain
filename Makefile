@@ -9,27 +9,37 @@ CLIENT_SOURCE=quaremain-client.c
 CLIENT_EXECUTABLE=quaremain-client
 VERSION=0.1.0
 
-.PHONY: webkit-client all
-all: $(EXECUTABLE).asd webkit-client
-	$(LISP) --eval "(ql:quickload :$(EXECUTABLE))" \
-                --eval "(asdf:make :$(EXECUTABLE))" \
-		--eval "(uiop:quit)"
+.PHONY: all server webkit-client ubuntu20.04-tarball opensusetumbleweed-tarball
+all: server webkit-client
 
 	mkdir -p bin/var
 	cp bin/$(EXECUTABLE) .
-	cp $(CLIENT_EXECUTABLE) bin/
+	cp -f $(CLIENT_EXECUTABLE) bin/
 	cp dist-data/* bin/
 	cp -r static/ bin/
 	cp -r templates bin/
 	rm -f bin/libssl* # don't want any trouble with weird licensing issues
 
+
+server: $(EXECUTABLE).asd
+	$(LISP) --eval "(ql:quickload :$(EXECUTABLE))" \
+                --eval "(asdf:make :$(EXECUTABLE))" \
+		--eval "(uiop:quit)"
+
 webkit-client: $(CLIENT_SOURCE)
 	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
 
-tarball-gz: all
-	cp -r bin/ $(EXECUTABLE)-$(VERSION)
-	tar -acf $(EXECUTABLE)-$(VERSION).tar.gz $(EXECUTABLE)-$(VERSION)
-	rm -rf $(EXECUTABLE)-$(VERSION)
+ubuntu20.04-tarball: all
+	cp -r bin/ $(EXECUTABLE)-ubuntu20.04-$(VERSION)
+	tar -acf $(EXECUTABLE)-ubuntu20.04-$(VERSION).tar.gz $(EXECUTABLE)-ubuntu20.04-$(VERSION)
+	rm -rf $(EXECUTABLE)-ubuntu20.04-$(VERSION)
+
+opensusetumbleweed-tarball: all
+	cp -r bin/ $(EXECUTABLE)-opensusetumbleweed-$(VERSION)
+	tar -acf $(EXECUTABLE)-opensusetumbleweed-$(VERSION).tar.gz $(EXECUTABLE)-opensusetumbleweed-$(VERSION)
+	rm -rf $(EXECUTABLE)-opensusetumbleweed-$(VERSION)
+
+all-tarballs: all ubuntu20.04-tarball opensusetumbleweed-tarball
 
 install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
 	mkdir -p $(DESTDIR)/var
@@ -58,4 +68,5 @@ clean:
 	rm -f $(EXECUTABLE)
 	rm -f var/$(EXECUTABLE).db
 	rm -f $(CLIENT_EXECUTABLE)
-	rm -f $(EXECUTABLE)-$(VERSION).tar.gz
+	rm -f $(EXECUTABLE)-ubuntu20.04-$(VERSION).tar.gz
+	rm -f $(EXECUTABLE)-opensusetumbleweed-$(VERSION).tar.gz
