@@ -1,20 +1,21 @@
-* Quaremain
+# Quaremain
 
 A desktop application to manage your basic survival resources for the future on Linux.
 
 
-** Version
+## Version
 
 0.1.0
 
 
-** Building
+## Building
 
-Dependencies
+### Dependencies
 
-OpenSUSE Tumbleweed (as in 2020/04/12)
+#### OpenSUSE Tumbleweed (as in 2020/04/12)
 
 For server
+
 - sbcl
 - quicklisp (manually install and download)
 - sqlite3-devel
@@ -26,26 +27,26 @@ For client
 - pkg-config
 - webkit2gtk3-devel
 
-Build and Run
+##### Build and Run
 
--  $ make & make webkit-client
--  $ ./quaremain  # for server
--  $ ./quaremain-client # run this in separate process 
+-  `$ make`
+-  `$ ./quaremain  # to run the server`
+-  `$ ./quaremain-client # run this in separate process i.e via &`
 
 
-** Contributing
+## Contributing
 
 If you want to report a bug, to discuss about features,
-asking for help, or sending new patches,
+asking questions, or sending new patches,
 please send an email to quaremain@freelists.org
 
 
-** Author
+## Author
 
-Momozor <skelic3@gmail.com>
+Momozor <skelic3@gmail.com, momozor4@gmail.com>
 
 
-** License
+## License
 
 This software is released under the GPL-3.0-or-later license.
 Please see COPYING file for more details.
