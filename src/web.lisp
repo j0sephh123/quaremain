@@ -80,6 +80,9 @@
           `(:food-list ,(sum-model
                          (get-all-from-model :food)))))
 
+(defroute "/app/create-form" ()
+  (render #p"app/create-form.html"))
+
 (defroute "/about" ()
   (render #p"about.html"))
 

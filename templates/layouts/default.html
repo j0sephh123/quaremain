@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>{% block title %}{% endblock %} | Quaremain</title>
+  <head lang="en">
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %} | Quaremain</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css">
-    </head>
+  </head>
 
-    <body>
-      {% block content %}{% endblock %}
-      <script src="/js/jquery.min.js"></script>
-      <script src="/js/bootstrap.min.js"></script>
-    </body>
+  <header>
+    <div class="blog-masthead">
+        <nav class="blog-nav">
+
+          <a class="blog-nav-item" href="/">List</a>
+          <a class="blog-nav-item" href="/about">About</a>
+          
+        </nav>
+    </div>
+  </header>
+
+  <body>
+    {% block content %}{% endblock %}
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+  </body>
 </html>
