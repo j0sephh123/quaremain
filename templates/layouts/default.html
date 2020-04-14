@@ -1,26 +1,36 @@
 <!DOCTYPE html>
-<html>
-  <head lang="en">
+<html lang="en">
+  <head>
     <meta charset="utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %} | Quaremain</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css">
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"  href="/css/style.css">
   </head>
 
-  <header>
-    <div class="blog-masthead">
-        <nav class="blog-nav">
-
-          <a class="blog-nav-item" href="/">List</a>
-          <a class="blog-nav-item" href="/about">About</a>
-          
-        </nav>
-    </div>
-  </header>
-
   <body>
-    {% block content %}{% endblock %}
+    
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">File <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    {% block content %}
+
+    
+    {% endblock %}
     <script src="/js/jquery.min.js"></script>
+    <script>window.jQuery</script>
+    <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
   </body>
 </html>
