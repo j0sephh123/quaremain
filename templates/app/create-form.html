@@ -1,6 +1,30 @@
 {% extends "layouts/default.html" %}
-{% block title %}New list{% endblock %}
+{% block title %}Create{% endblock %}
 
 {% block content %}
+
+<form method="POST" action="/app/create" class="form-group">
+    <label>Name</label>
+    <br>
+    <input type="text" name="name" required class="form-control">
+    <br
+    <label>Description</label>
+    <br>
+    <input type="text" name="description" class="form-control">
+    <br>
+    <label>Amount</label>
+    <br>
+    <input type="number" name="amount" required class="form-control">
+    <br>
+    <label>Cost per package</label>
+    <br>
+    <input type="number" name="cost-per-package" required class="form-control">
+    <br>
+    <label>Calories per package</label>
+    <br>
+    <input type="number" name="calories-per-package" required class="form-control">
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 {% endblock %}
