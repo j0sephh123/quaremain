@@ -10,7 +10,9 @@
   (testing "(sum-model '((:cost-per-package 2.2 :amount 3))) should equal to ((:cost-per-package 6.6000004 :amount 3)"
            (let* ((raw-result
                    (quaremain.web::sum-model '((:cost-per-package 2.2 :amount 3))))
-                  (total-cost (getf (car raw-result) :cost-per-package)))
+                  (total-cost (getf (car raw-result) :cost-per-package))
+                  (amount (getf (car raw-result) :amount)))
              (ok
-              (= total-cost 6.6000004)))))
+              (and (= total-cost 6.6000004)
+                   (= amount 3))))))
 
