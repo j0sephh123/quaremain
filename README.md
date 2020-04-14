@@ -30,10 +30,10 @@ For client
 
 ##### Build and Run
 
-> By default, Quaremain uses SBCL compiler to build a small sized
+By default, Quaremain uses SBCL compiler to build a small sized
 self-contained executable with the trade of high-memory usage.
 
-> If you prefer lower memory usage, use CCL (Clozure implementation) to build,
+If you prefer lower memory usage, use CCL (Clozure implementation) to build,
 but with the trade off of big self-contained executable. This
 shouldn't really matter if you distribute it in a compressed archive.
 
