@@ -86,6 +86,6 @@ please send an email to quaremain@freelists.org
 This software is released under the GPL-3.0-or-later license.
 Please see COPYING file for more details.
 
-For JQuery, Bootstrap, and Sweetalert code licenses, see 
-COPYING.jquery, COPYING.bootstrap, and COPYING.sweetalert in 
+For JQuery, Bootstrap, PopperJS, and Sweetalert code licenses, see 
+COPYING.jquery, COPYING.bootstrap, COPYING.popper, and COPYING.sweetalert in 
 static/js directory.
