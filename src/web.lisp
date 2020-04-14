@@ -79,16 +79,28 @@
   (next-route))
 
 (defroute "/" ()
-  "By default, shows list of current accumulated stocks."
   (render #p"index.html"
           `(:food-list ,(sum-model
                          (get-all-from-model :food)))))
 
+(defroute "/about" ()
+  (render #p"about.html"))
+
 (defroute "/app/create-form" ()
   (render #p"app/create-form.html"))
 
-(defroute "/about" ()
-  (render #p"about.html"))
+(defroute ("/app/create" :method :POST) (&key |name|
+                                              |description|
+                                              |amount|
+                                              |cost-per-package|
+                                              |calories-per-package|)
+  (insert-dao :food
+    :name |name|
+    :description |description|
+    :amount |amount|
+    :cost-per-package |cost-per-package|
+    :calories-per-package |calories-per-package|)
+  "Success!")
 
 
 ;;; Error pages.
