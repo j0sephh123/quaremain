@@ -3,8 +3,8 @@
 
 {% block content %}
 
-<div class="table-responsive">
-  <table>
+<table class="table table-bordered">
+  <thead class="thead-light">
     <tr>
         <th>ID</th>
         <th>Item</th>
@@ -24,6 +24,6 @@
         <td>{{ food.calories-per-package }}</td>
     </tr>
     {% endfor %}
+    </thead>
   </table>
-  </div>
 {% endblock %}

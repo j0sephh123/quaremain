@@ -74,6 +74,10 @@
 
 ;;; Routing rules.
 
+(defroute "**" ()
+  (setf (getf (response-headers *response*) :cache-control) "no-cache, no-store, must-revalidate")
+  (next-route))
+
 (defroute "/" ()
   "By default, shows list of current accumulated stocks."
   (render #p"index.html"
