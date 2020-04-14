@@ -53,9 +53,6 @@ uninstall:
 	rmdir $(DESTDIR)/var
 	rmdir $(DESTDIR)
 
-flatpak-development: target/release/quaremain
-	mkdir -p flatpak-development
-	flatpak-builder flatpak-development site.momozor.quaremain.json
 clean:
 	rm -rf bin/
 	rm -f $(EXECUTABLE)
