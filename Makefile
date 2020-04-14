@@ -7,7 +7,7 @@ CC=gcc
 CFLAGS=pkg-config --libs --cflags webkit2gtk-4.0
 CLIENT_SOURCE=quaremain-client.c
 CLIENT_EXECUTABLE=quaremain-client
-VERSION=0.1.0
+VERSION=0.2.0
 
 .PHONY: all server webkit-client ubuntu20.04-tarball opensusetumbleweed-tarball
 all: server webkit-client
@@ -28,6 +28,11 @@ server: $(EXECUTABLE).asd
 
 webkit-client: $(CLIENT_SOURCE)
 	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
+
+test: $(EXECUTABLE).asd
+	$(LISP) --eval "(ql:quickload :$(EXECUTABLE) :silent t)" \
+		--eval "(asdf:test-system :$(EXECUTABLE))" 2>/dev/null \
+		--eval "(uiop:quit)"
 
 ubuntu20.04-tarball: all
 	cp -r bin/ $(EXECUTABLE)-ubuntu20.04-$(VERSION)
