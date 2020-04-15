@@ -7,7 +7,7 @@ CC=gcc
 CFLAGS=pkg-config --libs --cflags webkit2gtk-4.0
 CLIENT_SOURCE=quaremain-client.c
 CLIENT_EXECUTABLE=quaremain-client
-VERSION=0.2.0
+VERSION=0.3.0
 
 .PHONY: all server webkit-client ubuntu20.04-tarball opensusetumbleweed-tarball
 all: server webkit-client
@@ -35,14 +35,14 @@ test: $(EXECUTABLE).asd
 		--eval "(uiop:quit)"
 
 ubuntu20.04-tarball: all
-	cp -r bin/ $(EXECUTABLE)-ubuntu20.04-$(VERSION)
-	tar -acf $(EXECUTABLE)-ubuntu20.04-$(VERSION).tar.gz $(EXECUTABLE)-ubuntu20.04-$(VERSION)
-	rm -rf $(EXECUTABLE)-ubuntu20.04-$(VERSION)
+	cp -r bin/ $(EXECUTABLE)-$(VERSION)-ubuntu20.04
+	tar -acf $(EXECUTABLE)-$(VERSION)-ubuntu20.04.tar.gz $(EXECUTABLE)-$(VERSION)-ubuntu20.04/
+	rm -rf $(EXECUTABLE)-$(VERSION)-ubuntu20.04/
 
 opensusetumbleweed-tarball: all
-	cp -r bin/ $(EXECUTABLE)-opensusetumbleweed-$(VERSION)
-	tar -acf $(EXECUTABLE)-opensusetumbleweed-$(VERSION).tar.gz $(EXECUTABLE)-opensusetumbleweed-$(VERSION)
-	rm -rf $(EXECUTABLE)-opensusetumbleweed-$(VERSION)
+	cp -r bin/ $(EXECUTABLE)-$(VERSION)-opensusetumbleweed
+	tar -acf $(EXECUTABLE)-$(VERSION)-opensusetumbleweed.tar.gz $(EXECUTABLE)-$(VERSION)-opensusetumbleweed/
+	rm -rf $(EXECUTABLE)-$(VERSION)-opensusetumbleweed/
 
 all-tarballs: ubuntu20.04-tarball opensusetumbleweed-tarball
 
@@ -73,5 +73,5 @@ clean:
 	rm -f $(EXECUTABLE)
 	rm -f var/$(EXECUTABLE).db
 	rm -f $(CLIENT_EXECUTABLE)
-	rm -f $(EXECUTABLE)-ubuntu20.04-$(VERSION).tar.gz
-	rm -f $(EXECUTABLE)-opensusetumbleweed-$(VERSION).tar.gz
+	rm -f $(EXECUTABLE)-$(VERSION)-ubuntu20.04.tar.gz
+	rm -f $(EXECUTABLE)-$(VERSION)-opensusetumbleweed.tar.gz
