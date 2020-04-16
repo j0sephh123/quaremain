@@ -19,20 +19,20 @@
 
 (defparameter *food-model*
   (sxql:create-table (:food :if-not-exists t)
-                     ((id :type 'integer :primary-key t)
-                      (name :type 'text :not-null t)
-                      (description :type 'text)
-                      (amount :type 'integer :not-null t)
-                      (cost-per-package :type 'real :not-null t)
-                      (calories-per-package :type 'integer :not-null t))))
+      ((id :type 'integer :primary-key t)
+       (name :type 'text :not-null t)
+       (description :type 'text)
+       (amount :type 'integer :not-null t)
+       (cost-per-package :type 'real :not-null t)
+       (calories-per-package :type 'integer :not-null t))))
 
 (defparameter *water-model*
   (sxql:create-table (:water :if-not-exists t)
-                     ((id :type 'integer :primary-key t)
-                      (name :type 'text :not-null t)
-                      (description :type 'text)
-                      (amount :type 'integer :not-null t)
-                      (cost-per-package :type 'real :not-null t))))
+      ((id :type 'integer :primary-key t)
+       (name :type 'text :not-null t)
+       (description :type 'text)
+       (amount :type 'integer :not-null t)
+       (cost-per-package :type 'real :not-null t))))
 
 
 (defun migrate-models ()
@@ -56,13 +56,13 @@
   `(with-connection (db)
      (datafly:execute
       (sxql:insert-into ,model-table
-                        (sxql:set= ,@body)))))
+        (sxql:set= ,@body)))))
 
 (defun get-all-from-model (model-table)
   (with-connection (db)
     (datafly:retrieve-all
      (sxql:select :*
-                  (sxql:from model-table)))))
+       (sxql:from model-table)))))
 
 (defun sum-model (datum)
   (loop for item in datum
@@ -70,6 +70,12 @@
               (* (getf item :amount)
                  (getf item :cost-per-package))))
   datum)
+
+(defun get-datum-by-id (id)
+  (with-connection (db)
+    (datafly:retrieve-one
+     (sxql:select :* (sxql:from :food)
+                  (sxql:where (:= :id id))))))
 
 
 ;;; Routing rules.
@@ -100,7 +106,18 @@
     :amount |amount|
     :cost-per-package |cost-per-package|
     :calories-per-package |calories-per-package|)
-  "Success!")
+  (render #p"index.html"))
+
+(defroute "/app/update-form/:id" (&key id)
+  (render #p"app/update-form.html"
+          (list :datum (get-datum-by-id id))))
+
+(defroute ("/app/update" :method :UPDATE) (&key |name|
+                                                |description|
+                                                |amount|
+                                                |cost-per-package|
+                                                |calories-per-package|)
+  nil)
 
 
 ;;; Error pages.
