@@ -15,6 +15,7 @@
 
 (defclass <web> (<app>) ())
 (defvar *web* (make-instance '<web>))
+(defvar *session* (make-hash-table))
 (clear-routing-rules *web*)
 
 (defparameter *food-model*
@@ -77,6 +78,22 @@
      (sxql:select :* (sxql:from :food)
                   (sxql:where (:= :id id))))))
 
+(defun update-datum-by-id (id &key
+                                name
+                                description
+                                amount
+                                cost-per-package
+                                calories-per-package)
+  (with-connection (db)
+    (datafly:execute
+     (sxql:update :food
+       (sxql:set= :name name
+                  :description description
+                  :amount amount
+                  :cost-per-package cost-per-package
+                  :calories-per-package calories-per-package)
+       (sxql:where (:= :id id))))))
+
 
 ;;; Routing rules.
 
@@ -109,15 +126,22 @@
   (render #p"index.html"))
 
 (defroute "/app/update-form/:id" (&key id)
+  (setf (gethash 'datum-id *session*) id)
   (render #p"app/update-form.html"
           (list :datum (get-datum-by-id id))))
 
-(defroute ("/app/update" :method :UPDATE) (&key |name|
-                                                |description|
-                                                |amount|
-                                                |cost-per-package|
-                                                |calories-per-package|)
-  nil)
+(defroute ("/app/update" :method :POST) (&key |name|
+                                              |description|
+                                              |amount|
+                                              |cost-per-package|
+                                              |calories-per-package|)
+  (update-datum-by-id (gethash 'datum-id *session*)
+                      :name |name|
+                      :description |description|
+                      :amount |amount|
+                      :cost-per-package |cost-per-package|
+                      :calories-per-package |calories-per-package|)
+  (render #p"index.html"))
 
 
 ;;; Error pages.
