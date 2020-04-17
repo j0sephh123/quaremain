@@ -68,9 +68,17 @@
 (defun sum-model (datum)
   (loop for item in datum
      do (setf (getf item :cost-per-package)
-              (* (getf item :amount)
-                 (getf item :cost-per-package))))
+              (coerce (* (getf item :amount)
+                         (getf item :cost-per-package))
+                      'single-float)))
   datum)
+
+(defun sum-datum (datum)
+  (let ((dcpp (getf datum :cost-per-package))
+        (da (getf datum :amount)))
+    (setf (getf datum :cost-per-package)
+          (coerce (* da dcpp) 'single-float))
+    datum))
 
 (defun get-datum-by-id (id)
   (with-connection (db)
@@ -134,7 +142,9 @@
 (defroute "/app/update-form/:id" (&key id)
   (setf (gethash 'datum-id *session*) id)
   (render #p"app/update-form.html"
-          (list :datum (get-datum-by-id id))))
+          (let ((datum-sum (sum-datum
+                            (get-datum-by-id id))))
+            (list :datum datum-sum))))
 
 (defroute ("/app/update" :method :POST) (&key |name|
                                               |description|
