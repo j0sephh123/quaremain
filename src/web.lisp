@@ -94,6 +94,12 @@
                   :calories-per-package calories-per-package)
        (sxql:where (:= :id id))))))
 
+(defun delete-datum-from-model (id)
+  (with-connection (db)
+    (datafly:execute
+     (sxql:delete-from :food
+       (sxql:where (:= :id id))))))
+
 
 ;;; Routing rules.
 
@@ -141,6 +147,10 @@
                       :amount |amount|
                       :cost-per-package |cost-per-package|
                       :calories-per-package |calories-per-package|)
+  (render #p"index.html"))
+
+(defroute ("/app/delete/:id" :method '(:DELETE :GET)) (&key id)
+  (delete-datum-from-model id)
   (render #p"index.html"))
 
 
