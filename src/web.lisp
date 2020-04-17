@@ -139,18 +139,25 @@
     :calories-per-package |calories-per-package|)
   (redirect "/"))
 
+(defun coe (datum)
+  (setf (getf datum :cost-per-package)
+        (coerce (getf datum :cost-per-package)
+                'single-float))
+  datum)
+
 (defroute "/app/update-form/:id" (&key id)
   (setf (gethash 'datum-id *session*) id)
   (render #p"app/update-form.html"
-          (let ((datum-sum (sum-datum
-                            (get-datum-by-id id))))
-            (list :datum datum-sum))))
+          (let ((coerced-datum (coe
+                                (get-datum-by-id id))))
+            (list :datum coerced-datum))))
 
 (defroute ("/app/update" :method :POST) (&key |name|
                                               |description|
                                               |amount|
                                               |cost-per-package|
                                               |calories-per-package|)
+  (format t "~a~%" (gethash 'datum-id *session*))
   (update-datum-by-id (gethash 'datum-id *session*)
                       :name |name|
                       :description |description|
