@@ -129,7 +129,7 @@
     :amount |amount|
     :cost-per-package |cost-per-package|
     :calories-per-package |calories-per-package|)
-  (render #p"index.html"))
+  (redirect "/"))
 
 (defroute "/app/update-form/:id" (&key id)
   (setf (gethash 'datum-id *session*) id)
@@ -147,12 +147,11 @@
                       :amount |amount|
                       :cost-per-package |cost-per-package|
                       :calories-per-package |calories-per-package|)
-  (render #p"index.html"))
+  (redirect "/"))
 
 (defroute ("/app/delete/:id" :method '(:DELETE :GET)) (&key id)
   (delete-datum-from-model id)
-  (render #p"index.html"))
-
+  (redirect "/"))
 
 ;;; Error pages.
 
