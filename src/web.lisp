@@ -157,7 +157,6 @@
                                               |amount|
                                               |cost-per-package|
                                               |calories-per-package|)
-  (format t "~a~%" (gethash 'datum-id *session*))
   (update-datum-by-id (gethash 'datum-id *session*)
                       :name |name|
                       :description |description|
