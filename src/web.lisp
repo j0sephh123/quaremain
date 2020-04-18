@@ -15,7 +15,7 @@
 
 (defclass <web> (<app>) ())
 (defvar *web* (make-instance '<web>))
-(defvar *session* (make-hash-table))
+(defparameter *session* (make-hash-table))
 (clear-routing-rules *web*)
 
 (defparameter *food-model*
@@ -35,6 +35,10 @@
        (amount :type 'integer :not-null t)
        (cost-per-package :type 'real :not-null t))))
 
+(defmacro with-connection-execute (&body body)
+  `(with-connection (db)
+     (datafly:execute ,@body)))
+
 
 (defun migrate-models ()
   "Returns list of nils if operation succeed."
@@ -52,12 +56,11 @@
                (sxql:drop-table table)))
             (list :food :water))))
 
-(defmacro insert-dao (model-table &body body)
-  "Example: (insert-dao :water :amount 3 :cost-per-package 92392.3)"
-  `(with-connection (db)
-     (datafly:execute
-      (sxql:insert-into ,model-table
-        (sxql:set= ,@body)))))
+
+(defmacro insert-datum (model-table &rest key-val)
+  `(with-connection-execute
+       (sxql:insert-into ,model-table
+         (sxql:set= ,@key-val))))
 
 (defun get-all-from-model (model-table)
   (with-connection (db)
@@ -65,48 +68,39 @@
      (sxql:select :*
        (sxql:from model-table)))))
 
-(defun sum-model (datum)
-  (loop for item in datum
-     do (setf (getf item :cost-per-package)
-              (coerce (* (getf item :amount)
-                         (getf item :cost-per-package))
+(defun sum-all-cost-per-package (data)
+  (loop for datum in data
+     do (setf (getf datum :cost-per-package)
+              (coerce (* (getf datum :amount)
+                         (getf datum :cost-per-package))
                       'single-float)))
-  datum)
+  data)
 
-(defun sum-datum (datum)
-  (let ((dcpp (getf datum :cost-per-package))
-        (da (getf datum :amount)))
-    (setf (getf datum :cost-per-package)
-          (coerce (* da dcpp) 'single-float))
-    datum))
-
-(defun get-datum-by-id (id)
+(defun get-datum-by-id (model-table id)
   (with-connection (db)
     (datafly:retrieve-one
-     (sxql:select :* (sxql:from :food)
+     (sxql:select :* (sxql:from model-table)
                   (sxql:where (:= :id id))))))
 
-(defun update-datum-by-id (id &key
-                                name
-                                description
-                                amount
-                                cost-per-package
-                                calories-per-package)
-  (with-connection (db)
-    (datafly:execute
-     (sxql:update :food
-       (sxql:set= :name name
-                  :description description
-                  :amount amount
-                  :cost-per-package cost-per-package
-                  :calories-per-package calories-per-package)
-       (sxql:where (:= :id id))))))
+(defun update-datum-by-id (model-table id &key
+                                            name
+                                            description
+                                            amount
+                                            cost-per-package
+                                            calories-per-package)
+  (with-connection-execute
+      (sxql:update model-table
+        (sxql:set= :name name
+                   :description description
+                   :amount amount
+                   :cost-per-package cost-per-package
+                   :calories-per-package calories-per-package)
+        (sxql:where (:= :id id)))))
 
-(defun delete-datum-from-model (id)
-  (with-connection (db)
-    (datafly:execute
-     (sxql:delete-from :food
-       (sxql:where (:= :id id))))))
+(defun delete-datum-from-model (model-table id)
+  (with-connection-execute
+      (sxql:delete-from model-table
+        (sxql:where (:= :id id)))))
 
 
 ;;; Routing rules.
@@ -117,7 +111,7 @@
 
 (defroute "/" ()
   (render #p"index.html"
-          `(:food-list ,(sum-model
+          `(:food-list ,(sum-all-cost-per-package
                          (get-all-from-model :food)))))
 
 (defroute "/about" ()
@@ -131,7 +125,7 @@
                                               |amount|
                                               |cost-per-package|
                                               |calories-per-package|)
-  (insert-dao :food
+  (insert-datum :food
     :name |name|
     :description |description|
     :amount |amount|
@@ -139,17 +133,16 @@
     :calories-per-package |calories-per-package|)
   (redirect "/"))
 
-(defun coe (datum)
-  (setf (getf datum :cost-per-package)
-        (coerce (getf datum :cost-per-package)
-                'single-float))
+(defun coerce-cost-per-package (datum)
+  (coerce (getf datum :cost-per-package)
+          'single-float)
   datum)
 
 (defroute "/app/update-form/:id" (&key id)
   (setf (gethash 'datum-id *session*) id)
   (render #p"app/update-form.html"
-          (let ((coerced-datum (coe
-                                (get-datum-by-id id))))
+          (let ((coerced-datum (coerce-cost-per-package
+                                (get-datum-by-id :food id))))
             (list :datum coerced-datum))))
 
 (defroute ("/app/update" :method :POST) (&key |name|
@@ -157,7 +150,8 @@
                                               |amount|
                                               |cost-per-package|
                                               |calories-per-package|)
-  (update-datum-by-id (gethash 'datum-id *session*)
+  (update-datum-by-id :food
+                      (gethash 'datum-id *session*)
                       :name |name|
                       :description |description|
                       :amount |amount|
@@ -165,8 +159,8 @@
                       :calories-per-package |calories-per-package|)
   (redirect "/"))
 
-(defroute ("/app/delete/:id" :method '(:DELETE :GET)) (&key id)
-  (delete-datum-from-model id)
+(defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
+  (delete-datum-from-model :food id)
   (redirect "/"))
 
 ;;; Error pages.
