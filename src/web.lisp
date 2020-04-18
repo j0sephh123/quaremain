@@ -126,16 +126,17 @@
                                               |cost-per-package|
                                               |calories-per-package|)
   (insert-datum :food
-    :name |name|
-    :description |description|
-    :amount |amount|
-    :cost-per-package |cost-per-package|
-    :calories-per-package |calories-per-package|)
+                :name |name|
+                :description |description|
+                :amount |amount|
+                :cost-per-package |cost-per-package|
+                :calories-per-package |calories-per-package|)
   (redirect "/"))
 
 (defun coerce-cost-per-package (datum)
-  (coerce (getf datum :cost-per-package)
-          'single-float)
+  (let ((cost-per-package (getf datum :cost-per-package)))
+    (setf (getf datum :cost-per-package)
+          (coerce cost-per-package 'single-float)))
   datum)
 
 (defroute "/app/update-form/:id" (&key id)
