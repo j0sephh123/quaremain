@@ -4,25 +4,32 @@
 {% block content %}
 
 <table class="table table-bordered">
-  <thead class="thead-light">
-    <tr>
-        <th>ID</th>
-        <th>Item</th>
-        <th>Description</th>
-        <th>Amount</th>
-        <th>Total Cost</th>
-    </tr>
+    <thead class="thead-light">
+        <tr>
+            <th>ID</th>
+            <th>Item</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Total Cost</th>
 
-    {% for datum in data %}
-    <tr>
-        <td>{{ datum.id }}</td>
-        <td>{{ datum.name }}</td>
-        <td>{{ datum.description }}</td>
-        <td>{{ datum.amount }}</td>
-        <td>${{ datum.cost-per-package }}</td>
-        <td>{{ datum.calories-per-package }}</td>
-    </tr>
-    {% endfor %}
+            {% ifequal list-type "food" %}
+            <th>Total Potential Calories</th>
+            {% endifequal %}
+        </tr>
+
+        {% for datum in data %}
+        <tr>
+            <td>{{ datum.id }}</td>
+            <td>{{ datum.name }}</td>
+            <td>{{ datum.description }}</td>
+            <td>{{ datum.amount }}</td>
+            <td>${{ datum.cost-per-package }}</td>
+
+            {% ifequal list-type "food" %}
+            <td>{{ datum.calories-per-package }}</td>
+            {% endifequal %}
+        </tr>
+        {% endfor %}
     </thead>
-  </table>
+</table>
 {% endblock %}

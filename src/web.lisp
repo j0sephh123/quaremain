@@ -105,25 +105,28 @@
 
 (defun delete-datum-from-model (model-table id)
   (with-connection-execute
-      (sxql:delete-from model-table
-        (sxql:where (:= :id id)))))
+    (sxql:delete-from model-table
+      (sxql:where (:= :id id)))))
 
 
 ;;; Routing rules.
-
-(defroute "**" ()
-  (setf (getf (response-headers *response*) :cache-control) "no-cache, no-store, must-revalidate")
-  (next-route))
-
 (defroute "/" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-cost-per-package
-                    (get-all-from-model :food)))))
+                    (get-all-from-model :food))
+                  :list-type "food")))
+
+(defroute "/app/list/food" ()
+  (render #p"app/list.html"
+          `(:data ,(sum-all-cost-per-package
+                    (get-all-from-model :food))
+                  :list-type "food")))
 
 (defroute "/app/list/water" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-cost-per-package
-                    (get-all-from-model :water)))))
+                    (get-all-from-model :water))
+                  :list-type "water")))
 
 (defroute "/about" ()
   (render #p"about.html"))
