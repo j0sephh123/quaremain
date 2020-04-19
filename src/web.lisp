@@ -26,7 +26,8 @@
   `(defparameter ,identifier
      (sxql:create-table (,table-name :if-not-exists t)
          ((id :type 'integer :primary-key t)
-          (name :type 'integer :not-null t)
+          (name :type 'text :not-null t)
+          (amount :type 'integer :not-null t)
           (cost-per-package :type 'real :not-null t)
           ,@body))))
 
