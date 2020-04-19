@@ -1,12 +1,12 @@
 # Quaremain
 
-A desktop application to manage your basic survival resources for the
-future on Linux.
+A software to manage resources for emergency times. Available
+on GNU/Linux Ubuntu 20.04 as a desktop application.
 
 
 ## Version
 
-0.2.0
+0.3.0
 
 
 ## Building
@@ -83,7 +83,7 @@ please send an email to quaremain@freelists.org
 
 ## License
 
-This software is released under the GPL-3.0-or-later license.
+This software is released under the GPL-3.0 or any later version.
 Please see COPYING file for more details.
 
 For JQuery, Bootstrap, PopperJS, and Sweetalert code licenses, see 
