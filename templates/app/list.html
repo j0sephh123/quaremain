@@ -3,6 +3,16 @@
 
 {% block content %}
 
+<h1>
+    {% ifequal list-type "food" %}
+    Food
+    {% endifequal %}
+    
+    {% ifequal list-type "water" %}
+    Water
+    {% endifequal %}
+</h1>
+
 <table class="table table-bordered">
     <thead class="thead-light">
         <tr>
