@@ -30,5 +30,11 @@
                     (amount (getf (car raw-result) :amount)))
                (ok
                 (and (= total-cost 6.6000004)
-                     (= amount 3))))))
+                     (= amount 3)))))
+
+  (testing "(coerce-cost-per-package '(:id 1 :amount 3 :cost-per-package 9239.84)) should equal to '(:id 1 :amount 3 :cost-per-package 9239.84)"
+           (ok
+            (equal (quaremain.web::coerce-cost-per-package
+                    '(:id 1 :amount 4 :cost-per-package 9239.84))
+                   '(:id 1 :amount 4 :cost-per-package 9239.84)))))
 
