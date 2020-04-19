@@ -18,9 +18,12 @@
 (defparameter *session* (make-hash-table))
 (clear-routing-rules *web*)
 
-(defmacro deftable (global-variable-name table-name &body body)
-  "Define a basic base table for new model"
-  `(defparameter ,global-variable-name
+(defmacro deftable (identifier table-name &body body)
+  "Define a basic base table for new model. This will create a
+   new non-dynamic global variable using the supplied first parameter
+   as the actual identifier name.
+   "
+  `(defparameter ,identifier
      (sxql:create-table (,table-name :if-not-exists t)
          ((id :type 'integer :primary-key t)
           (name :type 'integer :not-null t)
