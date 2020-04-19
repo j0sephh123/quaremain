@@ -27,6 +27,7 @@
      (sxql:create-table (,table-name :if-not-exists t)
          ((id :type 'integer :primary-key t)
           (name :type 'text :not-null t)
+          (description :type 'text :not-null t)
           (amount :type 'integer :not-null t)
           (cost-per-package :type 'real :not-null t)
           ,@body))))
@@ -115,9 +116,14 @@
   (next-route))
 
 (defroute "/" ()
-  (render #p"index.html"
-          `(:food-list ,(sum-all-cost-per-package
-                         (get-all-from-model :food)))))
+  (render #p"app/list.html"
+          `(:data ,(sum-all-cost-per-package
+                    (get-all-from-model :food)))))
+
+(defroute "/app/list/water" ()
+  (render #p"app/list.html"
+          `(:data ,(sum-all-cost-per-package
+                    (get-all-from-model :water)))))
 
 (defroute "/about" ()
   (render #p"about.html"))
