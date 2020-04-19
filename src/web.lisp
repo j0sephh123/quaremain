@@ -178,6 +178,11 @@
   (delete-datum-from-model :food id)
   (redirect "/"))
 
+
+(defroute "/open-url-using-separate-browser/:url" (&key url)
+  (uiop:run-program (format nil "xdg-open http://~s" url))
+  (redirect "/"))
+
 ;;; Error pages.
 
 (defmethod on-exception ((app <web>) (code (eql 404)))
