@@ -18,22 +18,20 @@
 (defparameter *session* (make-hash-table))
 (clear-routing-rules *web*)
 
-(defparameter *food-model*
-  (sxql:create-table (:food :if-not-exists t)
-      ((id :type 'integer :primary-key t)
-       (name :type 'text :not-null t)
-       (description :type 'text)
-       (amount :type 'integer :not-null t)
-       (cost-per-package :type 'real :not-null t)
-       (calories-per-package :type 'integer :not-null t))))
+(defmacro deftable (global-variable-name table-name &body body)
+  "Define a basic base table for new model"
+  `(defparameter ,global-variable-name
+     (sxql:create-table (,table-name :if-not-exists t)
+         ((id :type 'integer :primary-key t)
+          (name :type 'integer :not-null t)
+          (cost-per-package :type 'real :not-null t)
+          ,@body))))
 
-(defparameter *water-model*
-  (sxql:create-table (:water :if-not-exists t)
-      ((id :type 'integer :primary-key t)
-       (name :type 'text :not-null t)
-       (description :type 'text)
-       (amount :type 'integer :not-null t)
-       (cost-per-package :type 'real :not-null t))))
+;; Models.
+(deftable *food* :food
+  (calories-per-package :type 'integer :not-null t))
+(deftable *water* :water)
+(deftable *medicine* :medicine)
 
 (defmacro with-connection-execute (&body body)
   `(with-connection (db)
@@ -45,8 +43,9 @@
   (with-connection (db)
     (mapcar (lambda (model)
               (datafly:execute model))
-            (list *food-model*
-                  *water-model*))))
+            (list *food*
+                  *water*
+                  *medicine*))))
 
 (defun drop-models ()
   "Returns list of nils if operation succeed."
@@ -54,7 +53,9 @@
     (mapcar (lambda (table)
               (datafly:execute
                (sxql:drop-table table)))
-            (list :food :water))))
+            (list :food
+                  :water
+                  :medicine))))
 
 
 (defmacro insert-datum (model-table &rest key-val)
