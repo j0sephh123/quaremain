@@ -1,7 +1,8 @@
 # Quaremain
 
-A software to manage resources for emergency times. Available
-on GNU/Linux Ubuntu 20.04 as a desktop application.
+A software to manage resources for emergency times. 
+
+Available on GNU/Linux Ubuntu 20.04 as a desktop application.
 
 
 ## Version
@@ -17,8 +18,8 @@ on GNU/Linux Ubuntu 20.04 as a desktop application.
 
 For server
 
-- sbcl or ccl
-- quicklisp (manually install and download)
+- sbcl (or ccl from Clozure Common Lisp official website)
+- quicklisp (manually install and download from Quicklisp's official website)
 - sqlite3-devel
 
 For client
@@ -28,7 +29,21 @@ For client
 - pkg-config
 - webkit2gtk3-devel
 
-##### Build and Run
+#### Ubuntu 20.04
+
+For server
+
+- sbcl (or ccl from Clozure Common Lisp official website)
+- quicklisp (manually install and download from Quicklisp's official website)
+- libsqlite3-dev
+
+For client
+
+- build-essential (for most make and C compilers dependencies)
+- pkg-config
+- libwebkit2gtk-4.0-dev
+
+##### Build And Run
 
 By default, Quaremain uses SBCL compiler to build a small sized
 self-contained executable with the trade of high-memory usage.
@@ -49,7 +64,7 @@ shouldn't really matter if you distribute it in a compressed archive.
 
 - `$ make test`
 
-## Distributing for end-users
+## Distributing For End Users
 
 Currently, Quaremain is tested on OpenSUSE Tumbleweed and
 Ubuntu 20.04 (Focal Fossa). You must build on similar target platform
@@ -69,11 +84,46 @@ or
 
 if you want to build for OpenSUSE Tumbleweed.
 
+## Known Issues (as in version 0.3.0)
+
+1. Server build with Clozure Common Lisp implementation [Version 1.11.5/v1.11.5
+(LinuxX8664)] quitting phase ends up in the debugger instead of actually exiting
+program.
+
+2. Smaller client window (if resized) will likely hide the navigation toolbars.
+Maybe set a minimal default size to fix this issue?
+
+3. You always need to (slime-cd) in SLIME to the project directory. This
+should be resolved soon since it seems Deploy handles the relative
+path for the end executable automatically. We can go back to
+use merge-pathnames and current project directory if my
+assumption about Deploy is correct.
+
+4. Memory usage of SBCL's built executable is unnecesarily high.
+I tried it with CCL and it uses around 20-30MB+ compared to
+SBCL's 100MB+ for the same version of the program.
+It seems this issue caused by the SBCL garbage
+collector type usage (sacrificing memory for
+the excellent execution speed, I believe?)
+
+Will certainly make CCL as the default implementation
+but it's not possible currently due to issue 1.
+
+
 ## Contributing
 
-If you want to report a bug, discussing features,
-asking questions, or sending improvement patches,
+If you want to report a bug, to discuss features,
+to ask questions, or to send improvement patches,
 please send an email to quaremain@freelists.org
+
+NOTE: You must subscribe to the mailing list
+first before posting anything there. Please
+visit https://www.freelists.org/list/quaremain
+to subscribe first. It will require no
+registration or sign-in to subscribe.
+
+Quaremain uses `git` as the primary version
+control system.
 
 
 ## Author
