@@ -1,0 +1,17 @@
+# Number of days of inactivity before an issue becomes stale
+daysUntilStale: 1
+# Number of days of inactivity before a stale issue is closed
+daysUntilClose: 1
+# Issues with these labels will never be considered stale
+exemptLabels:
+  - pinned
+  - security
+# Label to use when marking an issue as stale
+staleLabel: wontfix
+# Comment to post when marking an issue as stale. Set to `false` to disable
+markComment: >
+  This issue has been automatically closed. If you want to send a patch,
+  please do so by sending a git patch email to quaremain@freelists.org.
+  This pull request will be archived as a future reference.
+# Comment to post when closing a stale issue. Set to `false` to disable
+closeComment: false
