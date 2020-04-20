@@ -23,3 +23,9 @@ License
 
 This software is released under the GPL-3.0 or later license.
 For further information, see COPYING.quaremain.
+
+For JQuery, Bootstrap, PopperJS, and Sweetalert code licenses, see 
+COPYING.jquery, COPYING.bootstrap, COPYING.popper, and COPYING.sweetalert in 
+static/js directory.
+
+For libz.so license, see COPYING.libz file.
