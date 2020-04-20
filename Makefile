@@ -7,7 +7,8 @@ CC=gcc
 CFLAGS=pkg-config --libs --cflags webkit2gtk-4.0
 CLIENT_SOURCE=quaremain-client.c
 CLIENT_EXECUTABLE=quaremain-client
-VERSION=0.3.0
+VERSION_BUMPER_SCRIPT=version-bumper.sh
+VERSION=0.4.4
 
 .PHONY: all server webkit-client ubuntu20.04-tarball opensusetumbleweed-tarball
 all: server webkit-client
@@ -21,6 +22,8 @@ all: server webkit-client
 	cp Quaremain bin/
 	cp CONTRIBUTING bin/
 	rm -f bin/libssl* # don't want any trouble with weird licensing issues
+	chmod a+x $(VERSION_BUMPER_SCRIPT)
+	./$(VERSION_BUMPER_SCRIPT) ${VERSION}
 
 
 server: $(EXECUTABLE).asd
