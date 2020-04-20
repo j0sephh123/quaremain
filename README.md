@@ -62,8 +62,9 @@ if you distribute it in a compressed archive.
   # Replace with make LISP=lx86cl64 to use CCL.
   $ make
   ```
--  `$ ./quaremain  # to run the server`
--  `$ ./quaremain-client # run this in separate process i.e via &`
+  
+- `$ chmod a+x ./Quaremain # to make the launcher executable`
+- `$ ./Quaremain # launch the program`
 
 ## Testing
 
