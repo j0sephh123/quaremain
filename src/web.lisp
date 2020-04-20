@@ -53,6 +53,8 @@
   (calories-per-package :type 'integer :not-null t))
 (deftable *water* :water)
 (deftable *medicine* :medicine)
+(deftable *weapon* :weapon)
+(deftable *non-lethal-protection-equipment* :non-lethal-protection-equipment)
 
 (defmacro with-connection-execute (&body body)
   `(with-connection (db)
@@ -66,7 +68,9 @@
               (datafly:execute model))
             (list *food*
                   *water*
-                  *medicine*))))
+                  *medicine*
+                  *weapon*
+                  *non-lethal-protection-equipment*))))
 
 (defun drop-models ()
   "Returns list of nils if operation succeed."
@@ -76,7 +80,9 @@
                (sxql:drop-table table)))
             (list :food
                   :water
-                  :medicine))))
+                  :medicine
+                  :weapon
+                  :non-lethal-protection-equipment))))
 
 
 (defmacro insert-datum (model-table &rest key-val)
