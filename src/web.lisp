@@ -150,17 +150,28 @@
 (defroute "/app/create-form" ()
   (render #p"app/create-form.html"))
 
-(defroute ("/app/create" :method :POST) (&key |name|
-                                              |description|
-                                              |amount|
-                                              |cost-per-package|
-                                              |calories-per-package|)
-  (insert-datum :food
-                :name |name|
-                :description |description|
-                :amount |amount|
-                :cost-per-package |cost-per-package|
-                :calories-per-package |calories-per-package|)
+(defroute ("/app/create" :method :POST) (&key
+                                         |stock-category|
+                                         |name|
+                                         |description|
+                                         |amount|
+                                         |cost-per-package|
+                                         |calories-per-package|)
+
+  (cond ((string-equal |stock-category| "food")
+         (insert-datum :food
+                       :name |name|
+                       :description |description|
+                       :amount |amount|
+                       :cost-per-package |cost-per-package|
+                       :calories-per-package |calories-per-package|))
+
+        ((string-equal |stock-category| "water")
+         (insert-datum :water
+                       :name |name|
+                       :description |description|
+                       :amount |amount|
+                       :cost-per-package |cost-per-package|)))
   (redirect "/"))
 
 (defun coerce-cost-per-package (datum)
