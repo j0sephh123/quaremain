@@ -40,6 +40,7 @@ int main(int argc, char* argv[])
 
   // Create an 800x600 window that will contain the browser instance
   GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title(GTK_WINDOW(main_window), "Quaremain");
   gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
 
   WebKitWebContext *context = webkit_web_context_new();

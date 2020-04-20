@@ -2,6 +2,7 @@
 
 ./quaremain &
 SID=$!
+sleep 1
 ./quaremain-client
 
 kill -9 $SID
