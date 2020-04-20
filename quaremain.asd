@@ -24,7 +24,9 @@
                  "lack-middleware-static"
                  "lack-middleware-session"
                  "hunchentoot"
-                 "clack-handler-hunchentoot")
+                 "clack-handler-hunchentoot"
+                 ;; "cl-webkit2" if bundling webkit2 and gtk stuff are needed
+                 )
     :components ((:module "src"
                           :components
                           ((:file "main" :depends-on ("config" "view" "db" "web"))

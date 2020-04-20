@@ -1,0 +1,7 @@
+#!/bin/sh
+
+./quaremain &
+SID=$!
+./quaremain-client
+
+kill -9 $SID
