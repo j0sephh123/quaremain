@@ -18,6 +18,8 @@ all: server webkit-client
 	cp dist-data/* bin/
 	cp -r static/ bin/
 	cp -r templates bin/
+	cp Quaremain bin/
+	cp CONTRIBUTING bin/
 	rm -f bin/libssl* # don't want any trouble with weird licensing issues
 
 
