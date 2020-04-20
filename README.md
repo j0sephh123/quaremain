@@ -90,7 +90,7 @@ or
 
 if you want to build for OpenSUSE Tumbleweed.
 
-## Known Issues (as in version 0.3.0)
+## Known Issues
 
 1. Server build with Clozure Common Lisp implementation [Version 1.11.5/v1.11.5
 (LinuxX8664)] quitting phase ends up in the debugger instead of actually exiting
