@@ -21,6 +21,7 @@ For server
 - sbcl (or ccl from Clozure Common Lisp official website)
 - quicklisp (manually install and download from Quicklisp's official website)
 - sqlite3-devel
+- zlib-devel
 
 For client
 
@@ -36,12 +37,14 @@ For server
 - sbcl (or ccl from Clozure Common Lisp official website)
 - quicklisp (manually install and download from Quicklisp's official website)
 - libsqlite3-dev
+- zlib1g-dev
 
 For client
 
 - build-essential (for most make and C compilers dependencies)
 - pkg-config
 - libwebkit2gtk-4.0-dev
+
 
 ##### Build And Run
 
