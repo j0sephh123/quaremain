@@ -1,0 +1,25 @@
+Quaremain
+----------
+
+A software to manage resources for emergency times.
+
+Usage
+------
+Run the commands in your terminal/shell.
+
+$ chmod a+x ./Quaremain # to make the launcher executable
+$ ./Quaremain # run the program
+
+Reporting bugs or sending fixes/improvements
+---------------------------------------------
+
+See CONTRIBUTING file that comes with this software.
+
+Author
+------
+Momozor <skelic3@gmail.com, momozor4@gmail.com>
+
+License
+
+This software is released under the GPL-3.0 or later license.
+For further information, see COPYING.quaremain.
