@@ -1,5 +1,5 @@
 (defsystem "quaremain"
-    :version "0.2.0"
+    :version "0.4.0"
     :author "Momozor"
     :license "GPL-3.0-or-later"
     :depends-on ("clack"
