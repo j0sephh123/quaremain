@@ -217,11 +217,24 @@
           (coerce cost-per-package 'single-float)))
   datum)
 
-(defroute "/app/update-form/:id" (&key id)
+(defroute "/app/update-form/:id" (&key id
+                                       |stock-category|)
   (setf (gethash 'datum-id *session*) id)
+  (setf (gethash 'datum-stock-category *session*) |stock-category|)
   (render #p"app/update-form.html"
-          (let ((coerced-datum (coerce-cost-per-package
-                                (get-datum-by-id :food id))))
+          (let ((coerced-datum
+                 (coerce-cost-per-package
+                  (cond ((string-equal |stock-category| "food")
+                         (get-datum-by-id :food id))
+
+                        ((string-equal |stock-category| "water")
+                         (get-datum-by-id :water id))
+
+                        ((string-equal |stock-category| "medicine")
+                         (get-datum-by-id :medicine id))
+
+                        ((string-equal |stock-category| "weapon")
+                         (get-datum-by-id :weapon id))))))
             (list :datum coerced-datum))))
 
 (defroute ("/app/update" :method :POST) (&key |name|
@@ -239,8 +252,8 @@
   (redirect "/"))
 
 (defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
-  (delete-datum-from-model :food id)
-  (redirect "/"))
+(delete-datum-from-model :food id)
+(redirect "/"))
 
 ;;; Error pages.
 

@@ -32,6 +32,8 @@
             {% ifequal list-type "food" %}
             <td>{{ datum.calories-per-package }}</td>
             {% endifequal %}
+
+            <td><a href="/app/update-form/{{ datum.id }}?stock-category={{ list-type }}">Update</a></td>
         </tr>
         {% endfor %}
     </thead>
