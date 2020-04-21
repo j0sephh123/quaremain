@@ -4,10 +4,11 @@
 {% block content %}
 
 <form method="POST" action="/app/create" class="form-group">
-    <label for="stock-type">Stock category:</label>
+    <label>Stock category:</label>
 
-    <select name="stock-category" id="stock-type" class="form-control">
-        <option selected="food">Food</option>
+    <select name="stock-category" id="stockCategory" class="form-control" required>
+        <option disabled selected value> -- select an option -- </option>
+        <option value="food">Food</option>
         <option value="water">Water</option>
         <option value="medicine">Medicine</option>
         <option value="weapon">Weapon</option>
@@ -38,5 +39,12 @@
     <br>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+<script>$(document).ready(() => {
+     $('#stockCategory').change(() => {
+         alert($(this).val());
+     });
+ });
+</script>
 
 {% endblock %}
