@@ -101,6 +101,13 @@
                       'single-float)))
   data)
 
+(defun sum-all-calories-per-package (data)
+  (loop for datum in data
+     do (setf (getf datum :calories-per-package)
+              (* (getf datum :amount)
+                 (getf datum :calories-per-package))))
+  data)
+
 (defun get-datum-by-id (model-table id)
   (with-connection (db)
     (datafly:retrieve-one
@@ -114,13 +121,13 @@
                                             cost-per-package
                                             calories-per-package)
   (with-connection-execute
-      (sxql:update model-table
-        (sxql:set= :name name
-                   :description description
-                   :amount amount
-                   :cost-per-package cost-per-package
-                   :calories-per-package calories-per-package)
-        (sxql:where (:= :id id)))))
+    (sxql:update model-table
+      (sxql:set= :name name
+                 :description description
+                 :amount amount
+                 :cost-per-package cost-per-package
+                 :calories-per-package calories-per-package)
+      (sxql:where (:= :id id)))))
 
 (defun delete-datum-from-model (model-table id)
   (with-connection-execute
@@ -131,8 +138,9 @@
 ;;; Routing rules.
 (defroute "/" ()
   (render #p"app/list.html"
-          `(:data ,(sum-all-cost-per-package
-                    (get-all-from-model :food))
+          `(:data ,(sum-all-calories-per-package
+                    (sum-all-cost-per-package
+                     (get-all-from-model :food)))
                   :list-type "food")))
 
 (defroute "/app/list/food" ()
