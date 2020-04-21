@@ -13,6 +13,12 @@ Available on GNU/Linux Ubuntu 20.04 as a desktop application.
 
 Active development.
 
+## Downloads
+### Executables
+- Ubuntu 20.04 (and Xubuntu 20.04
+- Kubuntu and other
+  Ubuntu 20.04 flavors (run apt install libwebkit2gtk-4.0-dev first)
+
 ## Building
 
 ### Dependencies
