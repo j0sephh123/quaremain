@@ -144,8 +144,9 @@
 
 (defroute "/app/list/food" ()
   (render #p"app/list.html"
-          `(:data ,(sum-all-cost-per-package
-                    (get-all-from-model :food))
+          `(:data ,(sum-all-calories-per-package
+                    (sum-all-cost-per-package
+                     (get-all-from-model :food)))
                   :list-type "food")))
 
 (defroute "/app/list/water" ()
