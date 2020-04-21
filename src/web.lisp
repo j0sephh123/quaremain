@@ -244,13 +244,18 @@
                                               |amount|
                                               |cost-per-package|
                                               |calories-per-package|)
-  (update-datum-by-id :food
-      (gethash 'datum-id *session*)
-      :name |name|
-      :description |description|
-    :amount |amount|
-    :cost-per-package |cost-per-package|
-    :calories-per-package |calories-per-package|)
+
+  (let* ((id (gethash 'datum-id *session*))
+         (stock-category
+          (gethash 'datum-stock-category *session*)))
+    (cond ((string-equal stock-category "food")
+           (update-datum-by-id :food
+               id
+               :name |name|
+               :description |description|
+             :amount |amount|
+             :cost-per-package |cost-per-package|
+             :calories-per-package |calories-per-package|))))
   (redirect "/"))
 
 (defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
