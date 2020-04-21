@@ -128,21 +128,6 @@
                 ,@body)
      (sxql:where (:= :id ,id))))
 
-(defun update-food-datum-by-id (id &key
-                                     name
-                                     description
-                                     amount
-                                     cost-per-package
-                                     calories-per-package)
-  (with-connection-execute
-    (generate-update-datum-by-id :food
-        id
-        name
-        description
-        amount
-        cost-per-package
-      :calories-per-package calories-per-package)))
-
 (defun delete-datum-from-model (model-table id)
   (with-connection-execute
     (sxql:delete-from model-table
@@ -306,9 +291,14 @@
                  |cost-per-package|))
            (redirect "/app/list/weapon")))))
 
-(defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
-  (delete-datum-from-model :food id)
-  (redirect "/"))
+(defroute ("/app/delete/:id" :method :GET) (&key id
+                                                 |stock-category|)
+  (let ((model-table
+         (read-from-string
+          (format nil ":~a" |stock-category|))))
+    (delete-datum-from-model model-table id))
+  (redirect (format nil "/app/list/~a"
+                    |stock-category|)))
 
 ;;; Error pages.
 
