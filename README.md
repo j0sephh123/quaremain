@@ -15,11 +15,11 @@ Unstable
 
 ## Downloads
 ### Executables
-- Ubuntu 20.04 (and Xubuntu 20.04
-- Kubuntu and other
+- Self contained executable for Ubuntu 20.04 and Xubuntu 20.04.
+- For Kubuntu and other
   Ubuntu 20.04 flavors (run apt install libwebkit2gtk-4.0-dev first)
 
-- https://github.com/momozor/quaremain/archive/quaremain-0.6.0-ubuntu20.04.tar.gz
+- https://github.com/momozor/quaremain/releases/tag/0.6.0
 
 ## Building
 
