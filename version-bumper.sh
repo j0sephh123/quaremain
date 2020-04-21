@@ -15,4 +15,4 @@ ABOUT_ROOT=./templates/about.html
 sed -i $README_REP $README_DIST
 sed -i $README_REP $README_ROOT
 sed -i $ASDF_REP $ASDF_ROOT
-sed $ABOUT_REP $ABOUT_ROOT
+sed -i $ABOUT_REP $ABOUT_ROOT
