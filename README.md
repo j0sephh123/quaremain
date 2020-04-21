@@ -19,6 +19,8 @@ Active development.
 - Kubuntu and other
   Ubuntu 20.04 flavors (run apt install libwebkit2gtk-4.0-dev first)
 
+- https://github.com/momozor/quaremain/archive/quaremain-0.6.0-ubuntu20.04.tar.gz
+
 ## Building
 
 ### Dependencies
