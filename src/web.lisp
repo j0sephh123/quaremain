@@ -54,7 +54,6 @@
 (deftable *water* :water)
 (deftable *medicine* :medicine)
 (deftable *weapon* :weapon)
-(deftable *non-lethal-protection-equipment* :non-lethal-protection-equipment)
 
 (defmacro with-connection-execute (&body body)
   `(with-connection (db)
@@ -69,8 +68,7 @@
             (list *food*
                   *water*
                   *medicine*
-                  *weapon*
-                  *non-lethal-protection-equipment*))))
+                  *weapon*))))
 
 (defun drop-models ()
   "Returns list of nils if operation succeed."
@@ -81,8 +79,7 @@
             (list :food
                   :water
                   :medicine
-                  :weapon
-                  :non-lethal-protection-equipment))))
+                  :weapon))))
 
 
 (defmacro insert-datum (model-table &rest key-val)
@@ -150,6 +147,18 @@
                     (get-all-from-model :water))
                   :list-type "water")))
 
+(defroute "/app/list/medicine" ()
+  (render #p"app/list.html"
+          `(:data ,(sum-all-cost-per-package
+                    (get-all-from-model :medicine))
+                  :list-type "medicine")))
+
+(defroute "/app/list/weapon" ()
+  (render #p"app/list.html"
+          `(:data ,(sum-all-cost-per-package
+                    (get-all-from-model :weapon))
+                  :list-type "weapon")))
+
 (defroute "/about" ()
   (render #p"about.html"))
 
@@ -174,6 +183,20 @@
 
         ((string-equal |stock-category| "water")
          (insert-datum :water
+                       :name |name|
+                       :description |description|
+                       :amount |amount|
+                       :cost-per-package |cost-per-package|))
+
+        ((string-equal |stock-category| "medicine")
+         (insert-datum :water
+                       :name |name|
+                       :description |description|
+                       :amount |amount|
+                       :cost-per-package |cost-per-package|))
+
+        ((string-equal |stock-category| "weapon")
+         (insert-datum :weapon
                        :name |name|
                        :description |description|
                        :amount |amount|
@@ -209,11 +232,6 @@
 
 (defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
   (delete-datum-from-model :food id)
-  (redirect "/"))
-
-
-(defroute "/open-url-using-separate-browser/:url" (&key url)
-  (uiop:run-program (format nil "xdg-open http://~s" url))
   (redirect "/"))
 
 ;;; Error pages.
