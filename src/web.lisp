@@ -115,12 +115,12 @@
                   (sxql:where (:= :id id))))))
 
 ;; FIXME: something wrong with key-val
-(defun update-datum-by-id (model-table id
-                           name
-                           description
-                           amount
-                           cost-per-package
-                           &rest key-val)
+(defmacro update-datum-by-id (model-table id
+                              name
+                              description
+                              amount
+                              cost-per-package
+                              &rest key-val)
   `(with-connection-execute
      (sxql:update ,model-table
        (sxql:set= :name ,name
@@ -244,18 +244,37 @@
                                               |amount|
                                               |cost-per-package|
                                               |calories-per-package|)
-  (update-datum-by-id (read-from-string
-                       (format nil ":~a" 
-                               (gethash 'datum-stock-category *session*)))
-                      (gethash 'datum-id *session*)
-                      |name|
-                      |description|
-                      |amount|
-                      |cost-per-package|
-                      (when (string-equal
-                             (gethash 'datum-stock-category *session*)
-                             "food")
-                        :calories-per-package |calories-per-package|))
+
+  (let* ((stock-category
+          (gethash 'datum-stock-category *session*))
+         (id (gethash 'datum-id *session*))
+         (table-name
+          (format nil ":~a"
+                  (gethash 'datum-stock-category *session*))))
+    (cond ((string-equal stock-category "food")
+           (update-datum-by-id table-name
+               id
+               |name|
+               |description|
+               |amount|
+               |cost-per-package|
+             :calories-per-package |calories-per-package|))
+
+          ((string-equal stock-category "water")
+           (update-datum-by-id table-name
+               id
+               |name|
+               |description|
+               |amount|
+               |cost-per-package|))
+
+          ((string-equal stock-category "weapon")
+           (update-datum-by-id table-name
+               id
+               |name|
+               |description|
+               |amount|
+               |cost-per-package|))))
   (redirect "/"))
 
 (defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
