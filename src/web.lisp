@@ -114,21 +114,20 @@
      (sxql:select :* (sxql:from model-table)
                   (sxql:where (:= :id id))))))
 
-;; FIXME: something wrong with key-val
-(defmacro update-datum-by-id (model-table id
-                              name
-                              description
-                              amount
-                              cost-per-package
-                              &rest key-val)
-  `(with-connection-execute
-     (sxql:update ,model-table
-       (sxql:set= :name ,name
-                  :description ,description
-                  :amount ,amount
-                  :cost-per-package ,cost-per-package
-                  ,@key-val)
-       (sxql:where (:= :id ,id)))))
+(defun update-datum-by-id (model-table id &key
+                                            name
+                                            description
+                                            amount
+                                            cost-per-package
+                                            calories-per-package)
+  (with-connection-execute
+    (sxql:update model-table
+      (sxql:set= :name name
+                 :description description
+                 :amount amount
+                 :cost-per-package cost-per-package
+                 :calories-per-package calories-per-package)
+      (sxql:where (:= :id id)))))
 
 (defun delete-datum-from-model (model-table id)
   (with-connection-execute
@@ -239,47 +238,29 @@
             (list :datum coerced-datum
                   :list-type |stock-category|))))
 
+
 (defroute ("/app/update" :method :POST) (&key |name|
                                               |description|
                                               |amount|
                                               |cost-per-package|
                                               |calories-per-package|)
-
-  (let* ((stock-category
-          (gethash 'datum-stock-category *session*))
-         (id (gethash 'datum-id *session*))
-         (table-name
-          (format nil ":~a"
-                  (gethash 'datum-stock-category *session*))))
-    (cond ((string-equal stock-category "food")
-           (update-datum-by-id table-name
-               id
-               |name|
-               |description|
-               |amount|
-               |cost-per-package|
-             :calories-per-package |calories-per-package|))
-
-          ((string-equal stock-category "water")
-           (update-datum-by-id table-name
-               id
-               |name|
-               |description|
-               |amount|
-               |cost-per-package|))
-
-          ((string-equal stock-category "weapon")
-           (update-datum-by-id table-name
-               id
-               |name|
-               |description|
-               |amount|
-               |cost-per-package|))))
+  (update-datum-by-id :food
+      (gethash 'datum-id *session*)
+      :name |name|
+      :description |description|
+    :amount |amount|
+    :cost-per-package |cost-per-package|
+    :calories-per-package |calories-per-package|)
   (redirect "/"))
 
 (defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
-(delete-datum-from-model :food id)
-(redirect "/"))
+  (delete-datum-from-model :food id)
+  (redirect "/"))
+
+
+(defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
+  (delete-datum-from-model :food id)
+  (redirect "/"))
 
 ;;; Error pages.
 
