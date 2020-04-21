@@ -262,11 +262,6 @@
   (delete-datum-from-model :food id)
   (redirect "/"))
 
-
-(defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
-  (delete-datum-from-model :food id)
-  (redirect "/"))
-
 ;;; Error pages.
 
 (defmethod on-exception ((app <web>) (code (eql 404)))
