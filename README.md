@@ -11,7 +11,7 @@ Available on GNU/Linux Ubuntu 20.04 as a desktop application.
 
 ## Status
 
-Active development.
+Unstable
 
 ## Downloads
 ### Executables
