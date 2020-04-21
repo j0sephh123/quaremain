@@ -114,20 +114,21 @@
      (sxql:select :* (sxql:from model-table)
                   (sxql:where (:= :id id))))))
 
-(defun update-datum-by-id (model-table id &key
-                                            name
-                                            description
-                                            amount
-                                            cost-per-package
-                                            calories-per-package)
-  (with-connection-execute
-    (sxql:update model-table
-      (sxql:set= :name name
-                 :description description
-                 :amount amount
-                 :cost-per-package cost-per-package
-                 :calories-per-package calories-per-package)
-      (sxql:where (:= :id id)))))
+;; FIXME: something wrong with key-val
+(defun update-datum-by-id (model-table id
+                           name
+                           description
+                           amount
+                           cost-per-package
+                           &rest key-val)
+  `(with-connection-execute
+     (sxql:update ,model-table
+       (sxql:set= :name ,name
+                  :description ,description
+                  :amount ,amount
+                  :cost-per-package ,cost-per-package
+                  ,@key-val)
+       (sxql:where (:= :id ,id)))))
 
 (defun delete-datum-from-model (model-table id)
   (with-connection-execute
@@ -235,20 +236,26 @@
 
                         ((string-equal |stock-category| "weapon")
                          (get-datum-by-id :weapon id))))))
-            (list :datum coerced-datum))))
+            (list :datum coerced-datum
+                  :list-type |stock-category|))))
 
 (defroute ("/app/update" :method :POST) (&key |name|
                                               |description|
                                               |amount|
                                               |cost-per-package|
                                               |calories-per-package|)
-  (update-datum-by-id :food
+  (update-datum-by-id (read-from-string
+                       (format nil ":~a" 
+                               (gethash 'datum-stock-category *session*)))
                       (gethash 'datum-id *session*)
-                      :name |name|
-                      :description |description|
-                      :amount |amount|
-                      :cost-per-package |cost-per-package|
-                      :calories-per-package |calories-per-package|)
+                      |name|
+                      |description|
+                      |amount|
+                      |cost-per-package|
+                      (when (string-equal
+                             (gethash 'datum-stock-category *session*)
+                             "food")
+                        :calories-per-package |calories-per-package|))
   (redirect "/"))
 
 (defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)

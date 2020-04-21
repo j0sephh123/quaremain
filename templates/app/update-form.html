@@ -25,11 +25,13 @@
     <br>
     <br>
 
+    {% ifequal list-type "food" %}
     <label>Calories per package</label>
     <br>
         <input type="number"
-               name="calories-per-package" required class="form-control"
+               name="calories-per-package" class="form-control"
                value="{{ datum.calories-per-package }}">
+    {% endifequal %}
 
     <br>
     <button type="submit" class="btn btn-primary">Submit</button>
