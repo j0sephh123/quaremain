@@ -7,7 +7,7 @@ Available on GNU/Linux Ubuntu 20.04 as a desktop application.
 
 ## Version
 
-0.5.0
+0.5.3
 
 
 ## Building

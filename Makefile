@@ -8,7 +8,7 @@ CFLAGS=pkg-config --libs --cflags webkit2gtk-4.0
 CLIENT_SOURCE=quaremain-client.c
 CLIENT_EXECUTABLE=quaremain-client
 VERSION_BUMPER_SCRIPT=version-bumper.sh
-VERSION=0.5.0
+VERSION=0.5.1
 
 .PHONY: all server webkit-client ubuntu20.04-tarball opensusetumbleweed-tarball
 all: server webkit-client
