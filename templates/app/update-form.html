@@ -4,9 +4,12 @@
 {% block content %}
 
 <form method="POST" action="/app/update" class="form-group">
-    
-    <label>Name</label>
+    <h2>Category: {{ list-type|capfirst}}</h2>
+    <hr>
+
     <br>
+    <label>Name</label>
+<br>
     <input type="text" name="name" required class="form-control" value="{{ datum.name }}">
     <br>
     <label>Description</label>

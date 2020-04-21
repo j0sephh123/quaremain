@@ -114,20 +114,34 @@
      (sxql:select :* (sxql:from model-table)
                   (sxql:where (:= :id id))))))
 
-(defun update-datum-by-id (model-table id &key
-                                            name
-                                            description
-                                            amount
-                                            cost-per-package
-                                            calories-per-package)
+(defmacro generate-update-datum-by-id (model-table id
+                                       name
+                                       description
+                                       amount
+                                       cost-per-package
+                                       &body body)
+  `(sxql:update ,model-table
+     (sxql:set= :name ,name
+                :description ,description
+                :amount ,amount
+                :cost-per-package ,cost-per-package
+                ,@body)
+     (sxql:where (:= :id ,id))))
+
+(defun update-food-datum-by-id (id &key
+                                     name
+                                     description
+                                     amount
+                                     cost-per-package
+                                     calories-per-package)
   (with-connection-execute
-    (sxql:update model-table
-      (sxql:set= :name name
-                 :description description
-                 :amount amount
-                 :cost-per-package cost-per-package
-                 :calories-per-package calories-per-package)
-      (sxql:where (:= :id id)))))
+    (generate-update-datum-by-id :food
+        id
+        name
+        description
+        amount
+        cost-per-package
+      :calories-per-package calories-per-package)))
 
 (defun delete-datum-from-model (model-table id)
   (with-connection-execute
@@ -187,29 +201,32 @@
                        :description |description|
                        :amount |amount|
                        :cost-per-package |cost-per-package|
-                       :calories-per-package |calories-per-package|))
+                       :calories-per-package |calories-per-package|)
+         (redirect "/app/list/food"))
 
         ((string-equal |stock-category| "water")
          (insert-datum :water
                        :name |name|
                        :description |description|
                        :amount |amount|
-                       :cost-per-package |cost-per-package|))
+                       :cost-per-package |cost-per-package|)
+         (redirect "/app/list/water"))
 
         ((string-equal |stock-category| "medicine")
-         (insert-datum :water
+         (insert-datum :medicine
                        :name |name|
                        :description |description|
                        :amount |amount|
-                       :cost-per-package |cost-per-package|))
+                       :cost-per-package |cost-per-package|)
+         (redirect "/app/list/medicine"))
 
         ((string-equal |stock-category| "weapon")
          (insert-datum :weapon
                        :name |name|
                        :description |description|
                        :amount |amount|
-                       :cost-per-package |cost-per-package|)))
-  (redirect "/"))
+                       :cost-per-package |cost-per-package|)
+         (redirect "/app/list/weapon"))))
 
 (defun coerce-cost-per-package (datum)
   (let ((cost-per-package (getf datum :cost-per-package)))
@@ -249,14 +266,45 @@
          (stock-category
           (gethash 'datum-stock-category *session*)))
     (cond ((string-equal stock-category "food")
-           (update-datum-by-id :food
-               id
-               :name |name|
-               :description |description|
-             :amount |amount|
-             :cost-per-package |cost-per-package|
-             :calories-per-package |calories-per-package|))))
-  (redirect "/"))
+           (with-connection-execute
+             (generate-update-datum-by-id :food
+                 id
+                 |name|
+                 |description|
+                 |amount|
+                 |cost-per-package|
+               :calories-per-package |calories-per-package|))
+           (redirect "/app/list/food"))
+
+          ((string-equal stock-category "water")
+           (with-connection-execute
+             (generate-update-datum-by-id :water
+                 id
+                 |name|
+                 |description|
+                 |amount|
+                 |cost-per-package|))
+           (redirect "/app/list/water"))
+
+          ((string-equal stock-category "medicine")
+           (with-connection-execute
+             (generate-update-datum-by-id :medicine
+                 id
+                 |name|
+                 |description|
+                 |amount|
+                 |cost-per-package|))
+           (redirect "/app/list/medicine"))
+
+          ((string-equal stock-category "weapon")
+           (with-connection-execute
+             (generate-update-datum-by-id :weapon
+                 id
+                 |name|
+                 |description|
+                 |amount|
+                 |cost-per-package|))
+           (redirect "/app/list/weapon")))))
 
 (defroute ("/app/delete/:id" :method '(:GET :DELETE)) (&key id)
   (delete-datum-from-model :food id)
