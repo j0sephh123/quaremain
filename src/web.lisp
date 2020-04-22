@@ -65,7 +65,6 @@
                   *weapon*))))
 
 (defun drop-models ()
-  "Returns list of nils if operation succeed."
   (with-connection (db)
     (mapcar (lambda (table)
               (datafly:execute

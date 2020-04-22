@@ -22,19 +22,30 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :quaremain)' in your Lisp.
 
-(deftest unit-tests
-    (testing "(sum-all-cost-per-package '((:cost-per-package 2.2 :amount 3))) should equal to ((:cost-per-package 6.6000004 :amount 3)"
-             (let* ((raw-result
-                     (quaremain.web::sum-all-cost-per-package '((:cost-per-package 2.2 :amount 3))))
-                    (total-cost (getf (car raw-result) :cost-per-package))
-                    (amount (getf (car raw-result) :amount)))
-               (ok
-                (and (= total-cost 6.6000004)
-                     (= amount 3)))))
+(deftest sum-all-cost-per-package
+  (testing "(sum-all-cost-per-package '((:cost-per-package 2.2 :amount 3))) should equal to ((:cost-per-package 6.6000004 :amount 3)"
+           (let* ((raw-result
+                   (quaremain.web::sum-all-cost-per-package '((:cost-per-package 2.2 :amount 3))))
+                  (total-cost (getf (car raw-result) :cost-per-package))
+                  (amount (getf (car raw-result) :amount)))
+             (ok
+              (and (= total-cost 6.6000004)
+                   (= amount 3))))))
 
+(deftest coerce-cost-per-package
   (testing "(coerce-cost-per-package '(:id 1 :amount 3 :cost-per-package 9239.84)) should equal to '(:id 1 :amount 3 :cost-per-package 9239.84)"
            (ok
             (equal (quaremain.web::coerce-cost-per-package
                     '(:id 1 :amount 4 :cost-per-package 9239.84))
                    '(:id 1 :amount 4 :cost-per-package 9239.84)))))
 
+(deftest sum-all-calories-per-package
+  (testing "(sum-all-calories-per-package '((:id 1 :amount 2 :calories-per-package 219))) first list :calories-per-package value should result to 438"
+           (let* ((raw-result
+                   (quaremain.web::sum-all-calories-per-package
+                    '((:id 1 :amount 2 :calories-per-package 219))))
+                  (calories-per-package
+                   (getf (car raw-result)
+                         :calories-per-package)))
+             (ok
+              (= calories-per-package 438)))))
