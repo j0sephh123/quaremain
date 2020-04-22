@@ -55,13 +55,7 @@
 (deftable *medicine* :medicine)
 (deftable *weapon* :weapon)
 
-(defmacro with-connection-execute (&body body)
-  `(with-connection (db)
-     (datafly:execute ,@body)))
-
-
 (defun migrate-models ()
-  "Returns list of nils if operation succeed."
   (with-connection (db)
     (mapcar (lambda (model)
               (datafly:execute model))

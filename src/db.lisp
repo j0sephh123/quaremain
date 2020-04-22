@@ -21,7 +21,10 @@
                 :connect-cached
                 :disconnect)
   (:import-from :datafly
-                :*connection*))
+                :*connection*)
+  (:export :db
+           :with-connection
+           :with-connection-execute))
 (in-package :quaremain.db)
 
 
@@ -35,3 +38,7 @@
   `(let ((*connection* ,connection))
      (unwind-protect (progn ,@body)
        (disconnect *connection*))))
+
+(defmacro with-connection-execute (&body body)
+  `(with-connection (db)
+     (datafly:execute ,@body)))
