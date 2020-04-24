@@ -21,8 +21,9 @@
         :quaremain.config
         :quaremain.view)
   (:import-from :quaremain.db
+                :db
                 :with-connection
-                :db)
+                :with-connection-execute)
   (:export :*web*
            :migrate-models))
 (in-package :quaremain.web)
