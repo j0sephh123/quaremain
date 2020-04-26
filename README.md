@@ -10,7 +10,7 @@ Available on GNU/Linux Ubuntu 20.04 as a graphical desktop application.
 
 ## Version
 
-0.6.0
+0.7.0
 
 ## Status
 
@@ -129,16 +129,21 @@ the excellent execution speed, I believe?)
 Will certainly make CCL as the default implementation
 but it's not possible currently due to issue 1.
 
-## Reporting an issue
 
-Please refer to CONTRIBUTING file that comes
-with this project.
+## Contributing and reporting an issue
 
+If you want to report a bug, to discuss features,
+to ask questions, or to send improvement patches,
+please send an email to quaremain@freelists.org
 
-## Contributing
+NOTE: You must subscribe to the mailing list
+first before posting anything there. Please
+visit https://www.freelists.org/list/quaremain
+to subscribe first. It will require no
+registration or sign-in to subscribe.
 
-Please refer to CONTRIBUTING file that comes with this
-project.
+Quaremain uses git as the primary version
+control system.
 
 
 ## Author

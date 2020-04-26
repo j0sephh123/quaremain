@@ -19,7 +19,18 @@ $ ./Quaremain # run the program
 Reporting bugs or sending fixes/improvements
 ---------------------------------------------
 
-See CONTRIBUTING file that comes with this software.
+If you want to report a bug, to discuss features,
+to ask questions, or to send improvement patches,
+please send an email to quaremain@freelists.org
+
+NOTE: You must subscribe to the mailing list
+first before posting anything there. Please
+visit https://www.freelists.org/list/quaremain
+to subscribe first. It will require no
+registration or sign-in to subscribe.
+
+Quaremain uses git as the primary version
+control system.
 
 Author
 ------
