@@ -34,7 +34,8 @@
                            (:file "view" :depends-on ("config"))
                            (:file "db" :depends-on ("config"))
                            (:file "config"))))
-    :description "A software to manage resources for emergency times."
+    :description "Manage your basic survival resources like food and water
+for preparation of emergency times"
     
 
     :defsystem-depends-on (:deploy)

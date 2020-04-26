@@ -1,8 +1,11 @@
 # Quaremain
 
-A software to manage resources for emergency times. 
+Manage your basic survival resources like food and water
+for preparation of emergency times. Keep track of costs and food
+calories. Spend and stock wisely for the unexpected with Quaremain.
 
-Available on GNU/Linux Ubuntu 20.04 as a desktop application.
+
+Available on GNU/Linux Ubuntu 20.04 as a graphical desktop application.
 
 
 ## Version
