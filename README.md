@@ -130,17 +130,16 @@ Will certainly make CCL as the default implementation
 but it's not possible currently due to issue 1.
 
 
-## Contributing and reporting an issue
+## Contributing and reporting issues
 
 If you want to report a bug, to discuss features,
 to ask questions, or to send improvement patches,
-please send an email to quaremain@freelists.org
+please open an issue or pull request
+at https://github.com/momozor/quaremain
 
-NOTE: You must subscribe to the mailing list
-first before posting anything there. Please
-visit https://www.freelists.org/list/quaremain
-to subscribe first. It will require no
-registration or sign-in to subscribe.
+If you don't prefer to use Github, consider email
+me your questions or patches directly to
+skelic3@gmail.com or momozor4@gmail.com
 
 Quaremain uses git as the primary version
 control system.
