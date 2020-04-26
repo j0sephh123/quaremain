@@ -20,7 +20,6 @@ all: server webkit-client
 	cp -r static/ bin/
 	cp -r templates bin/
 	cp Quaremain bin/
-	cp CONTRIBUTING bin/
 	rm -f bin/libssl* # don't want any trouble with weird licensing issues
 	chmod a+x $(VERSION_BUMPER_SCRIPT)
 	./$(VERSION_BUMPER_SCRIPT) ${VERSION}
