@@ -291,7 +291,13 @@
   (let ((model-table
          (read-from-string
           (format nil ":~a" |stock-category|))))
-    (delete-datum-from-model model-table id))
+    (handler-case
+        (delete-datum-from-model model-table id)
+      
+      (DBI.ERROR:DBI-PROGRAMMING-ERROR (e)
+        (format nil
+                "~a~a" "Error: list is not exist to be deleted."
+                e))))
   (redirect (format nil "/app/list/~a"
                     |stock-category|)))
 
