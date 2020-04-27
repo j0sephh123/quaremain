@@ -23,7 +23,10 @@
                 :connect-cached
                 :disconnect)
   (:import-from :datafly
+                :execute
                 :*connection*)
+  (:import-from :sxql
+                :create-table)
   (:export :db
            :with-connection
            :with-connection-execute
@@ -48,14 +51,14 @@
    on call.
    "
   `(with-connection (db)
-     (datafly:execute ,@body)))
+     (execute ,@body)))
 
 (defmacro deftable (table-name &body body)
   "Define a basic base table for new model. This will
    return the SXQL generated schema statements for executions.
    "
   `(let ((schema
-          (sxql:create-table (,table-name :if-not-exists t)
+          (create-table (,table-name :if-not-exists t)
               ((id :type 'integer :primary-key t)
                (name :type 'text :not-null t)
                (description :type 'text :not-null t)
