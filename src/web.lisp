@@ -35,35 +35,31 @@
 (defparameter *session* (make-hash-table))
 (clear-routing-rules *web*)
 
-(defmacro deftable (identifier table-name &body body)
-  "Define a basic base table for new model. This will create a
-   new non-dynamic global variable using the supplied first parameter
-   as the actual identifier name.
+(defmacro deftable (table-name &body body)
+  "Define a basic base table for new model. This will
+   return the SXQL generated schema statements for executions.
    "
-  `(defparameter ,identifier
-     (sxql:create-table (,table-name :if-not-exists t)
-         ((id :type 'integer :primary-key t)
-          (name :type 'text :not-null t)
-          (description :type 'text :not-null t)
-          (amount :type 'integer :not-null t)
-          (cost-per-package :type 'real :not-null t)
-          ,@body))))
-
-;; Models.
-(deftable *food* :food
-  (calories-per-package :type 'integer :not-null t))
-(deftable *water* :water)
-(deftable *medicine* :medicine)
-(deftable *weapon* :weapon)
+  `(let ((schema
+          (sxql:create-table (,table-name :if-not-exists t)
+              ((id :type 'integer :primary-key t)
+               (name :type 'text :not-null t)
+               (description :type 'text :not-null t)
+               (amount :type 'integer :not-null t)
+               (cost-per-package :type 'real :not-null t)
+               ,@body))))
+     schema))
 
 (defun migrate-models ()
   (with-connection (db)
     (mapcar (lambda (model)
               (datafly:execute model))
-            (list *food*
-                  *water*
-                  *medicine*
-                  *weapon*))))
+            (list (deftable :food
+                    (calories-per-package
+                     :type 'integer
+                     :not-null t))
+                  (deftable :water)
+                  (deftable :medicine)
+                  (deftable :weapon)))))
 
 (defun drop-models ()
   (with-connection (db)

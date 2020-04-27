@@ -1,48 +1,48 @@
 (defsystem "quaremain"
-    :version "0.7.0"
-    :author "Momozor"
-    :license "GPL-3.0-or-later"
-    :depends-on ("clack"
-                 "lack"
-                 "caveman2"
-                 "cl-ppcre"
-                 "uiop"
+  :version "0.7.0"
+  :author "Momozor"
+  :license "GPL-3.0-or-later"
+  :depends-on ("clack"
+               "lack"
+               "caveman2"
+               "cl-ppcre"
+               "uiop"
 
-                 ;; HTML Template.
-                 "djula"
+               ;; HTML Template.
+               "djula"
 
-                 ;; For DB.
-                 "sxql"
-                 "datafly"
-                 "dbd-sqlite3"
+               ;; For DB.
+               "sxql"
+               "datafly"
+               "dbd-sqlite3"
 
-                 ;; Logging.
-                 "log4cl"
+               ;; Logging.
+               "log4cl"
 
-                 ;; Deploying
-                 "deploy"
-                 "lack-middleware-static"
-                 "lack-middleware-session"
-                 "hunchentoot"
-                 "clack-handler-hunchentoot"
-                 ;; "cl-webkit2" if bundling webkit2 and gtk stuff are needed
-                 )
-    :components ((:module "src"
-                          :components
-                          ((:file "main" :depends-on ("config" "view" "db" "web"))
-                           (:file "web" :depends-on ("view"))
-                           (:file "view" :depends-on ("config"))
-                           (:file "db" :depends-on ("config"))
-                           (:file "config"))))
-    :description "Manage your basic survival resources like food and water
+               ;; Deploying
+               "deploy"
+               "lack-middleware-static"
+               "lack-middleware-session"
+               "hunchentoot"
+               "clack-handler-hunchentoot"
+               ;; "cl-webkit2" if bundling webkit2 and gtk stuff are needed
+               )
+  :components ((:module "src"
+                        :components
+                        ((:file "main" :depends-on ("config" "view" "db" "web"))
+                         (:file "web" :depends-on ("view"))
+                         (:file "view" :depends-on ("config"))
+                         (:file "db" :depends-on ("config"))
+                         (:file "config"))))
+  :description "Manage your basic survival resources like food and water
 for preparation of emergency times"
-    
+  
 
-    :defsystem-depends-on (:deploy)
-    :build-operation "deploy-op"
-    :build-pathname "quaremain"
-    :entry-point "quaremain:main"
-    :in-order-to ((test-op (test-op "quaremain/tests"))))
+  :defsystem-depends-on (:deploy)
+  :build-operation "deploy-op"
+  :build-pathname "quaremain"
+  :entry-point "quaremain:main"
+  :in-order-to ((test-op (test-op "quaremain/tests"))))
 
 (defsystem "quaremain/tests"
     :author "Momozor"
