@@ -30,7 +30,7 @@
 #include <webkit2/webkit2.h>
 
 
-static void destroyWindowCb(GtkWidget* widget, GtkWidget* window);
+static void destroyWindowCb();
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window);
 
 int main(int argc, char* argv[])
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 }
 
 
-static void destroyWindowCb(GtkWidget* widget, GtkWidget* window)
+static void destroyWindowCb()
 {
   gtk_main_quit();
 }

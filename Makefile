@@ -31,7 +31,7 @@ server: $(EXECUTABLE).asd
 		--eval "(uiop:quit)"
 
 webkit-client: $(CLIENT_SOURCE)
-	$(CC) $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
+	$(CC) -Wall -Wextra $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
 
 test: $(EXECUTABLE).asd
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE)/tests :silent t)" \
