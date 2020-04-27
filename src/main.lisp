@@ -20,7 +20,7 @@
 (defpackage quaremain
   (:use :cl)
   (:import-from :quaremain.config
-                :*static-directory*)
+                :+static-directory+)
   (:import-from :clack
                 :clackup)
   (:import-from :lack.builder
@@ -56,7 +56,7 @@
                                    (if (ppcre:scan "^(?:/images/|/css/|/js/|/robot\\.txt$|/favicon\\.ico$)" path)
                                        path
                                        nil))
-                           :root *static-directory*)
+                           :root +static-directory+)
                           :session
                           *web*)
                args)))

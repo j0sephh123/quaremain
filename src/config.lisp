@@ -19,11 +19,11 @@
 (in-package :cl-user)
 (defpackage quaremain.config
   (:use :cl)
-  (:export :*static-directory*
+  (:export :+static-directory+
            :*template-directory*
            :+database-path+))
 (in-package :quaremain.config)
 
-(defparameter *static-directory* (pathname "static/"))
+(defparameter +static-directory+ (pathname "static/"))
 (defparameter *template-directory* (pathname "templates/"))
 (defparameter +database-path+ "var/quaremain.db")
