@@ -1,0 +1,62 @@
+This is a coding style guideline to ensure consistency of the Quaremain's
+codebase. Due to extreme flexibility and abundance of concepts
+and tools that comes along with Common Lisp, I've decided to write
+a set of "rules" to cover the programming conventions for this project. These
+rules are based on other coding standards that I encountered when
+programming Lisp.
+
+This is neither a whole Common Lisp coding style coverage nor the
+official language coding standards. This standards should
+(or rather, must whenever possible) be applied to
+Quaremain's Common Lisp project.
+
+1. Maximum 80 columns/chararacters per line.
+
+2. Use ** for global variables, <> for classes and
+++ for constants.
+
+3. Use ? as a predicate instead of p or -p. (experimental).
+
+4. A block of composable function should remain small as much
+as possible. Try to separate big functions into smaller ones.
+
+5. Try to not make a function to call global variable directly.
+Instead, pass it to the function through parameters.
+
+6. If you need record types, try to use defclass from CLOS instead
+of defstruct. The reason is, there are so similar and for
+consistency reason, just try to use defclass.
+
+7. Defaults to single-dispatch for classes and methods. We don't
+need multiple dispatch and other stuff from CLOS just because you can.
+However, if you reached the point where you need to use those verbose
+"design patterns" from the Java land and such, selectively pick
+multiple dispatch or other good stuff from CLOS. Just be, consistent
+and conservative when using them. Else, look onto macros.
+Be clear. not clever.
+
+8. Pick macro as the last resort when functions/methods fails to
+provide what you need. Be aware of macro expansion time.
+
+9. Consider do and dotimes over loop. If the formers ends up with
+too much verbosity, pick the latter.
+
+10. Use ASDF and uiop as much as possible for portability reasons. Use
+#+ and #- for specific Lisp implementation code.
+
+11. Pick an immutable over mutable approach when manipulating data structures
+such as list.
+
+12. Handle error exceptions as much as you can. Be defensive and paranoid
+of your own code. Also, don't forget to log them.
+
+13. Try to do automated test as much as possible. Small amount of test is
+better than no test at all, but try to test every inch of the codebase
+as much as possible.
+
+14. Keep it simple and try to not duplicate large chunk of code.
+
+15. Break any of these "rules" whenever it doesn't make any sense in your
+situation. Please don't pick this coding style as your next cargo cult
+holy testament. Eitherway, try to stick with any coding style you
+prefer as much as possible, for consistency.
