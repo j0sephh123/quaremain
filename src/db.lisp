@@ -72,17 +72,23 @@
 
 (defun migrate-models ()
   "Migrate all models schemas into the database."
-  (log:info "Attempting to migrate all models schemas if not exist.")
-  (with-connection (db)
-    (mapcar (lambda (model)
-              (datafly:execute model))
-            (list (deftable :food
-                    (calories-per-package
-                     :type 'integer
-                     :not-null t))
-                  (deftable :water)
-                  (deftable :medicine)
-                  (deftable :weapon)))))
+  (handler-case
+      (progn
+        (log:info "Attempting to migrate all models schemas if not exist.")
+        (with-connection (db)
+          (mapcar (lambda (model)
+                    (datafly:execute model))
+                  (list (deftable :food
+                          (calories-per-package
+                           :type 'integer
+                           :not-null t))
+                        (deftable :water)
+                        (deftable :medicine)
+                        (deftable :weapon)))))
+    (SQLITE:SQLITE-ERROR (e)
+      (log:error "Could not find database location. Are you running from inside the software directory? [SQLITE-ERROR]: ~A"
+                 e)
+      (uiop:quit 1))))
 
 (defun drop-models ()
   "Erase all existing models tables from the database."
@@ -100,5 +106,9 @@
         (log:info "All models tables deletions complete."))
     (DBI.ERROR:DBI-PROGRAMMING-ERROR (e)
       (log:error
-       "No existing tables in the database to be erased. ~A"
-       e))))
+       "No existing tables in the database to be erased. [DBI-PROGRAMMING-ERROR]: ~A"
+       e))
+    (SQLITE:SQLITE-ERROR (e)
+      (log:error "Could not find database location. Are you running from inside the software directory? [SQLITE-ERROR]: ~A"
+                 e)
+      (uiop:quit 1))))
