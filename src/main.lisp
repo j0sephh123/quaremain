@@ -28,8 +28,10 @@
   (:import-from :ppcre
                 :scan
                 :regex-replace)
-  (:import-from :quaremain.web
+  (:import-from :quaremain.db
                 :migrate-models
+                )
+  (:import-from :quaremain.web
                 :*web*)
 
   (:export :start

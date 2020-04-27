@@ -32,9 +32,9 @@
   (:export :db
            :with-connection
            :with-connection-execute
-           :deftable))
+           :migrate-models
+           :drop-models))
 (in-package :quaremain.db)
-
 
 
 (defun db ()
@@ -69,3 +69,27 @@
                (cost-per-package :type 'real :not-null t)
                ,@body))))
      schema))
+
+(defun migrate-models ()
+  "Migrate all models schemas into the database."
+  (with-connection (db)
+    (mapcar (lambda (model)
+              (datafly:execute model))
+            (list (deftable :food
+                    (calories-per-package
+                     :type 'integer
+                     :not-null t))
+                  (deftable :water)
+                  (deftable :medicine)
+                  (deftable :weapon)))))
+
+(defun drop-models ()
+  "Erase all existing models tables from the database."
+  (with-connection (db)
+    (mapcar (lambda (table)
+              (datafly:execute
+               (sxql:drop-table table)))
+            (list :food
+                  :water
+                  :medicine
+                  :weapon))))

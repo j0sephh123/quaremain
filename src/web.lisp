@@ -25,10 +25,8 @@
   (:import-from :quaremain.db
                 :db
                 :with-connection
-                :with-connection-execute
-                :deftable)
-  (:export :*web*
-           :migrate-models))
+                :with-connection-execute)
+  (:export :*web*))
 (in-package :quaremain.web)
 
 ;;; Application.
@@ -38,33 +36,10 @@
 (defparameter *session* (make-hash-table))
 (clear-routing-rules *web*)
 
-(defun migrate-models ()
-  (with-connection (db)
-    (mapcar (lambda (model)
-              (datafly:execute model))
-            (list (deftable :food
-                    (calories-per-package
-                     :type 'integer
-                     :not-null t))
-                  (deftable :water)
-                  (deftable :medicine)
-                  (deftable :weapon)))))
-
-(defun drop-models ()
-  (with-connection (db)
-    (mapcar (lambda (table)
-              (datafly:execute
-               (sxql:drop-table table)))
-            (list :food
-                  :water
-                  :medicine
-                  :weapon))))
-
-
 (defmacro insert-datum (model-table &rest key-val)
   `(with-connection-execute
-       (sxql:insert-into ,model-table
-         (sxql:set= ,@key-val))))
+     (sxql:insert-into ,model-table
+       (sxql:set= ,@key-val))))
 
 (defun get-all-from-model (model-table)
   (with-connection (db)
