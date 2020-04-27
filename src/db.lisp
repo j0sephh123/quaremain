@@ -27,6 +27,8 @@
                 :*connection*)
   (:import-from :sxql
                 :create-table)
+  (:import-from :quaremain.config
+                :*database-name*)
   (:export :db
            :with-connection
            :with-connection-execute
@@ -34,11 +36,12 @@
 (in-package :quaremain.db)
 
 
+
 (defun db ()
   "Database connection instance."
   (connect-cached
    :sqlite3
-   :database-name "var/quaremain.db"))
+   :database-name *database-name*))
 
 (defmacro with-connection (connection &body body)
   "Wraps connection call to the database."
