@@ -25,7 +25,8 @@
   (:import-from :quaremain.db
                 :db
                 :with-connection
-                :with-connection-execute)
+                :with-connection-execute
+                :deftable)
   (:export :*web*
            :migrate-models))
 (in-package :quaremain.web)
@@ -36,20 +37,6 @@
 (defvar *web* (make-instance '<web>))
 (defparameter *session* (make-hash-table))
 (clear-routing-rules *web*)
-
-(defmacro deftable (table-name &body body)
-  "Define a basic base table for new model. This will
-   return the SXQL generated schema statements for executions.
-   "
-  `(let ((schema
-          (sxql:create-table (,table-name :if-not-exists t)
-              ((id :type 'integer :primary-key t)
-               (name :type 'text :not-null t)
-               (description :type 'text :not-null t)
-               (amount :type 'integer :not-null t)
-               (cost-per-package :type 'real :not-null t)
-               ,@body))))
-     schema))
 
 (defun migrate-models ()
   (with-connection (db)

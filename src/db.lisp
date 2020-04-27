@@ -26,21 +26,40 @@
                 :*connection*)
   (:export :db
            :with-connection
-           :with-connection-execute))
+           :with-connection-execute
+           :deftable))
 (in-package :quaremain.db)
 
 
 (defun db ()
+  "Database connection instance."
   (connect-cached
    :sqlite3
    :database-name "var/quaremain.db"))
 
 (defmacro with-connection (connection &body body)
-  "Database connection wrapper."
+  "Wraps connection call to the database."
   `(let ((*connection* ,connection))
      (unwind-protect (progn ,@body)
        (disconnect *connection*))))
 
 (defmacro with-connection-execute (&body body)
+  "Database connection wrapper which executes SXQL statements
+   on call.
+   "
   `(with-connection (db)
      (datafly:execute ,@body)))
+
+(defmacro deftable (table-name &body body)
+  "Define a basic base table for new model. This will
+   return the SXQL generated schema statements for executions.
+   "
+  `(let ((schema
+          (sxql:create-table (,table-name :if-not-exists t)
+              ((id :type 'integer :primary-key t)
+               (name :type 'text :not-null t)
+               (description :type 'text :not-null t)
+               (amount :type 'integer :not-null t)
+               (cost-per-package :type 'real :not-null t)
+               ,@body))))
+     schema))
