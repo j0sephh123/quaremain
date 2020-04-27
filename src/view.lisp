@@ -20,7 +20,7 @@
 (defpackage quaremain.view
   (:use :cl)
   (:import-from :quaremain.config
-                :*template-directory*)
+                :+template-directory+)
   (:import-from :caveman2
                 :*response*
                 :response-headers)
@@ -35,7 +35,7 @@
            :render-json))
 (in-package :quaremain.view)
 
-(djula:add-template-directory *template-directory*)
+(djula:add-template-directory +template-directory+)
 
 (defparameter *template-registry* (make-hash-table :test 'equal))
 
