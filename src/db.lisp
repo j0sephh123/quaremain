@@ -86,7 +86,8 @@
                         (deftable :medicine)
                         (deftable :weapon)))))
     (SQLITE:SQLITE-ERROR (e)
-      (log:error "Could not find database location. Are you running from inside the software directory? [SQLITE-ERROR]: ~A"
+      (log:error "Could not find database location. Are you running from inside
+                  the software directory? [SQLITE-ERROR]: ~A"
                  e)
       (uiop:quit 1))))
 
@@ -106,9 +107,11 @@
         (log:info "All models tables deletions complete."))
     (DBI.ERROR:DBI-PROGRAMMING-ERROR (e)
       (log:error
-       "No existing tables in the database to be erased. [DBI-PROGRAMMING-ERROR]: ~A"
+       "No existing tables in the database to be erased. 
+       [DBI-PROGRAMMING-ERROR]: ~A"
        e))
     (SQLITE:SQLITE-ERROR (e)
-      (log:error "Could not find database location. Are you running from inside the software directory? [SQLITE-ERROR]: ~A"
+      (log:error "Could not find database location. Are you running from inside
+                  the software directory? [SQLITE-ERROR]: ~A"
                  e)
       (uiop:quit 1))))
