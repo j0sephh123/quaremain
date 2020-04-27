@@ -72,6 +72,7 @@
 
 (defun migrate-models ()
   "Migrate all models schemas into the database."
+  (log:info "Attempting to migrate all models schemas if not exist.")
   (with-connection (db)
     (mapcar (lambda (model)
               (datafly:execute model))
@@ -85,11 +86,19 @@
 
 (defun drop-models ()
   "Erase all existing models tables from the database."
-  (with-connection (db)
-    (mapcar (lambda (table)
-              (datafly:execute
-               (sxql:drop-table table)))
-            (list :food
-                  :water
-                  :medicine
-                  :weapon))))
+  (handler-case
+      (progn
+        (log:info "Attempting to drop all models tables from the database")
+        (with-connection (db)
+          (mapcar (lambda (table)
+                    (datafly:execute
+                     (sxql:drop-table table)))
+                  (list :food
+                        :water
+                        :medicine
+                        :weapon)))
+        (log:info "All models tables deletions complete."))
+    (DBI.ERROR:DBI-PROGRAMMING-ERROR (e)
+      (log:error
+       "No existing tables in the database to be erased. ~A"
+       e))))
