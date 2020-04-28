@@ -28,5 +28,4 @@
 
 (defparameter +template-directory+ (pathname "templates/"))
 
-(declaim (type (string) +database-path+))
 (defparameter +database-path+ "var/quaremain.db")
