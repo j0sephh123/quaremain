@@ -36,7 +36,6 @@
            :drop-models))
 (in-package :quaremain.db)
 
-
 (defun db ()
   "Database connection instance."
   (connect-cached
@@ -55,6 +54,7 @@
    "
   `(with-connection (db)
      (execute ,@body)))
+
 
 (defmacro deftable (table-name &body body)
   "Define a basic base table for new model. This will

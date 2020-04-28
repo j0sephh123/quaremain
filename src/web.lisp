@@ -29,23 +29,26 @@
   (:export :*web*))
 (in-package :quaremain.web)
 
-;;; Application.
-
 (defclass <web> (<app>) ())
 (defvar *web* (make-instance '<web>))
-(defparameter *session* (make-hash-table))
 (clear-routing-rules *web*)
 
-(defmacro insert-datum (model-table &rest key-val)
+
+(declaim (ftype (function (hash-table)) *session*))
+(defparameter *session* (make-hash-table))
+
+
+(defmacro insert-datum-to-database (table &body key-val)
   `(with-connection-execute
-     (sxql:insert-into ,model-table
+     (sxql:insert-into ,table
        (sxql:set= ,@key-val))))
 
-(defun get-all-from-model (model-table)
+(declaim (ftype (function (keyword)) get-all-from-model))
+(defun get-all-from-model (table)
   (with-connection (db)
     (datafly:retrieve-all
      (sxql:select :*
-       (sxql:from model-table)))))
+       (sxql:from table)))))
 
 (defun sum-all-cost-per-package (data)
   (loop for datum in data
@@ -136,36 +139,36 @@
                                          |calories-per-package|)
 
   (cond ((string-equal |stock-category| "food")
-         (insert-datum :food
-                       :name |name|
-                       :description |description|
-                       :amount |amount|
-                       :cost-per-package |cost-per-package|
-                       :calories-per-package |calories-per-package|)
+         (insert-datum-to-database :food
+           :name |name|
+           :description |description|
+           :amount |amount|
+           :cost-per-package |cost-per-package|
+           :calories-per-package |calories-per-package|)
          (redirect "/app/list/food"))
 
         ((string-equal |stock-category| "water")
-         (insert-datum :water
-                       :name |name|
-                       :description |description|
-                       :amount |amount|
-                       :cost-per-package |cost-per-package|)
+         (insert-datum-to-database :water
+           :name |name|
+           :description |description|
+           :amount |amount|
+           :cost-per-package |cost-per-package|)
          (redirect "/app/list/water"))
 
         ((string-equal |stock-category| "medicine")
-         (insert-datum :medicine
-                       :name |name|
-                       :description |description|
-                       :amount |amount|
-                       :cost-per-package |cost-per-package|)
+         (insert-datum-to-database :medicine
+           :name |name|
+           :description |description|
+           :amount |amount|
+           :cost-per-package |cost-per-package|)
          (redirect "/app/list/medicine"))
 
         ((string-equal |stock-category| "weapon")
-         (insert-datum :weapon
-                       :name |name|
-                       :description |description|
-                       :amount |amount|
-                       :cost-per-package |cost-per-package|)
+         (insert-datum-to-database :weapon
+           :name |name|
+           :description |description|
+           :amount |amount|
+           :cost-per-package |cost-per-package|)
          (redirect "/app/list/weapon"))))
 
 (defun coerce-cost-per-package (datum)
