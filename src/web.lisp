@@ -41,7 +41,6 @@
      (sxql:insert-into ,table
        (sxql:set= ,@key-val))))
 
-(declaim (ftype (function (keyword)) get-all-from-model))
 (defun get-all-from-model (table)
   (with-connection (db)
     (datafly:retrieve-all
