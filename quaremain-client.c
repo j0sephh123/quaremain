@@ -79,7 +79,8 @@ static void destroyWindowCb()
   gtk_main_quit();
 }
 
-static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window)
+static gboolean closeWebViewCb(__attribute__((unused))WebKitWebView* webView,
+                               GtkWidget* window)
 {
   gtk_widget_destroy(window);
   return TRUE;
