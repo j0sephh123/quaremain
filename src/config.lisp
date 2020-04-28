@@ -24,10 +24,8 @@
            :+database-path+))
 (in-package :quaremain.config)
 
-(declaim (ftype (function (pathname)) +static-directory+))
 (defparameter +static-directory+ (pathname "static/"))
 
-(declaim (ftype (function (pathname)) +template-directory+))
 (defparameter +template-directory+ (pathname "templates/"))
 
 (declaim (type (string) +database-path+))

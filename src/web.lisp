@@ -33,8 +33,6 @@
 (defvar *web* (make-instance '<web>))
 (clear-routing-rules *web*)
 
-
-(declaim (ftype (function (hash-table)) *session*))
 (defparameter *session* (make-hash-table))
 
 
