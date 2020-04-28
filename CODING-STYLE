@@ -25,7 +25,8 @@ Instead, pass it to the function through parameters.
 
 6. If you need record types, try to use defclass from CLOS instead
 of defstruct. The reason is, there are so similar and for
-consistency reason, just try to use defclass.
+consistency reason, just try to use defclass. However, defstruct might
+be useful in the simple cases as well. 
 
 7. Defaults to single-dispatch for classes and methods. We don't
 need multiple dispatch and other stuff from CLOS just because you can.
@@ -51,8 +52,7 @@ such as list.
 of your own code. Also, don't forget to log them.
 
 13. Try to do automated test as much as possible. Small amount of test is
-better than no test at all, but try to test every inch of the codebase
-as much as possible.
+better than no test at all, but try to test every inch of the codebase.
 
 14. Keep it simple and try to not duplicate large chunk of code.
 
