@@ -2,7 +2,9 @@
 
 Manage your basic survival resources like food and water
 for preparation of emergency times. Keep track of costs and food
-calories. Spend and stock wisely for the unexpected with Quaremain.
+calories.
+
+Spend and stock wisely for the unexpected with Quaremain.
 
 
 Available on GNU/Linux Ubuntu 20.04 as a graphical desktop application.
@@ -63,26 +65,31 @@ For client
 ##### Build And Run
 
 By default, Quaremain uses SBCL compiler to build a small sized
-self-contained executable with the trade of high-memory usage.
+self-contained executable with the trade off of high-memory usage.
 
 If you prefer lower memory usage, use CCL (Clozure implementation) to build,
-but with the trade off of big self-contained executable.
+but with the result of bigger executable.
 
 Deployment tarball size shouldn't really matter,
-if you distribute it in a compressed archive.
+if you distribute it as a compressed archive.
 
-- ```sh
-  # By default, uses SBCL to compile.
-  # Replace with make LISP=lx86cl64 to use CCL.
-  $ make
-  ```
-  
-- `$ chmod a+x ./Quaremain # to make the launcher executable`
-- `$ ./Quaremain # launch the program`
+By default, uses SBCL to compile.
+
+Replace with make LISP=lx86cl64 to use CCL.
+
+`$ make`
+
+To make the launcher as an executable.
+
+`$ chmod a+x ./Quaremain`
+
+Run.
+
+`$ ./Quaremain`
 
 ## Testing
 
-- `$ make test`
+`$ make test`
 
 ## Distributing For End Users
 
@@ -124,7 +131,7 @@ I tried it with CCL and it uses around 20-30MB+ compared to
 SBCL's 100MB+ for the same version of the program.
 It seems this issue caused by the SBCL garbage
 collector type usage (sacrificing memory for
-the excellent execution speed, I believe?)
+the excellent execution speed, I believe?).
 
 Will certainly make CCL as the default implementation
 but it's not possible currently due to issue 1.
