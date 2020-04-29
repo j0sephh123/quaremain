@@ -35,17 +35,16 @@
 
 (defparameter *session* (make-hash-table))
 
-
-(defmacro insert-datum-to-database (table &body key-val)
+(defmacro insert-datum-to-database (table-name &body key-val)
   `(with-connection-execute
-     (sxql:insert-into ,table
+     (sxql:insert-into ,table-name
        (sxql:set= ,@key-val))))
 
-(defun get-all-from-model (table)
+(defun get-all-from-table (table-name)
   (with-connection (db)
     (datafly:retrieve-all
      (sxql:select :*
-       (sxql:from table)))))
+       (sxql:from table-name)))))
 
 (defun sum-all-cost-per-package (data)
   (loop for datum in data
@@ -62,19 +61,25 @@
                  (getf datum :calories-per-package))))
   data)
 
-(defun get-datum-by-id (model-table id)
+(defun coerce-cost-per-package (datum)
+  (let ((cost-per-package (getf datum :cost-per-package)))
+    (setf (getf datum :cost-per-package)
+          (coerce cost-per-package 'single-float)))
+  datum)
+
+(defun get-datum-by-id (table-name id)
   (with-connection (db)
     (datafly:retrieve-one
-     (sxql:select :* (sxql:from model-table)
+     (sxql:select :* (sxql:from table-name)
                   (sxql:where (:= :id id))))))
 
-(defmacro generate-update-datum-by-id (model-table id
+(defmacro generate-update-datum-by-id (table-name id
                                        name
                                        description
                                        amount
                                        cost-per-package
                                        &body body)
-  `(sxql:update ,model-table
+  `(sxql:update ,table-name
      (sxql:set= :name ,name
                 :description ,description
                 :amount ,amount
@@ -82,9 +87,9 @@
                 ,@body)
      (sxql:where (:= :id ,id))))
 
-(defun delete-datum-from-model (model-table id)
+(defun delete-datum-from-table (table-name id)
   (with-connection-execute
-    (sxql:delete-from model-table
+    (sxql:delete-from table-name
       (sxql:where (:= :id id)))))
 
 
@@ -93,32 +98,32 @@
   (render #p"app/list.html"
           `(:data ,(sum-all-calories-per-package
                     (sum-all-cost-per-package
-                     (get-all-from-model :food)))
+                     (get-all-from-table :food)))
                   :list-type "food")))
 
 (defroute "/app/list/food" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-calories-per-package
                     (sum-all-cost-per-package
-                     (get-all-from-model :food)))
+                     (get-all-from-table :food)))
                   :list-type "food")))
 
 (defroute "/app/list/water" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-cost-per-package
-                    (get-all-from-model :water))
+                    (get-all-from-table :water))
                   :list-type "water")))
 
 (defroute "/app/list/medicine" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-cost-per-package
-                    (get-all-from-model :medicine))
+                    (get-all-from-table :medicine))
                   :list-type "medicine")))
 
 (defroute "/app/list/weapon" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-cost-per-package
-                    (get-all-from-model :weapon))
+                    (get-all-from-table :weapon))
                   :list-type "weapon")))
 
 (defroute "/about" ()
@@ -167,12 +172,6 @@
            :amount |amount|
            :cost-per-package |cost-per-package|)
          (redirect "/app/list/weapon"))))
-
-(defun coerce-cost-per-package (datum)
-  (let ((cost-per-package (getf datum :cost-per-package)))
-    (setf (getf datum :cost-per-package)
-          (coerce cost-per-package 'single-float)))
-  datum)
 
 (defroute "/app/update-form/:id" (&key id
                                        |stock-category|)
@@ -252,7 +251,7 @@
          (read-from-string
           (format nil ":~a" |stock-category|))))
     (handler-case
-        (delete-datum-from-model model-table id)
+        (delete-datum-from-table model-table id)
       
       (DBI.ERROR:DBI-PROGRAMMING-ERROR (e)
         (format nil
