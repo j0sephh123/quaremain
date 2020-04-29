@@ -64,7 +64,8 @@
      (sxql:select :* (sxql:from table-name)
                   (sxql:where (:= :id id))))))
 
-(defmacro generate-update-datum-by-id (table-name id
+(defmacro generate-update-datum-by-id (table-name
+                                       id
                                        name
                                        description
                                        amount
@@ -77,6 +78,33 @@
                 :cost-per-package ,cost-per-package
                 ,@sxql-column-specifier-forms)
      (sxql:where (:= :id ,id))))
+
+(defun do-update-datum-by-id (stock-category
+                              id
+                              name
+                              description
+                              amount
+                              cost-per-package
+                              calories-per-package)
+  (if (string-equal stock-category "food")
+      (with-connection-execute
+        (generate-update-datum-by-id
+            (string-to-keyword stock-category)
+            id
+            :name name
+            :description description
+          :amount amount
+          :cost-per-package cost-per-package
+          :calories-per-package calories-per-package))
+
+      (with-connection-execute
+        (generate-update-datum-by-id
+            (string-to-keyword stock-category)
+            id
+            :name name
+            :description description
+          :amount amount
+          :cost-per-package cost-per-package))))
 
 (defun delete-datum-from-table (table-name id)
   (with-connection-execute
@@ -192,42 +220,13 @@
   (let* ((id (gethash 'datum-id *session*))
          (stock-category
           (gethash 'datum-stock-category *session*)))
-    (cond ((string-equal stock-category "food")
-           (with-connection-execute
-             (generate-update-datum-by-id :food
-                 id
-                 |name|
-                 |description|
-                 |amount|
-                 |cost-per-package|
-               :calories-per-package |calories-per-package|)))
-
-          ((string-equal stock-category "water")
-           (with-connection-execute
-             (generate-update-datum-by-id :water
-                 id
-                 |name|
-                 |description|
-                 |amount|
-                 |cost-per-package|)))
-
-          ((string-equal stock-category "medicine")
-           (with-connection-execute
-             (generate-update-datum-by-id :medicine
-                 id
-                 |name|
-                 |description|
-                 |amount|
-                 |cost-per-package|)))
-
-          ((string-equal stock-category "weapon")
-           (with-connection-execute
-             (generate-update-datum-by-id :weapon
-                 id
-                 |name|
-                 |description|
-                 |amount|
-                 |cost-per-package|))))
+    (do-update-datum-by-id stock-category
+      id
+      |name|
+      |description|
+      |amount|
+      |cost-per-package|
+      |calories-per-package|)
     (redirect
      (format nil "/app/list/~A" stock-category))))
 
