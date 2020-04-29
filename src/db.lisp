@@ -30,6 +30,12 @@
                 :drop-table)
   (:import-from :quaremain.config
                 :+database-path+)
+
+  ;; Exceptions.
+  (:import-from :sqlite
+                :sqlite-error)
+  (:import-from :dbi.error
+                :dbi-programming-error)
   (:export :db
            :with-connection
            :with-connection-execute
@@ -38,13 +44,20 @@
 (in-package :quaremain.db)
 
 (defun db ()
-  "Database connection instance."
+  "Database init connection.
+
+   returns: database connection instance"
   (connect-cached
    :sqlite3
    :database-name +database-path+))
 
 (defmacro with-connection (connection &body body)
-  "Wraps connection call to the database."
+  "Wraps connection call to the database.
+
+   connection -> connection instance
+   body -> SXQL statements
+
+   returns: nil"
   `(let ((*connection* ,connection))
      (unwind-protect (progn ,@body)
        (disconnect *connection*))))
@@ -52,14 +65,24 @@
 (defmacro with-connection-execute (&body body)
   "Database connection wrapper which executes SXQL statements
    on call.
+
+   body -> SXQL statements
+
+   returns: nil
    "
   `(with-connection (db)
      (execute ,@body)))
 
 
-(defmacro deftable (table-name &body body)
-  "Define a basic base table for new model. This will
-   return the SXQL generated schema statements for executions.
+(defmacro deftable (table-name &body extra-column-specifier)
+  "Define a basic base table for new model.
+
+   table-name -> keyword
+   extra-column-specifier -> SXQL column specifier
+   
+   returns: generated SXQL statements
+
+   Example: (deftable :user (:username :type 'varchar) (:password :type 'text))
    "
   `(let ((schema
           (create-table (,table-name :if-not-exists t)
@@ -68,11 +91,13 @@
                (description :type 'text :not-null t)
                (amount :type 'integer :not-null t)
                (cost-per-package :type 'real :not-null t)
-               ,@body))))
+               ,@extra-column-specifier))))
      schema))
 
 (defun migrate-models ()
-  "Migrate all models schemas into the database."
+  "Migrate all models schemas into the database.
+
+   returns: nil"
   (handler-case
       (progn
         (log:info "Attempting to migrate all models schemas if not exist.")
@@ -86,17 +111,19 @@
                         (deftable :water)
                         (deftable :medicine)
                         (deftable :weapon)))))
-    (SQLITE:SQLITE-ERROR (e)
-      (log:error "Could not find database location. Are you running from inside
-                  the software directory? [SQLITE-ERROR]: ~A"
-                 e)
+    (sqlite-error (exception)
+      (log:error "Are you trying to run from the outside of
+                  Quaremain's project directory?")
+      (log:error "[SQLITE-ERROR]: ~A" exception)
       (uiop:quit 1))))
 
 (defun drop-models ()
-  "Erase all existing models tables from the database."
+  "Erase all existing models tables from the database.
+
+   returns: nil"
   (handler-case
       (progn
-        (log:info "Attempting to drop all models tables from the database")
+        (log:info "Attempting to erase all models tables from the database")
         (with-connection (db)
           (mapcar (lambda (table)
                     (execute
@@ -105,14 +132,12 @@
                         :water
                         :medicine
                         :weapon)))
-        (log:info "All models tables deletions complete."))
-    (DBI.ERROR:DBI-PROGRAMMING-ERROR (e)
-      (log:error
-       "No existing tables in the database to be erased. 
-       [DBI-PROGRAMMING-ERROR]: ~A"
-       e))
-    (SQLITE:SQLITE-ERROR (e)
-      (log:error "Could not find database location. Are you running from inside
-                  the software directory? [SQLITE-ERROR]: ~A"
-                 e)
+        (log:info "Database models tables has been erased"))
+    (dbi-programming-error (exception)
+      (log:error "[DBI-PROGRAMMING-ERROR]: ~A" exception)
+      (log:error "No existing tables in the database found to be erased"))
+    (sqlite-error  (exception)
+      (log:error "[SQLITE-ERROR]: ~A" exception)
+      (log:error "Are you trying to run from the outside of
+                  Quaremain's project directory?")
       (uiop:quit 1))))
