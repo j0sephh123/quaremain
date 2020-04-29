@@ -51,3 +51,10 @@
                          :calories-per-package)))
              (ok
               (= calories-per-package 438)))))
+
+
+(deftest string-to-keyword
+  (testing "(string-to-keyword \"fruit\") should equal to :fruit"
+           (ok
+            (eql (quaremain.web::string-to-keyword "fruitz")
+                 :fruitz))))
