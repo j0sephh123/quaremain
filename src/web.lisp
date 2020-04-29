@@ -127,7 +127,7 @@
 
 (defun string-to-keyword (string)
   (read-from-string
-   (format nil ":~a" string)))
+   (format nil ":~A" string)))
 
 (defun create-new-stock (stock-category name description
                          amount cost-per-package calories-per-package)
