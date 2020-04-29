@@ -83,38 +83,40 @@
     (sxql:delete-from table-name
       (sxql:where (:= :id id)))))
 
+(defun sum-data-from-table (table-name)
+  (let ((table-data
+         (get-all-datum-from-table table-name)))
+    
+    (sum-all-cost-per-package
+     (if (eql table-name :food)
+         (sum-all-calories-per-package table-data)
+         table-data))
+    table-data))
 
-;;; Routing rules.
+
 (defroute "/" ()
   (render #p"app/list.html"
-          `(:data ,(sum-all-calories-per-package
-                    (sum-all-cost-per-package
-                     (get-all-datum-from-table :food)))
+          `(:data ,(sum-data-from-table :food)
                   :list-type "food")))
 
 (defroute "/app/list/food" ()
   (render #p"app/list.html"
-          `(:data ,(sum-all-calories-per-package
-                    (sum-all-cost-per-package
-                     (get-all-datum-from-table :food)))
+          `(:data ,(sum-data-from-table :food)
                   :list-type "food")))
 
 (defroute "/app/list/water" ()
   (render #p"app/list.html"
-          `(:data ,(sum-all-cost-per-package
-                    (get-all-datum-from-table :water))
+          `(:data ,(sum-data-from-table :water)
                   :list-type "water")))
 
 (defroute "/app/list/medicine" ()
   (render #p"app/list.html"
-          `(:data ,(sum-all-cost-per-package
-                    (get-all-datum-from-table :medicine))
+          `(:data ,(sum-data-from-table :medicine)
                   :list-type "medicine")))
 
 (defroute "/app/list/weapon" ()
   (render #p"app/list.html"
-          `(:data ,(sum-all-cost-per-package
-                    (get-all-datum-from-table :weapon))
+          `(:data ,(sum-data-from-table :weapon)
                   :list-type "weapon")))
 
 (defroute "/about" ()
@@ -123,18 +125,25 @@
 (defroute "/app/create-form" ()
   (render #p"app/create-form.html"))
 
-(defun create-new-food-stock (name description amount
-                              cost-per-package calories-per-package)
-  (insert-datum-into-table :food
-    :name name
-    :description description
-    :amount amount
-    :cost-per-package cost-per-package
-    :calories-per-package calories-per-package))
-
 (defun string-to-keyword (string)
   (read-from-string
    (format nil ":~a" string)))
+
+(defun create-new-stock (stock-category name description
+                         amount cost-per-package calories-per-package)
+  (if (string-equal stock-category "food")
+      (insert-datum-into-table (string-to-keyword stock-category)
+        :name name
+        :description description
+        :amount amount
+        :cost-per-package cost-per-package
+        :calories-per-package calories-per-package)
+
+      (insert-datum-into-table (string-to-keyword stock-category)
+        :name name
+        :description description
+        :amount amount
+        :cost-per-package cost-per-package)))
 
 
 (defroute ("/app/create" :method :POST) (&key
@@ -144,35 +153,12 @@
                                          |amount|
                                          |cost-per-package|
                                          |calories-per-package|)
-
-  (cond ((string-equal |stock-category| "food")
-         (insert-datum-into-table :food
-           :name |name|
-           :description |description|
-           :amount |amount|
-           :cost-per-package |cost-per-package|
-           :calories-per-package |calories-per-package|))
-
-        ((string-equal |stock-category| "water")
-         (insert-datum-into-table :water
-           :name |name|
-           :description |description|
-           :amount |amount|
-           :cost-per-package |cost-per-package|))
-
-        ((string-equal |stock-category| "medicine")
-         (insert-datum-into-table :medicine
-           :name |name|
-           :description |description|
-           :amount |amount|
-           :cost-per-package |cost-per-package|))
-
-        ((string-equal |stock-category| "weapon")
-         (insert-datum-into-table :weapon
-           :name |name|
-           :description |description|
-           :amount |amount|
-           :cost-per-package |cost-per-package|)))
+  (create-new-stock |stock-category|
+                    |name|
+                    |description|
+                    |amount|
+                    |cost-per-package|
+                    |calories-per-package|)
   (redirect
    (format nil "/app/list/~A" |stock-category|)))
 
