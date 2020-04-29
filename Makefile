@@ -56,7 +56,7 @@ manpage: README.md
 
 devdocs: docs/
 	$(LISP) --eval "(ql:quickload :staple)" \
-                --eval "(staple:generate :$(EXECUTABLE))" \
+                --eval "(staple:generate :$(EXECUTABLE) :if-exists :overwrite :compact nil)" \
 		--eval "(uiop:quit)"
 
 install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)

@@ -16,7 +16,7 @@
 
 (in-package :cl-user)
 (defpackage quaremain.db
-  (:documentation "Database access handler")
+  (:documentation "Database access handler.")
   (:use :cl)
   (:import-from :cl-dbi
                 :connect-cached
@@ -51,9 +51,9 @@
    :database-name +database-path+))
 
 (defmacro with-connection (connection &body body)
-  "Wraps connection call to the database.
+  "Wraps SXQL forms calls with database connection.
 
-   connection -> connection instance
+   connection -> database connection instance
    body -> SXQL forms
 
    returns: nil"
@@ -73,15 +73,20 @@
      (execute ,@body)))
 
 
-(defmacro deftable (table-name &body extra-column-specifier)
-  "Define a basic base table for new model.
+(defmacro deftable (table-name &body sxql-column-specifiers)
+  "Define a basic base table for new model. Remember that
+   this will inherit id, name, description, amount and
+   cost-per-package column specifier as well. Only suitable
+   for tables that are related to market products.
 
    table-name -> keyword
-   extra-column-specifier -> SXQL column specifier
+   sxql-column-specifiers -> SXQL forms
    
    returns: generated & translated SXQL forms
 
-   Example: (deftable :user (:username :type 'varchar) (:password :type 'text))
+   Example: (deftable :user 
+              (:username :type 'varchar)
+              (:password :type 'text :not-null t))
    "
   `(let ((schema
           (create-table (,table-name :if-not-exists t)
@@ -90,7 +95,7 @@
                (description :type 'text :not-null t)
                (amount :type 'integer :not-null t)
                (cost-per-package :type 'real :not-null t)
-               ,@extra-column-specifier))))
+               ,@sxql-column-specifiers))))
      schema))
 
 (defun migrate-models ()
