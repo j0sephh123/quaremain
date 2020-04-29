@@ -54,11 +54,6 @@ manpage: README.md
 	ronn -r README.md
 	mv README dist-data/quaremain.1
 
-devdocs: docs/
-	$(LISP) --eval "(ql:quickload :staple)" \
-                --eval "(staple:generate :$(EXECUTABLE) :if-exists :overwrite :compact nil)" \
-		--eval "(uiop:quit)"
-
 install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
 	mkdir -p $(DESTDIR)/var
 	mkdir $(DESTDIR)/bin

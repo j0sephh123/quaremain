@@ -19,9 +19,6 @@
                ;; Logging.
                "log4cl"
 
-               ;; Documentation generator.
-               "staple"
-
                ;; Deploying
                "lack-middleware-static"
                "lack-middleware-session"
