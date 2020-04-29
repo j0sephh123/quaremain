@@ -123,6 +123,20 @@
 (defroute "/app/create-form" ()
   (render #p"app/create-form.html"))
 
+(defun create-new-food-stock (name description amount
+                              cost-per-package calories-per-package)
+  (insert-datum-into-table :food
+    :name name
+    :description description
+    :amount amount
+    :cost-per-package cost-per-package
+    :calories-per-package calories-per-package))
+
+(defun string-to-keyword (string)
+  (read-from-string
+   (format nil ":~a" string)))
+
+
 (defroute ("/app/create" :method :POST) (&key
                                          |stock-category|
                                          |name|
@@ -133,36 +147,34 @@
 
   (cond ((string-equal |stock-category| "food")
          (insert-datum-into-table :food
-                                  :name |name|
-                                  :description |description|
-                                  :amount |amount|
-                                  :cost-per-package |cost-per-package|
-                                  :calories-per-package |calories-per-package|)
-         (redirect "/app/list/food"))
+           :name |name|
+           :description |description|
+           :amount |amount|
+           :cost-per-package |cost-per-package|
+           :calories-per-package |calories-per-package|))
 
         ((string-equal |stock-category| "water")
          (insert-datum-into-table :water
-                                  :name |name|
-                                  :description |description|
-                                  :amount |amount|
-                                  :cost-per-package |cost-per-package|)
-         (redirect "/app/list/water"))
+           :name |name|
+           :description |description|
+           :amount |amount|
+           :cost-per-package |cost-per-package|))
 
         ((string-equal |stock-category| "medicine")
          (insert-datum-into-table :medicine
-                                  :name |name|
-                                  :description |description|
-                                  :amount |amount|
-                                  :cost-per-package |cost-per-package|)
-         (redirect "/app/list/medicine"))
+           :name |name|
+           :description |description|
+           :amount |amount|
+           :cost-per-package |cost-per-package|))
 
         ((string-equal |stock-category| "weapon")
          (insert-datum-into-table :weapon
-                                  :name |name|
-                                  :description |description|
-                                  :amount |amount|
-                                  :cost-per-package |cost-per-package|)
-         (redirect "/app/list/weapon"))))
+           :name |name|
+           :description |description|
+           :amount |amount|
+           :cost-per-package |cost-per-package|)))
+  (redirect
+   (format nil "/app/list/~A" |stock-category|)))
 
 (defroute "/app/update-form/:id" (&key id
                                        |stock-category|)
@@ -185,7 +197,6 @@
             (list :datum coerced-datum
                   :list-type |stock-category|))))
 
-
 (defroute ("/app/update" :method :POST) (&key |name|
                                               |description|
                                               |amount|
@@ -203,8 +214,7 @@
                  |description|
                  |amount|
                  |cost-per-package|
-               :calories-per-package |calories-per-package|))
-           (redirect "/app/list/food"))
+               :calories-per-package |calories-per-package|)))
 
           ((string-equal stock-category "water")
            (with-connection-execute
@@ -213,8 +223,7 @@
                  |name|
                  |description|
                  |amount|
-                 |cost-per-package|))
-           (redirect "/app/list/water"))
+                 |cost-per-package|)))
 
           ((string-equal stock-category "medicine")
            (with-connection-execute
@@ -223,8 +232,7 @@
                  |name|
                  |description|
                  |amount|
-                 |cost-per-package|))
-           (redirect "/app/list/medicine"))
+                 |cost-per-package|)))
 
           ((string-equal stock-category "weapon")
            (with-connection-execute
@@ -233,22 +241,22 @@
                  |name|
                  |description|
                  |amount|
-                 |cost-per-package|))
-           (redirect "/app/list/weapon")))))
+                 |cost-per-package|))))
+    (redirect
+     (format nil "/app/list/~A" stock-category))))
 
 (defroute ("/app/delete/:id" :method :GET) (&key id
                                                  |stock-category|)
-  (let ((model-table
-         (read-from-string
-          (format nil ":~a" |stock-category|))))
+  (let ((table-name
+         (string-to-keyword |stock-category|)))
     (handler-case
-        (delete-datum-from-table model-table id)
+        (delete-datum-from-table table-name id)
       
       (DBI.ERROR:DBI-PROGRAMMING-ERROR (e)
-        (format nil
-                "~a~a" "Error: list is not exist to be deleted."
-                e))))
-  (redirect (format nil "/app/list/~a"
+        (log:error
+         "~A"
+         e))))
+  (redirect (format nil "/app/list/~A"
                     |stock-category|)))
 
 ;;; Error pages.
