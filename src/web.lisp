@@ -35,7 +35,7 @@
 
 (defparameter *session* (make-hash-table))
 
-(defmacro insert-datum-to-database (table-name &body key-val)
+(defmacro insert-datum-into-database (table-name &body key-val)
   `(with-connection-execute
      (sxql:insert-into ,table-name
        (sxql:set= ,@key-val))))
@@ -141,36 +141,36 @@
                                          |calories-per-package|)
 
   (cond ((string-equal |stock-category| "food")
-         (insert-datum-to-database :food
-           :name |name|
-           :description |description|
-           :amount |amount|
-           :cost-per-package |cost-per-package|
-           :calories-per-package |calories-per-package|)
+         (insert-datum-into-database :food
+                                     :name |name|
+                                     :description |description|
+                                     :amount |amount|
+                                     :cost-per-package |cost-per-package|
+                                     :calories-per-package |calories-per-package|)
          (redirect "/app/list/food"))
 
         ((string-equal |stock-category| "water")
-         (insert-datum-to-database :water
-           :name |name|
-           :description |description|
-           :amount |amount|
-           :cost-per-package |cost-per-package|)
+         (insert-datum-into-database :water
+                                     :name |name|
+                                     :description |description|
+                                     :amount |amount|
+                                     :cost-per-package |cost-per-package|)
          (redirect "/app/list/water"))
 
         ((string-equal |stock-category| "medicine")
-         (insert-datum-to-database :medicine
-           :name |name|
-           :description |description|
-           :amount |amount|
-           :cost-per-package |cost-per-package|)
+         (insert-datum-into-database :medicine
+                                     :name |name|
+                                     :description |description|
+                                     :amount |amount|
+                                     :cost-per-package |cost-per-package|)
          (redirect "/app/list/medicine"))
 
         ((string-equal |stock-category| "weapon")
-         (insert-datum-to-database :weapon
-           :name |name|
-           :description |description|
-           :amount |amount|
-           :cost-per-package |cost-per-package|)
+         (insert-datum-into-database :weapon
+                                     :name |name|
+                                     :description |description|
+                                     :amount |amount|
+                                     :cost-per-package |cost-per-package|)
          (redirect "/app/list/weapon"))))
 
 (defroute "/app/update-form/:id" (&key id
