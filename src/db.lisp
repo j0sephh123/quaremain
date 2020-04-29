@@ -51,15 +51,11 @@
    :database-name +database-path+))
 
 (defmacro with-connection (database-connection &body sxql-forms)
-  "Wraps SXQL forms calls with database connection."
   `(let ((*connection* ,database-connection))
      (unwind-protect (progn ,@sxql-forms)
        (disconnect *connection*))))
 
 (defmacro with-connection-execute (&body sxql-forms)
-  "Database connection wrapper which executes SXQL forms
-   on call.
-   "
   `(with-connection (db)
      (execute ,@sxql-forms)))
 
