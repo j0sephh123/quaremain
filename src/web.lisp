@@ -24,7 +24,9 @@
   (:import-from :quaremain.db
                 :db
                 :with-connection
-                :with-connection-execute)
+                :with-connection-execute
+                :insert-datum-into-table
+                :get-all-datum-from-table)
   (:export :*web*))
 (in-package :quaremain.web)
 
@@ -34,17 +36,6 @@
 (clear-routing-rules *web*)
 
 (defparameter *session* (make-hash-table))
-
-(defmacro insert-datum-into-database (table-name &body key-val)
-  `(with-connection-execute
-     (sxql:insert-into ,table-name
-       (sxql:set= ,@key-val))))
-
-(defun get-all-from-table (table-name)
-  (with-connection (db)
-    (datafly:retrieve-all
-     (sxql:select :*
-       (sxql:from table-name)))))
 
 (defun sum-all-cost-per-package (plists)
   (loop for plist in plists
@@ -98,32 +89,32 @@
   (render #p"app/list.html"
           `(:data ,(sum-all-calories-per-package
                     (sum-all-cost-per-package
-                     (get-all-from-table :food)))
+                     (get-all-datum-from-table :food)))
                   :list-type "food")))
 
 (defroute "/app/list/food" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-calories-per-package
                     (sum-all-cost-per-package
-                     (get-all-from-table :food)))
+                     (get-all-datum-from-table :food)))
                   :list-type "food")))
 
 (defroute "/app/list/water" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-cost-per-package
-                    (get-all-from-table :water))
+                    (get-all-datum-from-table :water))
                   :list-type "water")))
 
 (defroute "/app/list/medicine" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-cost-per-package
-                    (get-all-from-table :medicine))
+                    (get-all-datum-from-table :medicine))
                   :list-type "medicine")))
 
 (defroute "/app/list/weapon" ()
   (render #p"app/list.html"
           `(:data ,(sum-all-cost-per-package
-                    (get-all-from-table :weapon))
+                    (get-all-datum-from-table :weapon))
                   :list-type "weapon")))
 
 (defroute "/about" ()
@@ -141,36 +132,36 @@
                                          |calories-per-package|)
 
   (cond ((string-equal |stock-category| "food")
-         (insert-datum-into-database :food
-                                     :name |name|
-                                     :description |description|
-                                     :amount |amount|
-                                     :cost-per-package |cost-per-package|
-                                     :calories-per-package |calories-per-package|)
+         (insert-datum-into-table :food
+                                  :name |name|
+                                  :description |description|
+                                  :amount |amount|
+                                  :cost-per-package |cost-per-package|
+                                  :calories-per-package |calories-per-package|)
          (redirect "/app/list/food"))
 
         ((string-equal |stock-category| "water")
-         (insert-datum-into-database :water
-                                     :name |name|
-                                     :description |description|
-                                     :amount |amount|
-                                     :cost-per-package |cost-per-package|)
+         (insert-datum-into-table :water
+                                  :name |name|
+                                  :description |description|
+                                  :amount |amount|
+                                  :cost-per-package |cost-per-package|)
          (redirect "/app/list/water"))
 
         ((string-equal |stock-category| "medicine")
-         (insert-datum-into-database :medicine
-                                     :name |name|
-                                     :description |description|
-                                     :amount |amount|
-                                     :cost-per-package |cost-per-package|)
+         (insert-datum-into-table :medicine
+                                  :name |name|
+                                  :description |description|
+                                  :amount |amount|
+                                  :cost-per-package |cost-per-package|)
          (redirect "/app/list/medicine"))
 
         ((string-equal |stock-category| "weapon")
-         (insert-datum-into-database :weapon
-                                     :name |name|
-                                     :description |description|
-                                     :amount |amount|
-                                     :cost-per-package |cost-per-package|)
+         (insert-datum-into-table :weapon
+                                  :name |name|
+                                  :description |description|
+                                  :amount |amount|
+                                  :cost-per-package |cost-per-package|)
          (redirect "/app/list/weapon"))))
 
 (defroute "/app/update-form/:id" (&key id

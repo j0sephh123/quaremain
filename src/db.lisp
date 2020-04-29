@@ -39,7 +39,9 @@
            :with-connection
            :with-connection-execute
            :migrate-tables
-           :drop-tables))
+           :drop-tables
+           :insert-datum-into-table
+           :get-all-datum-from-table))
 (in-package :quaremain.db)
 
 (defun db ()
@@ -124,3 +126,14 @@
       (log:error "Are you trying to run from the outside of
                   Quaremain's project directory?")
       (uiop:quit 1))))
+
+(defmacro insert-datum-into-table (table-name &body key-val)
+  `(with-connection-execute
+     (sxql:insert-into ,table-name
+       (sxql:set= ,@key-val))))
+
+(defun get-all-datum-from-table (table-name)
+  (with-connection (db)
+    (datafly:retrieve-all
+     (sxql:select :*
+       (sxql:from table-name)))))
