@@ -197,17 +197,9 @@
   (render #p"app/update-form.html"
           (let ((coerced-datum
                  (coerce-cost-per-package
-                  (cond ((string-equal |stock-category| "food")
-                         (get-datum-by-id :food id))
-
-                        ((string-equal |stock-category| "water")
-                         (get-datum-by-id :water id))
-
-                        ((string-equal |stock-category| "medicine")
-                         (get-datum-by-id :medicine id))
-
-                        ((string-equal |stock-category| "weapon")
-                         (get-datum-by-id :weapon id))))))
+                  (get-datum-by-id
+                   (string-to-keyword |stock-category|)
+                   id))))
             (list :datum coerced-datum
                   :list-type |stock-category|))))
 
