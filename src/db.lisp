@@ -74,7 +74,7 @@
               (:username :type 'varchar)
               (:password :type 'text :not-null t))
    "
-  `(let ((schema
+  `(let ((generated-sxql-schema
           (create-table (,table-name :if-not-exists t)
               ((id :type 'integer :primary-key t)
                (name :type 'text :not-null t)
@@ -82,15 +82,15 @@
                (amount :type 'integer :not-null t)
                (cost-per-package :type 'real :not-null t)
                ,@sxql-column-specifier-forms))))
-     schema))
+     generated-sxql-schema))
 
 (defun migrate-tables ()
   (handler-case
       (progn
         (log:info "Attempting to migrate all models schemas if not exist.")
         (with-connection (db)
-          (mapcar (lambda (model)
-                    (execute model))
+          (mapcar (lambda (generated-sxql-schema)
+                    (execute generated-sxql-schema))
                   (list (deftable :food
                           (calories-per-package
                            :type 'integer
@@ -110,9 +110,9 @@
       (progn
         (log:info "Attempting to erase all tables from the database")
         (with-connection (db)
-          (mapcar (lambda (table)
+          (mapcar (lambda (table-name)
                     (execute
-                     (drop-table table)))
+                     (drop-table table-name)))
                   (list :food
                         :water
                         :medicine
