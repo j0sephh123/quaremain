@@ -26,7 +26,8 @@
                 :execute
                 :*connection*)
   (:import-from :sxql
-                :create-table)
+                :create-table
+                :drop-table)
   (:import-from :quaremain.config
                 :+database-path+)
   (:export :db
@@ -77,7 +78,7 @@
         (log:info "Attempting to migrate all models schemas if not exist.")
         (with-connection (db)
           (mapcar (lambda (model)
-                    (datafly:execute model))
+                    (execute model))
                   (list (deftable :food
                           (calories-per-package
                            :type 'integer
@@ -98,8 +99,8 @@
         (log:info "Attempting to drop all models tables from the database")
         (with-connection (db)
           (mapcar (lambda (table)
-                    (datafly:execute
-                     (sxql:drop-table table)))
+                    (execute
+                     (drop-table table)))
                   (list :food
                         :water
                         :medicine

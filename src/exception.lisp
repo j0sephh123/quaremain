@@ -20,4 +20,3 @@
 (defpackage quaremain.exception
   (:use :cl))
 (in-package :quaremain.exception)
-
