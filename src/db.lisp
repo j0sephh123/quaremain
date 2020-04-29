@@ -51,7 +51,7 @@
    :database-name +database-path+))
 
 (defmacro with-connection (database-connection &body sxql-forms)
-  "Wraps SXQL forms calls with database ."
+  "Wraps SXQL forms calls with database connection."
   `(let ((*connection* ,database-connection))
      (unwind-protect (progn ,@sxql-forms)
        (disconnect *connection*))))
@@ -69,11 +69,6 @@
    this will inherit id, name, description, amount and
    cost-per-package column specifier as well. Only suitable
    for tables that are related to market products.
-
-   table-name -> keyword
-   sxql-column-specifiers -> SXQL forms
-   
-   returns: generated & translated SXQL forms
 
    Example: (deftable :user 
               (:username :type 'varchar)
