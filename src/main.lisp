@@ -14,10 +14,9 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;;;; quaremain.main (quaremain) - Server handler.
-
 (in-package :cl-user)
 (defpackage quaremain
+  (:documentation "Server initialization handler.")
   (:use :cl)
   (:import-from :quaremain.config
                 :+static-directory+)

@@ -14,9 +14,8 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;;;; quaremain.config - High level and concrete custom exceptions.
-
 (in-package :cl-user)
 (defpackage quaremain.exception
+  (:documentation "High level and concrete custom exceptions.")
   (:use :cl))
 (in-package :quaremain.exception)

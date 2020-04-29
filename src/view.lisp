@@ -14,10 +14,9 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;;;; quaremain.view - View handler.
-
 (in-package :cl-user)
 (defpackage quaremain.view
+  (:documentation "Handle HTML and JSON generations.")
   (:use :cl)
   (:import-from :quaremain.config
                 :+template-directory+)
@@ -53,10 +52,8 @@
   (encode-json object))
 
 
-;;
-;; Execute package definition
-
 (defpackage quaremain.djula
+  (:documentation "HTML view.")
   (:use :cl)
   (:import-from :caveman2
                 :url-for))

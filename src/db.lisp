@@ -14,10 +14,9 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;;;; quaremain.db - Database access.
-
 (in-package :cl-user)
 (defpackage quaremain.db
+  (:documentation "Database access handler")
   (:use :cl)
   (:import-from :cl-dbi
                 :connect-cached
@@ -55,7 +54,7 @@
   "Wraps connection call to the database.
 
    connection -> connection instance
-   body -> SXQL statements
+   body -> SXQL forms
 
    returns: nil"
   `(let ((*connection* ,connection))
@@ -63,10 +62,10 @@
        (disconnect *connection*))))
 
 (defmacro with-connection-execute (&body body)
-  "Database connection wrapper which executes SXQL statements
+  "Database connection wrapper which executes SXQL forms
    on call.
 
-   body -> SXQL statements
+   body -> SXQL forms
 
    returns: nil
    "
@@ -80,7 +79,7 @@
    table-name -> keyword
    extra-column-specifier -> SXQL column specifier
    
-   returns: generated SXQL statements
+   returns: generated & translated SXQL forms
 
    Example: (deftable :user (:username :type 'varchar) (:password :type 'text))
    "

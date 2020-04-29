@@ -19,8 +19,10 @@
                ;; Logging.
                "log4cl"
 
+               ;; Documentation generator.
+               "staple"
+
                ;; Deploying
-               "deploy"
                "lack-middleware-static"
                "lack-middleware-session"
                "hunchentoot"

@@ -14,10 +14,9 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;;;; quaremain.web - Server routing handler.
-
 (in-package :cl-user)
 (defpackage quaremain.web
+  (:documentation "Server routing handler.")
   (:use :cl
         :caveman2
         :quaremain.config
@@ -30,7 +29,8 @@
 (in-package :quaremain.web)
 
 (defclass <web> (<app>) ())
-(defvar *web* (make-instance '<web>))
+(defvar *web* (make-instance '<web>)
+  "Quaremain's system wide application instance.")
 (clear-routing-rules *web*)
 
 (defparameter *session* (make-hash-table))
