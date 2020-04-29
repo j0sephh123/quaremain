@@ -21,7 +21,7 @@
         :caveman2
         :quaremain.config
         :quaremain.view)
-  (:import-from :quaremain.db
+  (:import-from :quaremain.database
                 :db
                 :with-connection
                 :with-connection-execute

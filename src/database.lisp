@@ -15,7 +15,7 @@
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (in-package :cl-user)
-(defpackage quaremain.db
+(defpackage quaremain.database
   (:documentation "Database access handler.")
   (:use :cl)
   (:import-from :cl-dbi
@@ -42,7 +42,7 @@
            :drop-tables
            :insert-datum-into-table
            :get-all-datum-from-table))
-(in-package :quaremain.db)
+(in-package :quaremain.database)
 
 (defun db ()
   "Database init connection.

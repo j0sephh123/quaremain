@@ -27,9 +27,8 @@
   (:import-from :ppcre
                 :scan
                 :regex-replace)
-  (:import-from :quaremain.db
-                :migrate-tables
-                )
+  (:import-from :quaremain.database
+                :migrate-tables)
   (:import-from :quaremain.web
                 :*web*)
 
