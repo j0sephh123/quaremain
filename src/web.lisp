@@ -69,13 +69,13 @@
                                        description
                                        amount
                                        cost-per-package
-                                       &body body)
+                                       &body sxql-column-specifier-forms)
   `(sxql:update ,table-name
      (sxql:set= :name ,name
                 :description ,description
                 :amount ,amount
                 :cost-per-package ,cost-per-package
-                ,@body)
+                ,@sxql-column-specifier-forms)
      (sxql:where (:= :id ,id))))
 
 (defun delete-datum-from-table (table-name id)

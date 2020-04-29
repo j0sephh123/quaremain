@@ -65,7 +65,7 @@
 (defmacro deftable (table-name &body sxql-column-specifier-forms)
   "Define a basic base table for new model. Remember that
    this will inherit id, name, description, amount and
-   cost-per-package column specifier as well. Only suitable
+   cost-per-package column specifiers as well. Only suitable
    for tables that are related to market products.
 
    Example: (deftable :user 
@@ -121,16 +121,16 @@
       (log:error "[DBI-PROGRAMMING-ERROR]: ~A" exception)
       (log:error "No existing tables in the database found to be erased"))
     
-    (sqlite-error  (exception)
+    (sqlite-error (exception)
       (log:error "[SQLITE-ERROR]: ~A" exception)
       (log:error "Are you trying to run from the outside of
                   Quaremain's project directory?")
       (uiop:quit 1))))
 
-(defmacro insert-datum-into-table (table-name &body key-val)
+(defmacro insert-datum-into-table (table-name &body key-and-value)
   `(with-connection-execute
      (sxql:insert-into ,table-name
-       (sxql:set= ,@key-val))))
+       (sxql:set= ,@key-and-value))))
 
 (defun get-all-datum-from-table (table-name)
   (with-connection (db)
