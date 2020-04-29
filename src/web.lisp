@@ -229,10 +229,10 @@
     (handler-case
         (delete-datum-from-table table-name id)
       
-      (DBI.ERROR:DBI-PROGRAMMING-ERROR (e)
+      (DBI.ERROR:DBI-PROGRAMMING-ERROR (exception)
         (log:error
          "~A"
-         e))))
+         exception))))
   (redirect (format nil "/app/list/~A"
                     |stock-category|)))
 
