@@ -46,26 +46,26 @@
      (sxql:select :*
        (sxql:from table-name)))))
 
-(defun sum-all-cost-per-package (data)
-  (loop for datum in data
-     do (setf (getf datum :cost-per-package)
-              (coerce (* (getf datum :amount)
-                         (getf datum :cost-per-package))
+(defun sum-all-cost-per-package (plists)
+  (loop for plist in plists
+     do (setf (getf plist :cost-per-package)
+              (coerce (* (getf plist :amount)
+                         (getf plist :cost-per-package))
                       'single-float)))
-  data)
+  plists)
 
-(defun sum-all-calories-per-package (data)
-  (loop for datum in data
-     do (setf (getf datum :calories-per-package)
-              (* (getf datum :amount)
-                 (getf datum :calories-per-package))))
-  data)
+(defun sum-all-calories-per-package (plists)
+  (loop for plist in plists
+     do (setf (getf plist :calories-per-package)
+              (* (getf plist :amount)
+                 (getf plist :calories-per-package))))
+  plists)
 
-(defun coerce-cost-per-package (datum)
-  (let ((cost-per-package (getf datum :cost-per-package)))
-    (setf (getf datum :cost-per-package)
+(defun coerce-cost-per-package (plist)
+  (let ((cost-per-package (getf plist :cost-per-package)))
+    (setf (getf plist :cost-per-package)
           (coerce cost-per-package 'single-float)))
-  datum)
+  plist)
 
 (defun get-datum-by-id (table-name id)
   (with-connection (db)

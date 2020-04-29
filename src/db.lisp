@@ -38,8 +38,8 @@
   (:export :db
            :with-connection
            :with-connection-execute
-           :migrate-models
-           :drop-models))
+           :migrate-tables
+           :drop-tables))
 (in-package :quaremain.db)
 
 (defun db ()
@@ -50,30 +50,21 @@
    :sqlite3
    :database-name +database-path+))
 
-(defmacro with-connection (connection &body body)
-  "Wraps SXQL forms calls with database connection.
-
-   connection -> database connection instance
-   body -> SXQL forms
-
-   returns: nil"
-  `(let ((*connection* ,connection))
-     (unwind-protect (progn ,@body)
+(defmacro with-connection (database-connection &body sxql-forms)
+  "Wraps SXQL forms calls with database ."
+  `(let ((*connection* ,database-connection))
+     (unwind-protect (progn ,@sxql-forms)
        (disconnect *connection*))))
 
-(defmacro with-connection-execute (&body body)
+(defmacro with-connection-execute (&body sxql-forms)
   "Database connection wrapper which executes SXQL forms
    on call.
-
-   body -> SXQL forms
-
-   returns: nil
    "
   `(with-connection (db)
-     (execute ,@body)))
+     (execute ,@sxql-forms)))
 
 
-(defmacro deftable (table-name &body sxql-column-specifiers)
+(defmacro deftable (table-name &body sxql-column-specifier-forms)
   "Define a basic base table for new model. Remember that
    this will inherit id, name, description, amount and
    cost-per-package column specifier as well. Only suitable
@@ -95,13 +86,10 @@
                (description :type 'text :not-null t)
                (amount :type 'integer :not-null t)
                (cost-per-package :type 'real :not-null t)
-               ,@sxql-column-specifiers))))
+               ,@sxql-column-specifier-forms))))
      schema))
 
-(defun migrate-models ()
-  "Migrate all models schemas into the database.
-
-   returns: nil"
+(defun migrate-tables ()
   (handler-case
       (progn
         (log:info "Attempting to migrate all models schemas if not exist.")
@@ -115,19 +103,17 @@
                         (deftable :water)
                         (deftable :medicine)
                         (deftable :weapon)))))
+    
     (sqlite-error (exception)
       (log:error "Are you trying to run from the outside of
                   Quaremain's project directory?")
       (log:error "[SQLITE-ERROR]: ~A" exception)
       (uiop:quit 1))))
 
-(defun drop-models ()
-  "Erase all existing models tables from the database.
-
-   returns: nil"
+(defun drop-tables ()
   (handler-case
       (progn
-        (log:info "Attempting to erase all models tables from the database")
+        (log:info "Attempting to erase all tables from the database")
         (with-connection (db)
           (mapcar (lambda (table)
                     (execute
@@ -136,10 +122,12 @@
                         :water
                         :medicine
                         :weapon)))
-        (log:info "Database models tables has been erased"))
+        (log:info "Database tables has been erased"))
+    
     (dbi-programming-error (exception)
       (log:error "[DBI-PROGRAMMING-ERROR]: ~A" exception)
       (log:error "No existing tables in the database found to be erased"))
+    
     (sqlite-error  (exception)
       (log:error "[SQLITE-ERROR]: ~A" exception)
       (log:error "Are you trying to run from the outside of

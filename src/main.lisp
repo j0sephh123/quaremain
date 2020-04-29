@@ -28,7 +28,7 @@
                 :scan
                 :regex-replace)
   (:import-from :quaremain.db
-                :migrate-models
+                :migrate-tables
                 )
   (:import-from :quaremain.web
                 :*web*)
@@ -42,7 +42,7 @@
 
 (defun start (&rest args &key server port debug &allow-other-keys)
   (declare (ignore server port debug))
-  (migrate-models)
+  (migrate-tables)
   (when *handler*
     (restart-case (error "Server is already running.")
       (restart-server ()
