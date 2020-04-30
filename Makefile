@@ -83,3 +83,4 @@ clean:
 	rm -f $(CLIENT_EXECUTABLE)
 	rm -f $(EXECUTABLE)-$(VERSION)-ubuntu20.04.tar.gz
 	rm -f $(EXECUTABLE)-$(VERSION)-opensusetumbleweed.tar.gz
+	rm -f tests/*.fasl
