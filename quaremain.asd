@@ -36,7 +36,11 @@
                            (:file "view" :depends-on ("config"))
                            (:file "database" :depends-on ("config"))
                            (:file "config")
-                           (:file "exception"))))
+                           (:file "exception")))
+                 
+                 (:module "src/models/stock"
+                          :components
+                          ((:file "stock"))))
     :description "Manage your basic survival resources like food and water
 for preparation of emergency times"
     
