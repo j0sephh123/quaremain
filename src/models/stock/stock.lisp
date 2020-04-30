@@ -17,16 +17,18 @@
 (in-package :cl-user)
 (defpackage quaremain.models.stock.stock
   (:documentation "Stock super class.")
-  (:use :cl))
+  (:use :cl)
+  (:import-from :quaremain.database
+                :insert-datum-into-table)
+  (:export :<stock>))
 (in-package :quaremain.models.stock.stock)
 
 (defclass <stock> ()
-  ((id
-    :accessor id
-    :initarg :id
+  ((table-name
+    :accessor table-name
+    :initarg :table-name
     :initform nil
-    :type integer)
-   
+    :type string)
    (name
     :accessor name
     :initarg :name
@@ -50,3 +52,10 @@
     :initarg :amount
     :initform nil
     :type single-float)))
+
+(defmethod create-new-stock ((stock <stock>))
+  (insert-datum-into-table (table-name stock)
+    :name (name stock)
+    :description (description stock)
+    :amount (amount stock)
+    :cost-per-package (cost-per-package stock)))
