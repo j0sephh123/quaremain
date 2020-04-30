@@ -21,9 +21,19 @@
   (:import-from :quaremain.utilities.string
                 :string-to-keyword)
   (:import-from :quaremain.utilities.database
+                :db
+                :with-connection
+                :with-connection-execute
                 :insert-datum-into-table
-                :get-all-datum-from-table)
-  (:export :create-new-stock))
+                :get-all-datum-from-table
+                :generate-update-datum-by-id
+                :delete-datum-by-id)
+  (:export :create-new-stock
+           :sum-all-cost-per-package
+           :sum-all-calories-per-package
+           :coerce-cost-per-package
+           :update-datum-by-id
+           :sum-data-from-table))
 (in-package :quaremain.models.stock.stock)
 
 
@@ -42,3 +52,63 @@
         :description description
         :amount amount
         :cost-per-package cost-per-package)))
+
+(defun sum-all-cost-per-package (packages)
+  (loop for package in packages
+     do (setf (getf package :cost-per-package)
+              (coerce (* (getf package :amount)
+                         (getf package :cost-per-package))
+                      'single-float)))
+  packages)
+
+(defun sum-all-calories-per-package (packages)
+  (loop for package in packages
+     do (setf (getf package :calories-per-package)
+              (* (getf package :amount)
+                 (getf package :calories-per-package))))
+  packages)
+
+
+(defun coerce-cost-per-package (package)
+  (let ((cost-per-package (getf package :cost-per-package)))
+    (setf (getf package :cost-per-package)
+          (coerce cost-per-package 'single-float)))
+  package)
+
+
+(defun update-datum-by-id (stock-category
+                           id
+                           name
+                           description
+                           amount
+                           cost-per-package
+                           calories-per-package)
+  (if (string-equal stock-category "food")
+      (with-connection-execute
+        (generate-update-datum-by-id
+            (string-to-keyword stock-category)
+            id
+            :name name
+            :description description
+          :amount amount
+          :cost-per-package cost-per-package
+          :calories-per-package calories-per-package))
+
+      (with-connection-execute
+        (generate-update-datum-by-id
+            (string-to-keyword stock-category)
+            id
+            :name name
+            :description description
+          :amount amount
+          :cost-per-package cost-per-package))))
+
+(defun sum-data-from-table (table-name)
+  (let ((table-data
+         (get-all-datum-from-table table-name)))
+    
+    (sum-all-cost-per-package
+     (if (eql table-name :food)
+         (sum-all-calories-per-package table-data)
+         table-data))
+    table-data))
