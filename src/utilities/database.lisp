@@ -15,7 +15,7 @@
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (in-package :cl-user)
-(defpackage quaremain.database
+(defpackage quaremain.utilities.database
   (:documentation "Database access handler.")
   (:use :cl)
   (:import-from :cl-dbi
@@ -40,7 +40,7 @@
            :with-connection-execute
            :migrate-tables
            :drop-tables))
-(in-package :quaremain.database)
+(in-package :quaremain.utilities.database)
 
 (defun db ()
   "Database init connection.
@@ -124,3 +124,14 @@
       (log:error "Are you trying to run from the outside of
                   Quaremain's project directory?")
       (uiop:quit 1))))
+
+(defmacro insert-datum-into-table (table-name &body key-and-value)
+  `(with-connection-execute
+     (sxql:insert-into ,table-name
+       (sxql:set= ,@key-and-value))))
+
+(defun get-all-datum-from-table (table-name)
+  (with-connection (db)
+    (datafly:retrieve-all
+     (sxql:select :*
+       (sxql:from table-name)))))

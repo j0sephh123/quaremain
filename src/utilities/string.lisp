@@ -15,22 +15,12 @@
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (in-package :cl-user)
-(defpackage quaremain.config
-  (:documentation "All system-wide configurations goes here.")
+(defpackage quaremain.utilities.string
+  (:documentation "String utilities.")
   (:use :cl)
-  (:export :+static-directory+
-           :+template-directory+
-           :+database-path+))
-(in-package :quaremain.config)
+  (:export :string-to-keyword))
+(in-package :quaremain.utilities.string)
 
-(defparameter +static-directory+
-  (pathname "static/")
-  "Anything that need to be served directly without going through server-side
-   rendering goes here. Examples, Javascript, CSS and images.")
-
-(defparameter +template-directory+
-  (pathname "templates/")
-  "Server-side HTML templates goes here. Obviously, HTML.")
-
-(defparameter +database-path+ "var/quaremain.db"
-  "Primary SQLite3 database location path.")
+(defun string-to-keyword (string)
+  (read-from-string
+   (format nil ":~A" string)))

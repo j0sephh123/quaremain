@@ -19,14 +19,18 @@
   (:documentation "Server routing handler.")
   (:use :cl
         :caveman2
-        :quaremain.config
+        :quaremain.utilities.config
         :quaremain.view)
-  (:import-from :quaremain.database
+  (:import-from :quaremain.utilities.database
                 :db
                 :with-connection
                 :with-connection-execute
                 :insert-datum-into-table
                 :get-all-datum-from-table)
+  (:import-from :quaremain.utilities.string
+                :string-to-keyword)
+  (:import-from :quaremain.models.stock.stock
+                :create-new-stock)
   (:export :*web*))
 (in-package :quaremain.web)
 
@@ -121,28 +125,6 @@
          table-data))
     table-data))
 
-
-(defun string-to-keyword (string)
-  (read-from-string
-   (format nil ":~A" string)))
-
-(defun create-new-stock (stock-category name description
-                         amount cost-per-package calories-per-package)
-  (if (string-equal stock-category "food")
-      (insert-datum-into-table (string-to-keyword stock-category)
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package
-        :calories-per-package calories-per-package)
-
-      (insert-datum-into-table (string-to-keyword stock-category)
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package)))
-
-
 (defroute "/" ()
   (render #p"app/list.html"
           `(:data ,(sum-data-from-table :food)
@@ -181,6 +163,7 @@
                                          |amount|
                                          |cost-per-package|
                                          |calories-per-package|)
+
   (create-new-stock |stock-category|
                     |name|
                     |description|

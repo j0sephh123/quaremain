@@ -18,7 +18,7 @@
 (defpackage quaremain.view
   (:documentation "Handle HTML and JSON generations.")
   (:use :cl)
-  (:import-from :quaremain.config
+  (:import-from :quaremain.utilities.config
                 :+template-directory+)
   (:import-from :caveman2
                 :*response*

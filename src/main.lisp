@@ -18,7 +18,7 @@
 (defpackage quaremain
   (:documentation "Server initialization handler.")
   (:use :cl)
-  (:import-from :quaremain.config
+  (:import-from :quaremain.utilities.config
                 :+static-directory+)
   (:import-from :clack
                 :clackup)
@@ -27,7 +27,7 @@
   (:import-from :ppcre
                 :scan
                 :regex-replace)
-  (:import-from :quaremain.database
+  (:import-from :quaremain.utilities.database
                 :migrate-tables)
   (:import-from :quaremain.web
                 :*web*)

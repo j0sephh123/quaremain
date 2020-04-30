@@ -15,16 +15,16 @@
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (in-package :cl-user)
-(defpackage quaremain.models.stock.food
-  (:documentation "Food stock class.")
+(defpackage quaremain.utilities.config
+  (:documentation "All system-wide configurations goes here.")
   (:use :cl)
-  (:import-from :quaremain.models.stock.stock
-                :<stock>)
-  (:export :<food>))
-(in-package :quaremain.models.stock.food)
+  (:export :+static-directory+
+           :+template-directory+
+           :+database-path+))
+(in-package :quaremain.utilities.config)
 
-(defclass <food> (<stock>)
-  ((cost-per-package
-    :accessor cost-per-package
-    :initarg :cost-per-package
-    :initform nil)))
+(defparameter +static-directory+ (pathname "static/"))
+
+(defparameter +template-directory+ (pathname "templates/"))
+
+(defparameter +database-path+ "var/quaremain.db")

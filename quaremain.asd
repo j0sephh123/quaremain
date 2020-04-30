@@ -26,23 +26,25 @@
                "clack-handler-hunchentoot"
                ;; "cl-webkit2" if bundling webkit2 and gtk stuff are needed
                )
-  :components ((:module "src"
+  :components ((:module "src/utilities"
                         :components
-                        ((:file "main" :depends-on ("config"
-                                                    "view"
-                                                    "database"
+                        ((:file "string")
+                         (:file "config")
+                         (:file "database" :depends-on ("config"))))
+               
+               (:module "src"
+                        :depends-on ("src/models/stock" "src/utilities")
+                        :components
+                        ((:file "main" :depends-on ("view"
                                                     "web"))
                          (:file "web" :depends-on ("view"))
-                         (:file "view" :depends-on ("config"))
-                         (:file "database" :depends-on ("config"))
-                         (:file "config")
+                         (:file "view")
                          (:file "exception")))
                
                (:module "src/models/stock"
-                        :depends-on ("src")
+                        :depends-on ("src/utilities")
                         :components
-                        ((:file "stock")
-                         (:file "food" :depends-on ("stock")))))
+                        ((:file "stock"))))
   :description "Manage your basic survival resources like food and water
 for preparation of emergency times"
   

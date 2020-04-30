@@ -16,46 +16,29 @@
 
 (in-package :cl-user)
 (defpackage quaremain.models.stock.stock
-  (:documentation "Stock super class.")
+  (:documentation "Stock abstract model related procedures.")
   (:use :cl)
-  (:import-from :quaremain.database
-                :insert-datum-into-table)
-  (:export :<stock>))
+  (:import-from :quaremain.utilities.string
+                :string-to-keyword)
+  (:import-from :quaremain.utilities.database
+                :insert-datum-into-table
+                :get-all-datum-from-table)
+  (:export :create-new-stock))
 (in-package :quaremain.models.stock.stock)
 
-(defclass <stock> ()
-  ((table-name
-    :accessor table-name
-    :initarg :table-name
-    :initform nil
-    :type string)
-   (name
-    :accessor name
-    :initarg :name
-    :initform nil
-    :type string)
-   
-   (description
-    :accessor description
-    :initarg :name
-    :initform nil
-    :type string)
 
-   (amount
-    :accessor amount
-    :initarg :amount
-    :initform nil
-    :type integer)
+(defun create-new-stock (stock-category name description
+                         amount cost-per-package calories-per-package)
+  (if (string-equal stock-category "food")
+      (insert-datum-into-table (string-to-keyword stock-category)
+        :name name
+        :description description
+        :amount amount
+        :cost-per-package cost-per-package
+        :calories-per-package calories-per-package)
 
-   (cost-per-package
-    :accessor cost-per-package
-    :initarg :amount
-    :initform nil
-    :type single-float)))
-
-(defmethod create-new-stock ((stock <stock>))
-  (insert-datum-into-table (table-name stock)
-    :name (name stock)
-    :description (description stock)
-    :amount (amount stock)
-    :cost-per-package (cost-per-package stock)))
+      (insert-datum-into-table (string-to-keyword stock-category)
+        :name name
+        :description description
+        :amount amount
+        :cost-per-package cost-per-package)))
