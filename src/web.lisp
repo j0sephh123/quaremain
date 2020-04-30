@@ -27,7 +27,9 @@
                 :with-connection-execute
                 :insert-datum-into-table
                 :get-all-datum-from-table
-                :get-datum-by-id)
+                :get-datum-by-id
+                :generate-update-datum-by-id
+                :delete-datum-by-id)
   (:import-from :quaremain.utilities.string
                 :string-to-keyword)
   (:import-from :quaremain.models.stock.stock
@@ -63,21 +65,6 @@
           (coerce cost-per-package 'single-float)))
   package)
 
-(defmacro generate-update-datum-by-id (table-name
-                                       id
-                                       name
-                                       description
-                                       amount
-                                       cost-per-package
-                                       &body sxql-column-specifier-forms)
-  `(sxql:update ,table-name
-     (sxql:set= :name ,name
-                :description ,description
-                :amount ,amount
-                :cost-per-package ,cost-per-package
-                ,@sxql-column-specifier-forms)
-     (sxql:where (:= :id ,id))))
-
 (defun do-update-datum-by-id (stock-category
                               id
                               name
@@ -104,11 +91,6 @@
             :description description
           :amount amount
           :cost-per-package cost-per-package))))
-
-(defun delete-datum-from-table (table-name id)
-  (with-connection-execute
-    (sxql:delete-from table-name
-      (sxql:where (:= :id id)))))
 
 (defun sum-data-from-table (table-name)
   (let ((table-data
