@@ -37,26 +37,26 @@
 
 (defparameter *session* (make-hash-table))
 
-(defun sum-all-cost-per-package (plists)
-  (loop for plist in plists
-     do (setf (getf plist :cost-per-package)
-              (coerce (* (getf plist :amount)
-                         (getf plist :cost-per-package))
+(defun sum-all-cost-per-package (packages)
+  (loop for package in packages
+     do (setf (getf package :cost-per-package)
+              (coerce (* (getf package :amount)
+                         (getf package :cost-per-package))
                       'single-float)))
-  plists)
+  packages)
 
-(defun sum-all-calories-per-package (plists)
-  (loop for plist in plists
-     do (setf (getf plist :calories-per-package)
-              (* (getf plist :amount)
-                 (getf plist :calories-per-package))))
-  plists)
+(defun sum-all-calories-per-package (packages)
+  (loop for package in packages
+     do (setf (getf package :calories-per-package)
+              (* (getf package :amount)
+                 (getf package :calories-per-package))))
+  packages)
 
-(defun coerce-cost-per-package (plist)
-  (let ((cost-per-package (getf plist :cost-per-package)))
-    (setf (getf plist :cost-per-package)
+(defun coerce-cost-per-package (package)
+  (let ((cost-per-package (getf package :cost-per-package)))
+    (setf (getf package :cost-per-package)
           (coerce cost-per-package 'single-float)))
-  plist)
+  package)
 
 (defun get-datum-by-id (table-name id)
   (with-connection (db)
@@ -122,6 +122,27 @@
     table-data))
 
 
+(defun string-to-keyword (string)
+  (read-from-string
+   (format nil ":~A" string)))
+
+(defun create-new-stock (stock-category name description
+                         amount cost-per-package calories-per-package)
+  (if (string-equal stock-category "food")
+      (insert-datum-into-table (string-to-keyword stock-category)
+        :name name
+        :description description
+        :amount amount
+        :cost-per-package cost-per-package
+        :calories-per-package calories-per-package)
+
+      (insert-datum-into-table (string-to-keyword stock-category)
+        :name name
+        :description description
+        :amount amount
+        :cost-per-package cost-per-package)))
+
+
 (defroute "/" ()
   (render #p"app/list.html"
           `(:data ,(sum-data-from-table :food)
@@ -152,27 +173,6 @@
 
 (defroute "/app/create-form" ()
   (render #p"app/create-form.html"))
-
-(defun string-to-keyword (string)
-  (read-from-string
-   (format nil ":~A" string)))
-
-(defun create-new-stock (stock-category name description
-                         amount cost-per-package calories-per-package)
-  (if (string-equal stock-category "food")
-      (insert-datum-into-table (string-to-keyword stock-category)
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package
-        :calories-per-package calories-per-package)
-
-      (insert-datum-into-table (string-to-keyword stock-category)
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package)))
-
 
 (defroute ("/app/create" :method :POST) (&key
                                          |stock-category|
@@ -235,8 +235,6 @@
          exception))))
   (redirect (format nil "/app/list/~A"
                     |stock-category|)))
-
-;;; Error pages.
 
 (defmethod on-exception ((app <web>) (code (eql 404)))
   (declare (ignore app))
