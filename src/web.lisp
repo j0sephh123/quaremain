@@ -26,7 +26,8 @@
                 :with-connection
                 :with-connection-execute
                 :insert-datum-into-table
-                :get-all-datum-from-table)
+                :get-all-datum-from-table
+                :get-datum-by-id)
   (:import-from :quaremain.utilities.string
                 :string-to-keyword)
   (:import-from :quaremain.models.stock.stock
@@ -61,12 +62,6 @@
     (setf (getf package :cost-per-package)
           (coerce cost-per-package 'single-float)))
   package)
-
-(defun get-datum-by-id (table-name id)
-  (with-connection (db)
-    (datafly:retrieve-one
-     (sxql:select :* (sxql:from table-name)
-                  (sxql:where (:= :id id))))))
 
 (defmacro generate-update-datum-by-id (table-name
                                        id

@@ -39,7 +39,10 @@
            :with-connection
            :with-connection-execute
            :migrate-tables
-           :drop-tables))
+           :drop-tables
+           :insert-datum-into-table
+           :get-all-datum-from-table
+           :get-datum-by-id))
 (in-package :quaremain.utilities.database)
 
 (defun db ()
@@ -135,3 +138,9 @@
     (datafly:retrieve-all
      (sxql:select :*
        (sxql:from table-name)))))
+
+(defun get-datum-by-id (table-name id)
+  (with-connection (db)
+    (datafly:retrieve-one
+     (sxql:select :* (sxql:from table-name)
+                  (sxql:where (:= :id id))))))
