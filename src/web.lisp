@@ -96,12 +96,10 @@
                                        |stock-category|)
   (setf (gethash 'datum-id *session*) id)
   (setf (gethash 'datum-stock-category *session*) |stock-category|)
+
   (render #p"app/update-form.html"
           (let ((coerced-datum
-                 (coerce-cost-per-package
-                  (get-datum-by-id
-                   (string-to-keyword |stock-category|)
-                   id))))
+                 (get-coerced-datum-by-id |stock-category| id)))
             (list :datum coerced-datum
                   :list-type |stock-category|))))
 

@@ -26,6 +26,7 @@
                 :with-connection-execute
                 :insert-datum-into-table
                 :get-all-datum-from-table
+                :get-datum-by-id
                 :generate-update-datum-by-id
                 :delete-datum-by-id)
   (:export :create-new-stock
@@ -112,3 +113,9 @@
          (sum-all-calories-per-package table-data)
          table-data))
     table-data))
+
+(defun get-coerced-datum-by-id (category id)
+  (let ((package
+         (get-datum-by-id (string-to-keyword category) id)))
+    (coerce-cost-per-package package)
+    package))
