@@ -42,6 +42,7 @@
 (defun start (&rest args &key server port debug &allow-other-keys)
   (declare (ignore server port debug))
   (migrate-tables)
+  (log:info "Proceeding to launch the local server..")
   (when *handler*
     (restart-case (error "Server is already running.")
       (restart-server ()
@@ -80,6 +81,6 @@
       #+ecl ext:interactive-interrupt
       #+allegro excl:interrupt-signal
       () (progn
-           (format *error-output* "Aborting.~&")
+           (log:info "Aborting")
            (stop)
            (uiop:quit 1)))))
