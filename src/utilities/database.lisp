@@ -164,7 +164,8 @@
 
 (defun delete-datum-from-table (table-name id)
   (with-connection-execute
-    (sxql:delete-from table-name
-      (sxql:where (:= :id id)))))
-
-
+    (handler-case
+        (sxql:delete-from table-name
+          (sxql:where (:= :id id)))
+      (error (exception)
+        (log:error "~A" exception)))))

@@ -127,15 +127,9 @@
                                                  |stock-category|)
   (let ((table-name
          (string-to-keyword |stock-category|)))
-    (handler-case
-        (delete-datum-from-table table-name id)
-      
-      (DBI.ERROR:DBI-PROGRAMMING-ERROR (exception)
-        (log:error
-         "~A"
-         exception))))
-  (redirect (format nil "/app/list/~A"
-                    |stock-category|)))
+    (delete-datum-from-table table-name id)
+    (redirect (format nil "/app/list/~A"
+                      |stock-category|))))
 
 (defmethod on-exception ((app <web>) (code (eql 404)))
   (declare (ignore app))
