@@ -15,7 +15,21 @@
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (in-package :cl-user)
-(defpackage quaremain.exception
+(defpackage quaremain.utilities.exception
   (:documentation "High level and concrete custom exceptions.")
-  (:use :cl))
-(in-package :quaremain.exception)
+  (:use :cl)
+  (:export :stock-missing-property-value-error))
+(in-package :quaremain.utilities.exception)
+
+(define-condition quaremain-error (simple-error)
+  ())
+
+(define-condition stock-missing-property-value-error (quaremain-error)
+  ((message
+    :reader message
+    :initarg :message
+    :initform nil))
+  (:report (lambda (condition stream)
+             (format stream
+                     "~A"
+                     (message condition)))))

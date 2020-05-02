@@ -83,13 +83,17 @@
                                          |amount|
                                          |cost-per-package|
                                          |calories-per-package|)
+  (handler-case
 
-  (create-new-stock |stock-category|
-                    |name|
-                    |description|
-                    |amount|
-                    |cost-per-package|
-                    |calories-per-package|)
+      (create-new-stock |stock-category|
+                        |name|
+                        |description|
+                        |amount|
+                        |cost-per-package|
+                        |calories-per-package|)
+    (error (exception)
+      (log:error "~A" exception)
+      (redirect (format nil "/app/list/~A" |stock-category|))))
   (redirect
    (format nil "/app/list/~A" |stock-category|)))
 
@@ -127,6 +131,7 @@
                                                  |stock-category|)
   (let ((table-name
          (string-to-keyword |stock-category|)))
+    
     (delete-datum-from-table table-name id)
     (redirect (format nil "/app/list/~A"
                       |stock-category|))))

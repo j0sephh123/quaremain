@@ -30,7 +30,8 @@
                         :components
                         ((:file "string")
                          (:file "config")
-                         (:file "database" :depends-on ("config"))))
+                         (:file "database" :depends-on ("config"))
+                         (:file "exception")))
                
                (:module "src"
                         :depends-on ("src/models/stock" "src/utilities")
@@ -38,8 +39,7 @@
                         ((:file "main" :depends-on ("view"
                                                     "web"))
                          (:file "web" :depends-on ("view"))
-                         (:file "view")
-                         (:file "exception")))
+                         (:file "view")))
                
                (:module "src/models/stock"
                         :depends-on ("src/utilities")

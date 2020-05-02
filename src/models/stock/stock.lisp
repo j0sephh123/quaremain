@@ -29,6 +29,10 @@
                 :get-datum-by-id
                 :generate-update-datum-by-id
                 :delete-datum-by-id)
+
+  (:import-from :quaremain.utilities.exception
+                :stock-missing-property-value-error)
+  
   (:export :create-new-stock
            :sum-all-cost-per-package
            :sum-all-calories-per-package
@@ -41,12 +45,17 @@
 (defun create-new-stock (stock-category name description
                          amount cost-per-package calories-per-package)
   (if (string-equal stock-category "food")
-      (insert-datum-into-table (string-to-keyword stock-category)
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package
-        :calories-per-package calories-per-package)
+      (progn
+        (when (or (string-equal calories-per-package "")
+                  (null calories-per-package))
+          (error 'stock-missing-property-value-error
+                 :message "Calories per package is empty."))
+        (insert-datum-into-table (string-to-keyword stock-category)
+          :name name
+          :description description
+          :amount amount
+          :cost-per-package cost-per-package
+          :calories-per-package calories-per-package))
 
       (insert-datum-into-table (string-to-keyword stock-category)
         :name name
