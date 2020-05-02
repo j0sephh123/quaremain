@@ -84,18 +84,18 @@
                                          |cost-per-package|
                                          |calories-per-package|)
   (handler-case
-
-      (create-new-stock |stock-category|
-                        |name|
-                        |description|
-                        |amount|
-                        |cost-per-package|
-                        |calories-per-package|)
+      (progn
+        (create-new-stock |stock-category|
+                          |name|
+                          |description|
+                          |amount|
+                          |cost-per-package|
+                          |calories-per-package|)
+        (redirect
+         (format nil "/app/list/~A" |stock-category|)))
     (error (exception)
       (log:error "~A" exception)
-      (redirect (format nil "/app/list/~A" |stock-category|))))
-  (redirect
-   (format nil "/app/list/~A" |stock-category|)))
+      (redirect (format nil "/app/list/~A" |stock-category|)))))
 
 (defroute "/app/update-form/:id" (&key id
                                        |stock-category|)
