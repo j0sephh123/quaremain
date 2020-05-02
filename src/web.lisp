@@ -135,7 +135,3 @@
     (delete-datum-from-table table-name id)
     (redirect (format nil "/app/list/~A"
                       |stock-category|))))
-
-(defmethod on-exception ((app <web>) (code (eql 404)))
-  (declare (ignore app))
-  (render #p"_errors/404.html"))
