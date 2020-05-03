@@ -34,9 +34,6 @@
                 :stock-missing-property-value-error)
   
   (:export :create-new-stock
-           :sum-all-cost-per-package
-           :sum-all-calories-per-package
-           :coerce-cost-per-package
            :update-stock-by-category-and-id
            :sum-stocks-from-table
            :get-coerced-stock-by-category-and-id
