@@ -42,8 +42,8 @@
            :drop-tables
            :insert-datum-into-table
            :get-all-datum-from-table
-           :get-datum-by-id
-           :generate-update-datum-by-id
+           :get-datum-from-table
+           :generate-update-datum
            :delete-datum-from-table))
 (in-package :quaremain.utilities.database)
 
@@ -141,19 +141,19 @@
      (sxql:select :*
        (sxql:from table-name)))))
 
-(defun get-datum-by-id (table-name id)
+(defun get-datum-from-table (table-name id)
   (with-connection (db)
     (datafly:retrieve-one
      (sxql:select :* (sxql:from table-name)
                   (sxql:where (:= :id id))))))
 
-(defmacro generate-update-datum-by-id (table-name
-                                       id
-                                       name
-                                       description
-                                       amount
-                                       cost-per-package
-                                       &body sxql-column-specifier-forms)
+(defmacro generate-update-datum (table-name
+                                 id
+                                 name
+                                 description
+                                 amount
+                                 cost-per-package
+                                 &body sxql-column-specifier-forms)
   `(sxql:update ,table-name
      (sxql:set= :name ,name
                 :description ,description

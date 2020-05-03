@@ -26,9 +26,9 @@
                 :sum-all-cost-per-package
                 :sum-all-calories-per-package
                 :coerce-cost-per-package
-                :update-stock-by-id
+                :update-stock-by-category-and-id
                 :sum-stocks-from-table
-                :get-coerced-datum-by-id
+                :get-coerced-stock-by-category-and-id
                 :delete-stock-by-category-and-id)
   (:export :*web*))
 (in-package :quaremain.web)
@@ -101,9 +101,9 @@
   (setf (gethash 'datum-stock-category *session*) |stock-category|)
 
   (render #p"app/update-form.html"
-          (let ((coerced-datum
-                 (get-coerced-datum-by-id |stock-category| id)))
-            (list :datum coerced-datum
+          (let ((coerced-stock
+                 (get-coerced-stock-by-category-and-id |stock-category| id)))
+            (list :datum coerced-stock
                   :list-type |stock-category|))))
 
 (defroute ("/app/update" :method :POST) (&key |name|
@@ -115,13 +115,13 @@
   (let* ((id (gethash 'datum-id *session*))
          (stock-category
           (gethash 'datum-stock-category *session*)))
-    (update-stock-by-id stock-category
-                        id
-                        |name|
-                        |description|
-                        |amount|
-                        |cost-per-package|
-                        |calories-per-package|)
+    (update-stock-by-category-and-id stock-category
+                                     id
+                                     |name|
+                                     |description|
+                                     |amount|
+                                     |cost-per-package|
+                                     |calories-per-package|)
     (redirect
      (format nil "/app/list/~A" stock-category))))
 

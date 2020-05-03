@@ -26,8 +26,8 @@
                 :with-connection-execute
                 :insert-datum-into-table
                 :get-all-datum-from-table
-                :get-datum-by-id
-                :generate-update-datum-by-id
+                :get-datum-from-table
+                :generate-update-datum
                 :delete-datum-from-table)
 
   (:import-from :quaremain.utilities.exception
@@ -37,8 +37,9 @@
            :sum-all-cost-per-package
            :sum-all-calories-per-package
            :coerce-cost-per-package
-           :update-stock-by-id
+           :update-stock-by-category-and-id
            :sum-stocks-from-table
+           :get-coerced-stock-by-category-and-id
            :delete-stock-by-category-and-id))
 (in-package :quaremain.models.stock.stock)
 
@@ -87,32 +88,32 @@
   package)
 
 
-(defun update-stock-by-id (stock-category
-                           id
-                           name
-                           description
-                           amount
-                           cost-per-package
-                           calories-per-package)
+(defun update-stock-by-category-and-id (stock-category
+                                        id
+                                        name
+                                        description
+                                        amount
+                                        cost-per-package
+                                        calories-per-package)
   (if (string-equal stock-category "food")
       (with-connection-execute
-        (generate-update-datum-by-id
-            (string-to-keyword stock-category)
-            id
-            name
-            description
-            amount
-            cost-per-package
-          :calories-per-package calories-per-package))
+        (generate-update-datum
+         (string-to-keyword stock-category)
+         id
+         name
+         description
+         amount
+         cost-per-package
+         :calories-per-package calories-per-package))
 
       (with-connection-execute
-        (generate-update-datum-by-id
-            (string-to-keyword stock-category)
-            id
-            name
-            description
-            amount
-            cost-per-package))))
+        (generate-update-datum
+         (string-to-keyword stock-category)
+         id
+         name
+         description
+         amount
+         cost-per-package))))
 
 (defun sum-stocks-from-table (table-name)
   (let ((table-data
@@ -124,9 +125,9 @@
          table-data))
     table-data))
 
-(defun get-coerced-datum-by-id (category id)
+(defun get-coerced-stock-by-category-and-id (category id)
   (let ((package
-         (get-datum-by-id (string-to-keyword category) id)))
+         (get-datum-from-table (string-to-keyword category) id)))
     (coerce-cost-per-package package)
     package))
 
