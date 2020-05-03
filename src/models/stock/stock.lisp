@@ -38,7 +38,7 @@
            :sum-all-calories-per-package
            :coerce-cost-per-package
            :update-datum-by-id
-           :sum-data-from-table))
+           :sum-stocks-from-table))
 (in-package :quaremain.models.stock.stock)
 
 
@@ -113,7 +113,7 @@
             amount
             cost-per-package))))
 
-(defun sum-data-from-table (table-name)
+(defun sum-stocks-from-table (table-name)
   (let ((table-data
          (get-all-datum-from-table table-name)))
     

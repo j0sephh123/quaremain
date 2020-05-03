@@ -31,7 +31,7 @@
                 :sum-all-calories-per-package
                 :coerce-cost-per-package
                 :update-datum-by-id
-                :sum-data-from-table
+                :sum-stocks-from-table
                 :get-coerced-datum-by-id)
   (:export :*web*))
 (in-package :quaremain.web)
@@ -47,30 +47,31 @@
 
 (defroute "/" ()
   (render #p"app/list.html"
-          `(:data ,(sum-data-from-table :food)
+          `(:data ,(sum-stocks-from-table :food)
                   :list-type "food")))
 
 (defroute "/about" ()
   (render #p"about.html"))
 
+
 (defroute "/app/list/food" ()
   (render #p"app/list.html"
-          `(:data ,(sum-data-from-table :food)
+          `(:data ,(sum-stocks-from-table :food)
                   :list-type "food")))
 
 (defroute "/app/list/water" ()
   (render #p"app/list.html"
-          `(:data ,(sum-data-from-table :water)
+          `(:data ,(sum-stocks-from-table :water)
                   :list-type "water")))
 
 (defroute "/app/list/medicine" ()
   (render #p"app/list.html"
-          `(:data ,(sum-data-from-table :medicine)
+          `(:data ,(sum-stocks-from-table :medicine)
                   :list-type "medicine")))
 
 (defroute "/app/list/weapon" ()
   (render #p"app/list.html"
-          `(:data ,(sum-data-from-table :weapon)
+          `(:data ,(sum-stocks-from-table :weapon)
                   :list-type "weapon")))
 
 (defroute "/app/create-form" ()
