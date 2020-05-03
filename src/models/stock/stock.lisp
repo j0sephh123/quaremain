@@ -98,20 +98,20 @@
         (generate-update-datum-by-id
             (string-to-keyword stock-category)
             id
-            :name name
-            :description description
-          :amount amount
-          :cost-per-package cost-per-package
+            name
+            description
+            amount
+            cost-per-package
           :calories-per-package calories-per-package))
 
       (with-connection-execute
         (generate-update-datum-by-id
             (string-to-keyword stock-category)
             id
-            :name name
-            :description description
-          :amount amount
-          :cost-per-package cost-per-package))))
+            name
+            description
+            amount
+            cost-per-package))))
 
 (defun sum-data-from-table (table-name)
   (let ((table-data
