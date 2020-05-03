@@ -21,10 +21,6 @@
         :caveman2
         :quaremain.utilities.config
         :quaremain.view)
-  (:import-from :quaremain.utilities.database
-                :delete-datum-from-table)
-  (:import-from :quaremain.utilities.string
-                :string-to-keyword)
   (:import-from :quaremain.models.stock.stock
                 :create-new-stock
                 :sum-all-cost-per-package
@@ -32,7 +28,8 @@
                 :coerce-cost-per-package
                 :update-stock-by-id
                 :sum-stocks-from-table
-                :get-coerced-datum-by-id)
+                :get-coerced-datum-by-id
+                :delete-stock-by-category-and-id)
   (:export :*web*))
 (in-package :quaremain.web)
 
@@ -130,9 +127,7 @@
 
 (defroute ("/app/delete/:id" :method :GET) (&key id
                                                  |stock-category|)
-  (let ((table-name
-         (string-to-keyword |stock-category|)))
-    
-    (delete-datum-from-table table-name id)
-    (redirect (format nil "/app/list/~A"
-                      |stock-category|))))
+  
+  (delete-stock-by-category-and-id |stock-category| id)
+  (redirect (format nil "/app/list/~A"
+                    |stock-category|)))

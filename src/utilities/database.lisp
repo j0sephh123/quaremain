@@ -44,7 +44,7 @@
            :get-all-datum-from-table
            :get-datum-by-id
            :generate-update-datum-by-id
-           :delete-datum-by-id))
+           :delete-datum-from-table))
 (in-package :quaremain.utilities.database)
 
 (defun db ()

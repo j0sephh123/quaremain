@@ -28,7 +28,7 @@
                 :get-all-datum-from-table
                 :get-datum-by-id
                 :generate-update-datum-by-id
-                :delete-datum-by-id)
+                :delete-datum-from-table)
 
   (:import-from :quaremain.utilities.exception
                 :stock-missing-property-value-error)
@@ -38,7 +38,8 @@
            :sum-all-calories-per-package
            :coerce-cost-per-package
            :update-stock-by-id
-           :sum-stocks-from-table))
+           :sum-stocks-from-table
+           :delete-stock-by-category-and-id))
 (in-package :quaremain.models.stock.stock)
 
 
@@ -128,3 +129,8 @@
          (get-datum-by-id (string-to-keyword category) id)))
     (coerce-cost-per-package package)
     package))
+
+(defun delete-stock-by-category-and-id (category id)
+  (let ((table-name
+         (string-to-keyword category)))
+    (delete-datum-from-table table-name id)))
