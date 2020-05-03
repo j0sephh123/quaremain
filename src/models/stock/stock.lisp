@@ -37,7 +37,7 @@
            :sum-all-cost-per-package
            :sum-all-calories-per-package
            :coerce-cost-per-package
-           :update-datum-by-id
+           :update-stock-by-id
            :sum-stocks-from-table))
 (in-package :quaremain.models.stock.stock)
 
@@ -86,7 +86,7 @@
   package)
 
 
-(defun update-datum-by-id (stock-category
+(defun update-stock-by-id (stock-category
                            id
                            name
                            description

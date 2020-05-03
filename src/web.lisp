@@ -30,7 +30,7 @@
                 :sum-all-cost-per-package
                 :sum-all-calories-per-package
                 :coerce-cost-per-package
-                :update-datum-by-id
+                :update-stock-by-id
                 :sum-stocks-from-table
                 :get-coerced-datum-by-id)
   (:export :*web*))
@@ -118,7 +118,7 @@
   (let* ((id (gethash 'datum-id *session*))
          (stock-category
           (gethash 'datum-stock-category *session*)))
-    (update-datum-by-id stock-category
+    (update-stock-by-id stock-category
                         id
                         |name|
                         |description|
