@@ -30,7 +30,6 @@
   (:export :*web*))
 (in-package :quaremain.web)
 
-
 (defclass <web> (<app>) ())
 (defvar *web* (make-instance '<web>)
   "Quaremain's system wide application instance.")
@@ -40,6 +39,7 @@
 (defparameter *session* (make-hash-table))
 
 (defroute "/" ()
+
   (render #p"app/list.html"
           `(:data ,(sum-stocks-from-table :food)
                   :list-type "food")))
