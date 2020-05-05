@@ -94,8 +94,8 @@
 
 (defroute "/app/update-form/:id" (&key id
                                        |stock-category|)
-  (setf (gethash 'datum-id *session*) id)
-  (setf (gethash 'datum-stock-category *session*) |stock-category|)
+  (setf (gethash 'session-stock-id *session*) id)
+  (setf (gethash 'session-stock-category *session*) |stock-category|)
 
   (render #p"app/update-form.html"
           (let ((coerced-stock
@@ -109,9 +109,9 @@
                                               |cost-per-package|
                                               |calories-per-package|)
 
-  (let* ((id (gethash 'datum-id *session*))
+  (let* ((id (gethash 'session-stock-id *session*))
          (stock-category
-          (gethash 'datum-stock-category *session*)))
+          (gethash 'session-stock-category *session*)))
     (update-stock-by-category-and-id stock-category
                                      id
                                      |name|
