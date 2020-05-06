@@ -16,6 +16,8 @@ body {
   min-width: 60px;
 }
 .sidebar .parent_name {
+  left: 50px;
+  top: 10px;
   position: absolute;
   font-size: 1.1em;
   font-weight: 600;
