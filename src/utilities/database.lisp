@@ -134,9 +134,8 @@
       (uiop:quit 1))))
 
 (defmacro insert-datum-into-table (table-name &body key-and-value)
-  `(with-connection-execute
-     (sxql:insert-into ,table-name
-       (sxql:set= ,@key-and-value))))
+  `(sxql:insert-into ,table-name
+     (sxql:set= ,@key-and-value)))
 
 (defun get-all-datum-from-table (table-name)
   (with-connection (db)
