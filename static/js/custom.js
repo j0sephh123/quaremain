@@ -53,7 +53,9 @@ window.onload = () => {
       const activeParent = structure.find(parent => (
         parent.children.find(child => child.slug === path)
       ));
-      this.parentClick(activeParent.id);
+      if(activeParent) {
+        this.parentClick(activeParent.id);
+      }
   
       // this assures we have border-left on the active child
       this.slug = path;
