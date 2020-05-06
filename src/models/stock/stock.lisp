@@ -81,7 +81,7 @@
 (defclass <water> (<stock>)
   ((millilitre-per-package
     :initform nil
-    :initarg :calories-per-package
+    :initarg :millilitre-per-package
     :reader get-millilitre-per-package
     :writer set-millilitre-per-package)))
 
