@@ -40,27 +40,55 @@
            :delete-stock-by-category-and-id))
 (in-package :quaremain.models.stock.stock)
 
+(defun item-value-is-empty? (item)
+  (or (null "")
+      (string-equal item "")))
+
+(defun create-food-stock (&key name description amount
+                            cost-per-package calories-per-package)
+  (when (item-value-is-empty? calories-per-package)
+    (error 'stock-missing-property-value-error
+           :message "Calories per package is empty."))
+  (insert-datum-into-table :food
+    :name name
+    :description description
+    :amount amount
+    :cost-per-package cost-per-package
+    :calories-per-package calories-per-package))
+
+(defun create-water-stock (&key name description amount
+                             cost-per-package millilitre-per-package)
+
+  (when (item-value-is-empty? millilitre-per-package)
+    (error 'stock-missing-property-value-error
+           :message "Millilitre-per-package is missing."))
+  (insert-datum-into-table :water
+    :name name
+    :description description
+    :amount amount
+    :cost-per-package cost-per-package
+    :millilitre-per-package millilitre-per-package))
 
 (defun create-new-stock (stock-category name description
-                         amount cost-per-package calories-per-package)
-  (if (string-equal stock-category "food")
-      (progn
-        (when (or (string-equal calories-per-package "")
-                  (null calories-per-package))
-          (error 'stock-missing-property-value-error
-                 :message "Calories per package is empty."))
-        (insert-datum-into-table (string-to-keyword stock-category)
-          :name name
-          :description description
-          :amount amount
-          :cost-per-package cost-per-package
-          :calories-per-package calories-per-package))
+                         amount cost-per-package calories-per-package
+                         millilitre-per-package)
+  
+  (cond ((string-equal stock-category "food")
+         (create-food-stock :name name :description description
+                            :amount amount :cost-per-package cost-per-package
+                            :calories-per-package calories-per-package))
 
-      (insert-datum-into-table (string-to-keyword stock-category)
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package)))
+        ((string-equal stock-category "water")
+         (create-water-stock :name name :description description
+                             :amount amount :cost-per-package cost-per-package
+                             :millilitre-per-package millilitre-per-package))
+
+        (t
+         (insert-datum-into-table (string-to-keyword stock-category))
+         :name name
+         :description description
+         :amount amount
+         :cost-per-package cost-per-package)))
 
 (defun sum-all-cost-per-package (packages)
   (loop for package in packages

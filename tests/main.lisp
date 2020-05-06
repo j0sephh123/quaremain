@@ -54,7 +54,7 @@
 
 
 (deftest string-to-keyword
-  (testing "(string-to-keyword \"fruit\") should equal to :fruit"
+  (testing "(string-to-keyword \"fruitz\") should equal to :fruitz"
            (ok
             (eql (quaremain.utilities.string::string-to-keyword "fruitz")
                  :fruitz))))

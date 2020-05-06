@@ -77,7 +77,8 @@
                                          |description|
                                          |amount|
                                          |cost-per-package|
-                                         |calories-per-package|)
+                                         |calories-per-package|
+                                         |millilitre-per-package|)
   (handler-case
       (progn
         (create-new-stock |stock-category|
@@ -85,7 +86,8 @@
                           |description|
                           |amount|
                           |cost-per-package|
-                          |calories-per-package|)
+                          |calories-per-package|
+                          |millilitre-per-package|)
         (redirect
          (format nil "/app/list/~A" |stock-category|)))
     (error (exception)
