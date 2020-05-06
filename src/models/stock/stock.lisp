@@ -53,6 +53,12 @@
     :reader get-name
     :writer set-name)
 
+   (description
+    :initform nil
+    :initarg :description
+    :reader get-description
+    :writer set-description)
+
    (amount
     :initform nil
     :initarg :amount
@@ -98,6 +104,36 @@
 (defmethod retrieve ((stock <stock>)))
 (defmethod update ((stock <stock>)))
 (defmethod destroy ((stock <stock>)))
+
+(defmethod new ((food <food>))
+  (insert-datum-into-table :food
+    :name (get-name food)
+    :description (get-description food)
+    :amount (get-amount food)
+    :cost-per-package (get-cost-per-package food)
+    :get-calories-per-package (get-calories-per-package food)))
+
+(defmethod new ((water <water>))
+  (insert-datum-into-table :water
+    :name (get-name water)
+    :description (get-description water)
+    :amount (get-amount water)
+    :cost-per-package (get-cost-per-package water)
+    :millilitre-per-package (get-millilitre-per-package water)))
+
+(defmethod new ((medicine <medicine>))
+  (insert-datum-into-table :medicine
+    :name (get-name medicine)
+    :description (get-description medicine)
+    :amount (get-amount medicine)
+    :cost-per-package (get-cost-per-package medicine)))
+
+(defmethod new ((weapon <weapon>))
+  (insert-datum-into-table :weapon
+    :name (get-name weapon)
+    :description (get-description weapon)
+    :amount (get-amount weapon)
+    :cost-per-package (get-cost-per-package weapon)))
 
 (defmethod create-stock ((stock-creator <stock-creator>))
   (new (get-stock-instance stock-creator)))
