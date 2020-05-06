@@ -104,7 +104,19 @@
 
 (defmethod new ((stock <stock>)))
 
+(defmethod unique-property-value-empty? ((food <food>))
+  (or (null (get-calories-per-package food))
+      (string-equal "" (get-calories-per-package food))))
+
+(defmethod unique-property-value-empty? ((water <water>))
+  (or (null (get-millilitre-per-package water))
+      (string-equal "" (get-millilitre-per-package water))))
+
 (defmethod new ((food <food>))
+  (when (unique-property-value-empty? food)
+    (error 'stock-missing-property-value-error
+           :message "Calories per package value is empty."))
+  
   (with-connection (db)
     (execute
      (insert-datum-into-table :food
@@ -115,6 +127,10 @@
        :calories-per-package (get-calories-per-package food)))))
 
 (defmethod new ((water <water>))
+  (when (unique-property-value-empty? water)
+    (error 'stock-missing-property-value-error
+           :message "Millilitre per package value is empty."))
+  
   (with-connection (db)
     (execute
      (insert-datum-into-table :water
