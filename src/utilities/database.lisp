@@ -23,10 +23,15 @@
                 :disconnect)
   (:import-from :datafly
                 :execute
+                :retrieve-one
+                :retrieve-all
                 :*connection*)
   (:import-from :sxql
                 :create-table
-                :drop-table)
+                :drop-table
+                :from
+                :select
+                :where)
   (:import-from :quaremain.utilities.config
                 :+database-path+)
 
@@ -129,16 +134,15 @@
 
 (defun get-all-datum-from-table (table-name)
   (with-connection (db)
-    (datafly:retrieve-all
-     (sxql:select :*
-       (sxql:from table-name)))))
+    (retrieve-all
+     (select :*
+       (from table-name)))))
 
 (defun get-datum-from-table (table-name id)
   (with-connection (db)
-    (execute
-     (datafly:retrieve-one
-      (sxql:select :* (sxql:from table-name)
-                   (sxql:where (:= :id id)))))))
+    (retrieve-one
+     (select :* (from table-name)
+             (where (:= :id id))))))
 
 (defmacro generate-update-datum (table-name
                                  id
