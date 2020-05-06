@@ -236,7 +236,18 @@
                 description
                 amount
                 cost-per-package
-              :millilitre-per-package millilitre-per-package))))))
+              :millilitre-per-package millilitre-per-package))))
+
+        (t
+         (with-connection (db)
+           (execute
+            (generate-update-datum
+                (string-to-keyword stock-category)
+                id
+                name
+                description
+                amount
+                cost-per-package))))))
 
 (defun sum-stocks-from-table (table-name)
   (let ((table-data
