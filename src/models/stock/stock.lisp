@@ -101,9 +101,6 @@
     :reader get-stock-instance)))
 
 (defmethod new ((stock <stock>)))
-(defmethod retrieve ((stock <stock>)))
-(defmethod update ((stock <stock>)))
-(defmethod destroy ((stock <stock>)))
 
 (defmethod new ((food <food>))
   (with-connection-execute

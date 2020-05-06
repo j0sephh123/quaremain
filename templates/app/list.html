@@ -11,7 +11,7 @@
     <thead class="thead-light">
         <tr>
             <th>ID</th>
-            <th>Item</th>
+            <th>Name</th>
             <th>Description</th>
             <th>Amount</th>
             <th>Total Cost</th>
@@ -21,7 +21,7 @@
             {% endifequal %}
 
             {% ifequal list-type "water" %}
-            <th>Total Millilitres</th>
+            <th>Total ML (Millilitre)</th>
             {% endifequal %}
         </tr>
 
@@ -38,7 +38,7 @@
             {% endifequal %}
 
             {% ifequal list-type "water" %}
-            <td>{{ datum.millilitre-per-package }}</td>
+            <td>{{ datum.millilitre-per-package }}ML</td>
             {% endifequal %}
 
             <td><a href="/app/update-form/{{ datum.id }}?stock-category={{ list-type }}">Update</a></td>
