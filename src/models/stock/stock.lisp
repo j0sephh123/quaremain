@@ -40,6 +40,12 @@
            :delete-stock-by-category-and-id))
 (in-package :quaremain.models.stock.stock)
 
+(defclass <stock> () ())
+(defclass <food> (<stock>) ())
+(defclass <water> (<stock>) ())
+(defclass <medicine> (<stock>) ())
+(defclass <weapon> (<stock>) ())
+
 (defun item-value-is-empty? (item)
   (or (null "")
       (string-equal item "")))
