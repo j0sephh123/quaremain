@@ -177,11 +177,11 @@
                              :cost-per-package cost-per-package)))))
 
 (defun sum-all-cost-per-package (packages)
-  (loop for package in packages
-     do (setf (getf package :cost-per-package)
-              (coerce (* (getf package :amount)
-                         (getf package :cost-per-package))
-                      'single-float)))
+  (dolist (package packages)
+    (setf (getf package :cost-per-package)
+          (coerce (* (getf package :amount)
+                     (getf package :cost-per-package))
+                  'single-float)))
   packages)
 
 (defun sum-all-calories-per-package (packages)
