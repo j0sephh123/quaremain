@@ -40,14 +40,54 @@
            :delete-stock-by-category-and-id))
 (in-package :quaremain.models.stock.stock)
 
-(defclass <stock> () ())
-(defclass <food> (<stock>) ())
+(defclass <stock> ()
+  ((id
+    :initform nil
+    :initarg :id
+    :reader get-id
+    :writer set-id)
+
+   (name
+    :initform nil
+    :initarg :name
+    :reader get-name
+    :writer set-name)
+
+   (amount
+    :initform nil
+    :initarg :amount
+    :reader get-amount
+    :writer set-amount)
+
+   (cost-per-package
+    :initform nil
+    :initarg :cost-per-package
+    :reader get-cost-per-package
+    :writer set-cost-per-package)))
+
+(defclass <food> (<stock>)
+  ((calories-per-package
+    :initform nil
+    :initarg :calories-per-package
+    :reader get-calories-per-package
+    :writer set-calories-per-package)))
 (defclass <water> (<stock>) ())
 (defclass <medicine> (<stock>) ())
 (defclass <weapon> (<stock>) ())
 
+(defclass <calculator> ()
+  ((stock-instance
+    :initform nil
+    :initarg :stock-instance
+    :accessor stock-instance)))
+
+(defmethod property-value-empty? ((food <food>))
+  (or (null (get-calories-per-package food))
+      (string-equal (get-calories-per-package food)
+                    "")))
+
 (defun item-value-is-empty? (item)
-  (or (null "")
+  (or (null item)
       (string-equal item "")))
 
 (defun create-food-stock (&key name description amount
@@ -64,6 +104,7 @@
 
 (defun create-water-stock (&key name description amount
                              cost-per-package millilitre-per-package)
+
 
   (when (item-value-is-empty? millilitre-per-package)
     (error 'stock-missing-property-value-error
