@@ -96,7 +96,10 @@
                           (calories-per-package
                            :type 'integer
                            :not-null t))
-                        (deftable :water)
+                        (deftable :water
+                          (millilitre-per-package
+                           :type 'integer
+                           :not-null t))
                         (deftable :medicine)
                         (deftable :weapon)))))
     

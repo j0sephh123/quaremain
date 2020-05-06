@@ -39,6 +39,13 @@
         <input type="number" name="calories-per-package" class="form-control">
         <br>
     </span>
+
+    <span id="millilitrePerPackageInput">
+      <label>Millitre per package</label>
+      <br>
+      <input type="number" name="calories-per-package" class="form-control">
+      <br>
+    </span>
     
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
@@ -50,6 +57,10 @@
 
          if (stockCategory === 'food') {
              $('#caloriesPerPackageInput').show();
+         }
+
+         else if (stockCategory === 'water') {
+             $('#millilitrePerPackageInput').show();
          }
 
          else {

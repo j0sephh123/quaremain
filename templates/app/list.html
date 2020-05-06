@@ -19,6 +19,10 @@
             {% ifequal list-type "food" %}
             <th>Total Potential Calories</th>
             {% endifequal %}
+
+            {% ifequal list-type "water" %}
+            <th>Millilitre Per Package</th>
+            <% endifequal %>
         </tr>
 
         {% for datum in data %}
@@ -31,6 +35,10 @@
 
             {% ifequal list-type "food" %}
             <td>{{ datum.calories-per-package }}</td>
+            {% endifequal %}
+
+            {% ifequal list-type "water" %}
+            <td>{{ datum.millilitre-per-package }}</td>
             {% endifequal %}
 
             <td><a href="/app/update-form/{{ datum.id }}?stock-category={{ list-type }}">Update</a></td>
