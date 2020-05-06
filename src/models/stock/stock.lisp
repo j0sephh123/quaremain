@@ -105,6 +105,13 @@
                  (getf package :calories-per-package))))
   packages)
 
+(defun sum-all-millilitre-per-package (packages)
+  (loop for package in packages
+     do (setf (getf package :millilitre-per-package)
+              (* (getf package :amount)
+                 (getf package :millilitre-per-package))))
+  packages)
+
 
 (defun coerce-cost-per-package (package)
   (let ((cost-per-package (getf package :cost-per-package)))
@@ -119,36 +126,42 @@
                                         description
                                         amount
                                         cost-per-package
-                                        calories-per-package)
-  (if (string-equal stock-category "food")
-      (with-connection-execute
-        (generate-update-datum
-         (string-to-keyword stock-category)
-         id
-         name
-         description
-         amount
-         cost-per-package
-         :calories-per-package calories-per-package))
+                                        calories-per-package
+                                        millilitre-per-package)
+  (cond ((string-equal stock-category "food")
+         (with-connection-execute
+           (generate-update-datum
+               (string-to-keyword stock-category)
+               id
+               name
+               description
+               amount
+               cost-per-package
+             :calories-per-package calories-per-package)))
 
-      (with-connection-execute
-        (generate-update-datum
-         (string-to-keyword stock-category)
-         id
-         name
-         description
-         amount
-         cost-per-package))))
+        ((string-equal stock-category "water")
+         (with-connection-execute
+           (generate-update-datum
+               (string-to-keyword stock-category)
+               id
+               name
+               description
+               amount
+               cost-per-package
+             :millilitre-per-package millilitre-per-package)))))
 
 (defun sum-stocks-from-table (table-name)
   (let ((table-data
          (get-all-datum-from-table table-name)))
     
     (sum-all-cost-per-package
-     (if (eql table-name :food)
-         (sum-all-calories-per-package table-data)
-         table-data))
-    table-data))
+     (cond ((eql table-name :food)
+            (sum-all-calories-per-package table-data)
+            table-data)
+
+           ((eql table-name :water)
+            (sum-all-millilitre-per-package table-data)
+            table-data)))))
 
 (defun get-coerced-stock-by-category-and-id (category id)
   (let ((package

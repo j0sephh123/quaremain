@@ -109,7 +109,8 @@
                                               |description|
                                               |amount|
                                               |cost-per-package|
-                                              |calories-per-package|)
+                                              |calories-per-package|
+                                              |millilitre-per-package|)
 
   (let* ((id (gethash 'session-stock-id *session*))
          (stock-category
@@ -120,7 +121,8 @@
                                      |description|
                                      |amount|
                                      |cost-per-package|
-                                     |calories-per-package|)
+                                     |calories-per-package|
+                                     |millilitre-per-package|)
     (redirect
      (format nil "/app/list/~A" stock-category))))
 
