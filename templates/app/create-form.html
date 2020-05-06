@@ -41,7 +41,7 @@
   </span>
 
   <span id="millilitrePerPackageInput">
-    <label>Millitre per package</label>
+    <label>Millilitre per package</label>
     <br>
     <input type="number" name="millilitre-per-package" class="form-control">
     <br>
@@ -53,18 +53,28 @@
 <script>$(document).ready(() => {
     const caloriesPerPackageInput = '#caloriesPerPackageInput';
     const millilitrePerPackageInput = '#millilitrePerPackageInput';
-    $(caloriesPerPackageInput).hide();
     
-    $('#stockCategory').change(() => {
+    const stockCategory = '#stockCategory';
 
-        if (stockCategory === 'food') {
+    $(caloriesPerPackageInput).hide();
+    $(millilitrePerPackageInput).hide();
+    
+    $(stockCategory).change(() => {
+        const stockCategoryValue = $(stockCategory).val();
+
+        if (stockCategoryValue === 'food') {
             $(millilitrePerPackageInput).hide();
             $(caloriesPerPackageInput).show();
         }
 
-        else if (stockCategory === 'water') {
+        else if (stockCategoryValue === 'water') {
             $(caloriesPerPackageInput).hide();
             $(millilitrePerPackageInput).show();
+        }
+
+        else {
+            $(caloriesPerPackageInput).hide();
+            $(millilitrePerPackageInput).hide();
         }
 
     });
