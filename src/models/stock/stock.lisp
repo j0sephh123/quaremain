@@ -71,7 +71,14 @@
     :initarg :calories-per-package
     :reader get-calories-per-package
     :writer set-calories-per-package)))
-(defclass <water> (<stock>) ())
+
+(defclass <water> (<stock>)
+  ((millilitre-per-package
+    :initform nil
+    :initarg :calories-per-package
+    :reader get-millilitre-per-package
+    :writer set-millilitre-per-package)))
+
 (defclass <medicine> (<stock>) ())
 (defclass <weapon> (<stock>) ())
 
@@ -79,12 +86,21 @@
   ((stock-instance
     :initform nil
     :initarg :stock-instance
-    :accessor stock-instance)))
+    :reader get-stock-instance)))
 
-(defmethod property-value-empty? ((food <food>))
-  (or (null (get-calories-per-package food))
-      (string-equal (get-calories-per-package food)
-                    "")))
+(defclass <stock-creator> ()
+  ((stock-instance
+    :initform nil
+    :initarg :stock-instance
+    :reader get-stock-instance)))
+
+(defmethod new ((stock <stock>)))
+(defmethod retrieve ((stock <stock>)))
+(defmethod update ((stock <stock>)))
+(defmethod destroy ((stock <stock>)))
+
+(defmethod create-stock ((stock-creator <stock-creator>))
+  (new (get-stock-instance stock-creator)))
 
 (defun item-value-is-empty? (item)
   (or (null item)
