@@ -25,11 +25,11 @@
   ())
 
 (define-condition stock-missing-property-value-error (quaremain-error)
-  ((message
-    :reader message
-    :initarg :message
+  ((property-value
+    :reader property-value
+    :initarg :property-value
     :initform nil))
   (:report (lambda (condition stream)
              (format stream
-                     "~A"
-                     (message condition)))))
+                     "Property value of ~A is empty."
+                     (property-value condition)))))

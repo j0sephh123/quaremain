@@ -87,8 +87,8 @@
     :reader get-millilitre-per-package
     :writer set-millilitre-per-package)))
 
-(defclass <medicine> (<stock>) nil)
-(defclass <weapon> (<stock>) nil)
+(defclass <medicine> (<stock>) ())
+(defclass <weapon> (<stock>) ())
 
 (defclass <calculator> ()
   ((stock-instance
@@ -115,30 +115,30 @@
 (defmethod new ((food <food>))
   (when (unique-property-value-empty? food)
     (error 'stock-missing-property-value-error
-           :message "Calories per package value is empty."))
+           :property-value :calories-per-package))
   
   (with-connection (db)
     (execute
      (insert-datum-into-table :food
-       :name (get-name food)
-       :description (get-description food)
-       :amount (get-amount food)
-       :cost-per-package (get-cost-per-package food)
-       :calories-per-package (get-calories-per-package food)))))
+                              :name (get-name food)
+                              :description (get-description food)
+                              :amount (get-amount food)
+                              :cost-per-package (get-cost-per-package food)
+                              :calories-per-package (get-calories-per-package food)))))
 
 (defmethod new ((water <water>))
   (when (unique-property-value-empty? water)
     (error 'stock-missing-property-value-error
-           :message "Millilitre per package value is empty."))
+           :property-value :millilitre-per-package))
   
   (with-connection (db)
     (execute
      (insert-datum-into-table :water
-       :name (get-name water)
-       :description (get-description water)
-       :amount (get-amount water)
-       :cost-per-package (get-cost-per-package water)
-       :millilitre-per-package (get-millilitre-per-package water)))))
+                              :name (get-name water)
+                              :description (get-description water)
+                              :amount (get-amount water)
+                              :cost-per-package (get-cost-per-package water)
+                              :millilitre-per-package (get-millilitre-per-package water)))))
 
 (defmethod new ((medicine <medicine>))
   (with-connection (db)
