@@ -242,13 +242,15 @@
   (let ((table-data
          (get-all-datum-from-table table-name)))
     
-    (sum-all-cost-per-package
-     
+    (sum-all-cost-per-package     
      (cond ((eql table-name :food)
             (sum-all-calories-per-package table-data)
             table-data)
            ((eql table-name :water)
             (sum-all-millilitre-per-package table-data)
+            table-data)
+
+           (t
             table-data)))
     table-data))
 
