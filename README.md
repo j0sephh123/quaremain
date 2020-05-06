@@ -11,7 +11,7 @@ Available on GNU/Linux Ubuntu 20.04 as a graphical desktop application.
 
 
 ## Version
-0.7.3
+0.7.4
 
 ## Status
 

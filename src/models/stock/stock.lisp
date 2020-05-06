@@ -20,10 +20,12 @@
   (:use :cl)
   (:import-from :quaremain.utilities.string
                 :string-to-keyword)
+  
+  (:import-from :datafly
+                :execute)
   (:import-from :quaremain.utilities.database
                 :db
                 :with-connection
-                :with-connection-execute
                 :insert-datum-into-table
                 :get-all-datum-from-table
                 :get-datum-from-table
@@ -85,8 +87,8 @@
     :reader get-millilitre-per-package
     :writer set-millilitre-per-package)))
 
-(defclass <medicine> (<stock>) ())
-(defclass <weapon> (<stock>) ())
+(defclass <medicine> (<stock>) nil)
+(defclass <weapon> (<stock>) nil)
 
 (defclass <calculator> ()
   ((stock-instance
@@ -103,41 +105,42 @@
 (defmethod new ((stock <stock>)))
 
 (defmethod new ((food <food>))
-  (with-connection-execute
-    (insert-datum-into-table :food
-      :name (get-name food)
-      :description (get-description food)
-      :amount (get-amount food)
-      :cost-per-package (get-cost-per-package food)
-      :calories-per-package (get-calories-per-package food))))
+  (with-connection (db)
+    (execute
+     (insert-datum-into-table :food
+       :name (get-name food)
+       :description (get-description food)
+       :amount (get-amount food)
+       :cost-per-package (get-cost-per-package food)
+       :calories-per-package (get-calories-per-package food)))))
 
 (defmethod new ((water <water>))
-  (with-connection-execute
-    (insert-datum-into-table :water
-      :name (get-name water)
-      :description (get-description water)
-      :amount (get-amount water)
-      :cost-per-package (get-cost-per-package water)
-      :millilitre-per-package (get-millilitre-per-package water))))
+  (with-connection (db)
+    (execute
+     (insert-datum-into-table :water
+       :name (get-name water)
+       :description (get-description water)
+       :amount (get-amount water)
+       :cost-per-package (get-cost-per-package water)
+       :millilitre-per-package (get-millilitre-per-package water)))))
 
 (defmethod new ((medicine <medicine>))
-  (with-connection-execute
-    (insert-datum-into-table :medicine
-      :name (get-name medicine)
-      :description (get-description medicine)
-      :amount (get-amount medicine)
-      :cost-per-package (get-cost-per-package medicine))))
+  (with-connection (db)
+    (execute
+     (insert-datum-into-table :medicine
+       :name (get-name medicine)
+       :description (get-description medicine)
+       :amount (get-amount medicine)
+       :cost-per-package (get-cost-per-package medicine)))))
 
 (defmethod new ((weapon <weapon>))
-  (with-connection-execute
-    (insert-datum-into-table :weapon
-      :name (get-name weapon)
-      :description (get-description weapon)
-      :amount (get-amount weapon)
-      :cost-per-package (get-cost-per-package weapon))))
-
-(defmethod create-stock ((stock-creator <stock-creator>))
-  (new (get-stock-instance stock-creator)))
+  (with-connection (db)
+    (execute
+     (insert-datum-into-table :weapon
+       :name (get-name weapon)
+       :description (get-description weapon)
+       :amount (get-amount weapon)
+       :cost-per-package (get-cost-per-package weapon)))))
 
 (defun create-new-stock (stock-category name description
                          amount cost-per-package calories-per-package
@@ -212,26 +215,28 @@
                                         calories-per-package
                                         millilitre-per-package)
   (cond ((string-equal stock-category "food")
-         (with-connection-execute
-           (generate-update-datum
-               (string-to-keyword stock-category)
-               id
-               name
-               description
-               amount
-               cost-per-package
-             :calories-per-package calories-per-package)))
+         (with-connection (db)
+           (execute
+            (generate-update-datum
+                (string-to-keyword stock-category)
+                id
+                name
+                description
+                amount
+                cost-per-package
+              :calories-per-package calories-per-package))))
 
         ((string-equal stock-category "water")
-         (with-connection-execute
-           (generate-update-datum
-               (string-to-keyword stock-category)
-               id
-               name
-               description
-               amount
-               cost-per-package
-             :millilitre-per-package millilitre-per-package)))))
+         (with-connection (db)
+           (execute
+            (generate-update-datum
+                (string-to-keyword stock-category)
+                id
+                name
+                description
+                amount
+                cost-per-package
+              :millilitre-per-package millilitre-per-package))))))
 
 (defun sum-stocks-from-table (table-name)
   (let ((table-data

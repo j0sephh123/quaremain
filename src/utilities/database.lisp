@@ -37,7 +37,6 @@
                 :dbi-programming-error)
   (:export :db
            :with-connection
-           :with-connection-execute
            :migrate-tables
            :drop-tables
            :insert-datum-into-table
@@ -48,22 +47,13 @@
 (in-package :quaremain.utilities.database)
 
 (defun db ()
-  "Database init connection.
-
-   returns: database connection instance"
   (connect-cached
    :sqlite3
    :database-name +database-path+))
 
-(defmacro with-connection (database-connection &body sxql-forms)
-  `(let ((*connection* ,database-connection))
-     (unwind-protect (progn ,@sxql-forms)
-       (disconnect *connection*))))
-
-(defmacro with-connection-execute (&body sxql-forms)
-  `(with-connection (db)
-     (execute ,@sxql-forms)))
-
+(defmacro with-connection (conn &body sxql-forms)
+  `(let ((*connection* ,conn))
+     ,@sxql-forms))
 
 (defmacro deftable (table-name &body sxql-column-specifier-forms)
   "Define a basic base table for new model. Remember that
@@ -77,12 +67,12 @@
    "
   `(let ((generated-sxql-schema
           (create-table (,table-name :if-not-exists t)
-              ((id :type 'integer :primary-key t)
-               (name :type 'text :not-null t)
-               (description :type 'text :not-null t)
-               (amount :type 'integer :not-null t)
-               (cost-per-package :type 'real :not-null t)
-               ,@sxql-column-specifier-forms))))
+                        ((id :type 'integer :primary-key t)
+                         (name :type 'text :not-null t)
+                         (description :type 'text :not-null t)
+                         (amount :type 'integer :not-null t)
+                         (cost-per-package :type 'real :not-null t)
+                         ,@sxql-column-specifier-forms))))
      generated-sxql-schema))
 
 (defun migrate-tables ()
@@ -145,9 +135,10 @@
 
 (defun get-datum-from-table (table-name id)
   (with-connection (db)
-    (datafly:retrieve-one
-     (sxql:select :* (sxql:from table-name)
-                  (sxql:where (:= :id id))))))
+    (execute
+     (datafly:retrieve-one
+      (sxql:select :* (sxql:from table-name)
+                   (sxql:where (:= :id id)))))))
 
 (defmacro generate-update-datum (table-name
                                  id
@@ -165,6 +156,7 @@
      (sxql:where (:= :id ,id))))
 
 (defun delete-datum-from-table (table-name id)
-  (with-connection-execute
-    (sxql:delete-from table-name
-      (sxql:where (:= :id id)))))
+  (with-connection (db)
+    (execute
+     (sxql:delete-from table-name
+       (sxql:where (:= :id id))))))
