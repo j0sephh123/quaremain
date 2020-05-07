@@ -112,20 +112,20 @@ if you want to build for OpenSUSE Tumbleweed.
 
 ## Known Issues
 
-1. Server build with Clozure Common Lisp implementation [Version 1.11.5/v1.11.5
+- Server build with Clozure Common Lisp implementation [Version 1.11.5/v1.11.5
 (LinuxX8664)] quitting phase ends up in the debugger instead of actually exiting
 program.
 
-2. Smaller client window (if resized) will likely hide the navigation toolbars.
+- [x] Smaller client window (if resized) will likely hide the navigation toolbars.
 Maybe set a minimal default size to fix this issue?
 
-3. You always need to (slime-cd) in SLIME to the project directory. This
+- You always need to (slime-cd) in SLIME to the project directory. This
 should be resolved soon since it seems Deploy handles the relative
 path for the end executable automatically. We can go back to
 use merge-pathnames and current project directory if my
 assumption about Deploy is correct.
 
-4. Memory usage of SBCL's built executable is unnecesarily high.
+- Memory usage of SBCL's built executable is unnecesarily high.
 I tried it with CCL and it uses around 20-30MB+ compared to
 SBCL's 100MB+ for the same version of the program.
 It seems this issue caused by the SBCL garbage
