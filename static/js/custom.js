@@ -12,6 +12,9 @@ window.onload = () => {
     {id: 3, name: "About", icon: "fas fa-info-circle fa-lg", children: [
       {id: 3.1, name: "About Quaremain", slug: "/about"}
     ]},
+    {id: 4, name: "Experimental", icon: "fas fa-atom fa-lg", children: [
+      {id: 4.1, name: "Index", slug: "/experimental"}
+    ]},
   ];
   
   Vue.component('sidebar-component', {
@@ -61,7 +64,7 @@ window.onload = () => {
       this.slug = path;
     },
     updated() {
-      console.log(this.slug)
+      //console.log('updated', {slug: this.slug})
     },  
     template: `
       <div :class="'sidebar ' + (toggled ? 'toggled' : '')">
@@ -109,6 +112,134 @@ window.onload = () => {
       </div>
     `,
   });
-  
+
+  Vue.component('stock-component', {
+    data() {
+      return {
+        search: "",
+        loaded: false,
+        categories: ["food", "medicine", "water", "weapon"],
+        activeCategory: "food",
+        stocks: {},
+      }
+    },
+    template: `
+      <div class="experimental">
+
+        <div class="flex my-2">
+          <div class="form-group search_box">
+            <i class="fas fa-search fa-lg"></i>
+            <input  
+              v-model="search"
+              id="search"
+              type="text"
+              placeholder="Search"
+              class="pl-5 form-control" />
+          </div>
+          <div class="form-group">
+            <button id="create" class="btn btn-secondary"
+              >Create {{ activeCategory }} {{ search }}
+            </button>
+          </div>
+        </div>
+
+        <ul class="nav nav-tabs">
+          <li 
+            :key="category"
+            v-for="category in categories"
+            class="nav-item">
+            <a 
+              @click="changeCategory(category)"
+              :class="'nav-link ' + (activeCategory === category ? 'active' : '')">
+              {{ category }}
+            </a>
+          </li>
+        </ul>
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Total Cost</th>
+              <th v-if="activeCategory === 'water'">Total ML (Millilitre)</th>
+              <th v-if="activeCategory === 'food'">Total Potential Calories</th>
+              <th>Actions</th>
+            </tr>
+            <template v-if="loaded">
+              <tr
+                :key="stock.id"
+                v-for="stock in activeStocks"
+              >
+                <td>{{ stock.id }}</td>
+                <td>{{ stock.name }}</td>
+                <td>{{ stock.description }}</td>
+                <td>{{ stock.amount }}</td>
+                <td>\${{ (stock.amount * stock.costPerPackage).toFixed(2) }}</td>
+                <td v-if="activeCategory === 'food'">{{ stock.amount * stock.caloriesPerPackage }}</td>
+                <td v-if="activeCategory === 'water'">{{ stock.amount * stock.millilitrePerPackage }}ML</td>
+                <td class="actions">
+                  <i 
+                    @click="removeStockItem(stock.id, activeCategory)"
+                    class="fas fa-trash-alt"></i>
+                </td>
+              </tr>
+            </template>
+          </thead>
+        </table>
+      </div>
+    `,
+    mounted() {
+      // we have to start somewhere
+      this.get('food');
+    },
+    updated() {
+      
+    },
+    computed: {
+      activeStocks() {
+        if(this.search.length > 0) {
+          return this.stocks[this.activeCategory].filter(item => (
+            item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+          ));
+        } else {
+          return this.stocks[this.activeCategory];
+        }
+      }
+    },
+    methods: {
+      removeStockItem(id, collection) {
+        fetch(`/api/0.1/app/list/delete/${id}?stock-category=${collection}`)
+          .then(result => result.json())
+          .then(data => {
+            this.get(collection);
+            this.loaded = false;
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      },
+      changeCategory(category) {
+        this.activeCategory = category;
+        this.get(category);
+        this.loaded = false;
+        this.search = "";
+      },
+      get(collection) {
+        fetch(`/api/0.1/app/list/${collection}`)
+          .then(result => result.json())
+          .then(data => {
+            this.loaded = true;
+            this.stocks[collection] = data.stocks;
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }
+    }
+  });
+
+  new Vue({ el: '#experimental'});
   new Vue({ el: '#sidebar'});
 }

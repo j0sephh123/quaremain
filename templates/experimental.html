@@ -2,10 +2,34 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/css/style.css">
+
+        <title>{% block title %}{% endblock %} | Quaremain</title>
+        <link rel="stylesheet" type="text/css" href="/css/fa/css/all.min.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"  href="/css/style.css">
+        <script src="/js/vue.js"></script>
     </head>
+    
     <body>
+
+
+        <div class="d-flex">
+
+            <div id="sidebar">
+                <sidebar-component></sidebar-component>
+            </div>
+
+            <div class="container pt-2 px-5 ml-2">
+                <div id="experimental">
+                    <stock-component></stock-component>
+                </div>
+            </div>
+        </div>
+
+
+        
+        
+        <script src="/js/custom.js"></script>
         <script src="/js/engine.js"></script>
     </body>
 </html>
