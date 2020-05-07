@@ -54,41 +54,75 @@
 ;; for OS commands calls
 
 ;;; GET/SHOW/LIST
+
+(defstruct status-code
+  (not-found 404)
+  (success 200)
+  (redirect 302))
+
+(defparameter +status-code-definition+ (make-status-code))
+
 (defroute "/api/0.1/app/list/food" ()
   (let ((food-stocks (sum-stocks-from-table :food)))
     (if (null food-stocks)
         (render-json (list
                       :error "No food stocks available."
-                      :status 404))
+                      :status (status-code-not-found +status-code-definition+)))
         (render-json (list
-                      :stocks food-stocks)))))
+                      :stocks food-stocks
+                      :status (status-code-success
+                               +status-code-definition+))))))
 
 (defroute "/api/0.1/app/list/water" ()
   (let ((water-stocks (sum-stocks-from-table :water)))
     (if (null water-stocks)
         (render-json (list
                       :error "No water stocks available."
-                      :status 404))
+                      :status (status-code-not-found
+                               +status-code-definition+)))
         (render-json (list
-                      :stocks water-stocks)))))
+                      :stocks water-stocks
+                      :status (status-code-success
+                               +status-code-definition+))))))
 
 (defroute "/api/0.1/app/list/medicine" ()
   (let ((medicine-stocks (sum-stocks-from-table :medicine)))
     (if (null medicine-stocks)
         (render-json (list
                       :error "No medicine stocks available."
-                      :status 404))
+                      :status (status-code-not-found
+                               +status-code-definition+)))
         (render-json (list
-                      :stocks medicine-stocks)))))
+                      :stocks medicine-stocks
+                      :status (status-code-success
+                               +status-code-definition+))))))
 
 (defroute "/api/0.1/app/list/weapon" ()
   (let ((weapon-stocks (sum-stocks-from-table :weapon)))
     (if (null weapon-stocks)
         (render-json (list
                       :error "No weapon stocks available."
-                      :status 404))
+                      :status (status-code-not-found
+                               +status-code-definition+)))
         (render-json (list
-                      :stocks weapon-stocks)))))
+                      :stocks weapon-stocks
+                      :status (status-code-success
+                               +status-code-definition+))))))
+
+(defroute "/api/0.1/app/list/delete/:id" (&key id |stock-category|)
+  (handler-case
+      (progn
+        ;; actually returns nothing even if id is not exist?
+        (delete-stock-by-category-and-id |stock-category| id)
+        (render-json (list
+                      :status (status-code-success
+                               +status-code-definition+))))
+    (error (exception)
+      (log:error "~A" exception)
+      (render-json (list
+                    :error exception
+                    :status (status-code-not-found
+                             +status-code-definition+))))))
 
 ;;; EXPERIMENTAL ENDPOINTS
 
