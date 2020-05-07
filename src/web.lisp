@@ -50,6 +50,9 @@
 (defroute "/experimental" ()
   (render #p"experimental.html"))
 
+;; (defroute "/api/0.1/os/")
+;; for OS commands calls
+
 ;;; GET/SHOW/LIST
 (defroute "/api/0.1/app/list/food" ()
   (let ((food-stocks (sum-stocks-from-table :food)))
