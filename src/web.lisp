@@ -39,10 +39,55 @@
 (defparameter *session* (make-hash-table))
 
 (defroute "/" ()
-
   (render #p"app/list.html"
           `(:data ,(sum-stocks-from-table :food)
                   :list-type "food")))
+
+
+;;; EXPERIMENTAL ENDPOINTS
+
+;;; Experimental client-side index page
+(defroute "/experimental" ()
+  (render #p"experimental.html"))
+
+;;; GET/SHOW/LIST
+(defroute "/api/0.1/app/list/food" ()
+  (let ((food-stocks (sum-stocks-from-table :food)))
+    (if (null food-stocks)
+        (render-json (list
+                      :error "No food stocks available."
+                      :status 404))
+        (render-json (list
+                      :stocks food-stocks)))))
+
+(defroute "/api/0.1/app/list/water" ()
+  (let ((water-stocks (sum-stocks-from-table :water)))
+    (if (null water-stocks)
+        (render-json (list
+                      :error "No water stocks available."
+                      :status 404))
+        (render-json (list
+                      :stocks water-stocks)))))
+
+(defroute "/api/0.1/app/list/medicine" ()
+  (let ((medicine-stocks (sum-stocks-from-table :medicine)))
+    (if (null medicine-stocks)
+        (render-json (list
+                      :error "No medicine stocks available."
+                      :status 404))
+        (render-json (list
+                      :stocks medicine-stocks)))))
+
+(defroute "/api/0.1/app/list/weapon" ()
+  (let ((weapon-stocks (sum-stocks-from-table :weapon)))
+    (if (null weapon-stocks)
+        (render-json (list
+                      :error "No weapon stocks available."
+                      :status 404))
+        (render-json (list
+                      :stocks weapon-stocks)))))
+
+;;; EXPERIMENTAL ENDPOINTS
 
 (defroute "/about" ()
   (render #p"about.html"))
