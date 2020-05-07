@@ -3,9 +3,13 @@
 
 {% block content %}
 
-<h1>
-  {{ list-type|capfirst }}
-</h1>
+<div class="d-flex align-items-center">
+    <h1>
+        {{ list-type|capfirst }}
+    </h1>
+    <!-- <button class="ml-3 btn btn-primary">Add new - go to create-form with preselected category</button> -->
+</div>
+
 
 <table class="table table-bordered">
     <thead class="thead-light">
@@ -23,6 +27,7 @@
             {% ifequal list-type "water" %}
             <th>Total ML (Millilitre)</th>
             {% endifequal %}
+            <th>Actions</th>
         </tr>
 
         {% for datum in data %}
@@ -41,8 +46,26 @@
             <td>{{ datum.millilitre-per-package }}ML</td>
             {% endifequal %}
 
-            <td><a href="/app/update-form/{{ datum.id }}?stock-category={{ list-type }}">Update</a></td>
-            <td><a href="/app/delete/{{ datum.id }}?stock-category={{ list-type }}">Delete</a></td>
+            <td>
+                <a class="nav-link" data-toggle="dropdown" 
+                    href="#" role="button">
+                    <i class="fas fa-ellipsis-h fa-2x"></i>
+                </a>
+                <div class="dropdown-menu" >
+                    <a class="dropdown-item" 
+                        href="/app/update-form/{{ datum.id }}?stock-category={{ list-type }}">
+                        Update
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a class="dropdown-item" 
+                        href="/app/delete/{{ datum.id }}?stock-category={{ list-type }}">
+                        Delete
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </div>
+            </td>
+
+            
         </tr>
         {% endfor %}
     </thead>
