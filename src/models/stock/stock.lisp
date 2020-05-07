@@ -200,18 +200,20 @@
                   'single-float)))
   packages)
 
+(defun sum-unique-property-value-by-amount (package property-key)
+  (setf (getf package property-key)
+        (* (getf package :amount)
+           (getf package property-key)))
+  package)
+
 (defun sum-all-calories-per-package (packages)
   (dolist (package packages)
-    (setf (getf package :calories-per-package)
-          (* (getf package :amount)
-             (getf package :calories-per-package))))
+    (sum-unique-property-value-by-amount package :calories-per-package))
   packages)
 
 (defun sum-all-millilitre-per-package (packages)
   (dolist (package packages)
-    (setf (getf package :millilitre-per-package)
-          (* (getf package :amount)
-             (getf package :millilitre-per-package))))
+    (sum-unique-property-value-by-amount package :millilitre-per-package))
   packages)
 
 

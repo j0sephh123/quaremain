@@ -58,3 +58,23 @@
            (ok
             (eql (quaremain.utilities.string::string-to-keyword "fruitz")
                  :fruitz))))
+
+(deftest sum-all-millilitre-per-package
+  (testing "(sum-all-millilitre-per-package '((:id 1 :amount 2 :millilitre-per-package 219))) first list :millilitre-per-package value should result to 438"
+           (let* ((raw-result
+                   (quaremain.models.stock.stock::sum-all-millilitre-per-package
+                    '((:id 1 :amount 2 :millilitre-per-package 219))))
+                  (millilitre-per-package
+                   (getf (car raw-result)
+                         :millilitre-per-package)))
+             (ok
+              (= millilitre-per-package 438)))))
+
+(deftest sum-unique-property-value-by-amount
+  (testing "(sum-unique-property-value-by-amount '(:id 1 :amount 3 :fire 9823) should equal to '(:ID 1 :AMOUNT 3 :FIRE 29469)"
+           (let* ((result
+                   (quaremain.models.stock.stock::sum-unique-property-value-by-amount '(:id 1 :amount 3 :fire 9823) :fire)))
+             (ok
+              (equal '(:id 1 :amount 3 :fire 29469)
+                     result)))))
+
