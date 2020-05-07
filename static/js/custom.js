@@ -1,15 +1,15 @@
 window.onload = () => {
   const structure = [
-    {id: 1, name: "File", icon: "fa fa-address-book fa-lg", children: [
+    {id: 1, name: "File", icon: "far fa-file-alt fa-lg", children: [
       {id: 1.1, name: "Create", slug: "/app/create-form"},
     ]},
-    {id: 2, name: "Categories", icon: "far fa-comment-dots fa-lg", children: [
+    {id: 2, name: "Categories", icon: "far fa-list-alt fa-lg", children: [
       {id: 2.1, name: "Food", slug: "/app/list/food"},
       {id: 2.2, name: "Water", slug: "/app/list/water"},
       {id: 2.3, name: "Medicine", slug: "/app/list/medicine"},
       {id: 2.4, name: "Weapon", slug: "/app/list/weapon"},
     ]},
-    {id: 3, name: "About", icon: "fa fa-indent fa-lg", children: [
+    {id: 3, name: "About", icon: "fas fa-info-circle fa-lg", children: [
       {id: 3.1, name: "About Quaremain", slug: "/about"}
     ]},
   ];
@@ -18,7 +18,7 @@ window.onload = () => {
     data() {
       return {
         slug: "/",
-        toggled: false,
+        toggled: true,
         activeParent: null,
         activeParentCoordinates: null,
         structure,
@@ -110,5 +110,5 @@ window.onload = () => {
     `,
   });
   
-  new Vue({ el: '#app'});
+  new Vue({ el: '#sidebar'});
 }
