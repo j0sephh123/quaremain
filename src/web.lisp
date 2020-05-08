@@ -109,6 +109,33 @@
                       :status (status-code-success
                                +status-code-definition+))))))
 
+(defroute ("/api/0.1/app/list/create" :method :POST) (&key
+                                                      |stock-category|
+                                                      |name|
+                                                      |description|
+                                                      |amount|
+                                                      |cost-per-package|
+                                                      |calories-per-package|
+                                                      |millilitre-per-package|)
+  (handler-case
+      (progn
+        (create-new-stock |stock-category|
+                          |name|
+                          |description|
+                          |amount|
+                          |cost-per-package|
+                          |calories-per-package|
+                          |millilitre-per-package|)
+        (render-json (list
+                      :status (status-code-success
+                               +status-code-definition+))))
+    (error (exception)
+      (log:error "~A" exception)
+      (render-json (list
+                    :error exception
+                    :status (status-code-not-found
+                             +status-code-definition+))))))
+
 (defroute "/api/0.1/app/list/delete/:id" (&key id |stock-category|)
   (handler-case
       (progn
