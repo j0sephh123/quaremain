@@ -132,7 +132,7 @@
     (error (exception)
       (log:error "~A" exception)
       (render-json (list
-                    :error exception
+                    :error "New stock list creation failed."
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
