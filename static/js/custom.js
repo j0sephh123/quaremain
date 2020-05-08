@@ -1,4 +1,8 @@
 window.onload = () => {
+  const config = {
+    API_VER: 0.1,
+  }
+
   const structure = [
     {id: 1, name: "File", icon: "far fa-file-alt fa-lg", children: [
       {id: 1.1, name: "Create", slug: "/app/create-form"},
@@ -177,8 +181,8 @@ window.onload = () => {
                 <td>{{ stock.description }}</td>
                 <td>{{ stock.amount }}</td>
                 <td>\${{ (stock.amount * stock.costPerPackage).toFixed(2) }}</td>
-                <td v-if="activeCategory === 'food'">{{ stock.amount * stock.caloriesPerPackage }}</td>
-                <td v-if="activeCategory === 'water'">{{ stock.amount * stock.millilitrePerPackage }}ML</td>
+                <td v-if="activeCategory === 'food'">{{ stock.caloriesPerPackage }}</td>
+                <td v-if="activeCategory === 'water'">{{ stock.millilitrePerPackage }}ML</td>
                 <td class="actions">
                   <i 
                     @click="removeStockItem(stock.id, activeCategory)"
@@ -203,14 +207,13 @@ window.onload = () => {
           return this.stocks[this.activeCategory].filter(item => (
             item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1
           ));
-        } else {
-          return this.stocks[this.activeCategory];
-        }
+        } 
+        return this.stocks[this.activeCategory];
       }
     },
     methods: {
       removeStockItem(id, collection) {
-        fetch(`/api/0.1/app/list/delete/${id}?stock-category=${collection}`)
+        fetch(`/api/${config.API_VER}/app/list/delete/${id}?stock-category=${collection}`)
           .then(result => result.json())
           .then(data => {
             this.get(collection);
@@ -227,7 +230,7 @@ window.onload = () => {
         this.search = "";
       },
       get(collection) {
-        fetch(`/api/0.1/app/list/${collection}`)
+        fetch(`/api/${config.API_VER}/app/list/${collection}`)
           .then(result => result.json())
           .then(data => {
             this.loaded = true;
