@@ -180,7 +180,7 @@ window.onload = () => {
                 <td>{{ stock.name }}</td>
                 <td>{{ stock.description }}</td>
                 <td>{{ stock.amount }}</td>
-                <td>\${{ (stock.amount * stock.costPerPackage).toFixed(2) }}</td>
+                <td>\${{ (stock.costPerPackage).toFixed(2) }}</td>
                 <td v-if="activeCategory === 'food'">{{ stock.caloriesPerPackage }}</td>
                 <td v-if="activeCategory === 'water'">{{ stock.millilitrePerPackage }}ML</td>
                 <td class="actions">
