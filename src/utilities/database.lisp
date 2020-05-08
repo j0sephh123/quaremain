@@ -72,12 +72,12 @@
    "
   `(let ((generated-sxql-schema
           (create-table (,table-name :if-not-exists t)
-                        ((id :type 'integer :primary-key t)
-                         (name :type 'text :not-null t)
-                         (description :type 'text :not-null nil)
-                         (amount :type 'integer :not-null t)
-                         (cost-per-package :type 'real :not-null t)
-                         ,@sxql-column-specifier-forms))))
+              ((id :type 'integer :primary-key t)
+               (name :type 'text :not-null t)
+               (description :type 'text)
+               (amount :type 'integer :not-null t)
+               (cost-per-package :type 'real :not-null t)
+               ,@sxql-column-specifier-forms))))
      generated-sxql-schema))
 
 (defun migrate-tables ()

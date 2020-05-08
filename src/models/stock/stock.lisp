@@ -158,9 +158,10 @@
        :amount (get-amount weapon)
        :cost-per-package (get-cost-per-package weapon)))))
 
-(defun create-new-stock (stock-category name description
-                         amount cost-per-package calories-per-package
-                         millilitre-per-package)
+(defun create-new-stock (&key
+                           stock-category name description
+                           amount cost-per-package calories-per-package
+                           millilitre-per-package)
   
   (cond ((string-equal stock-category "food")
          (new (make-instance '<food>

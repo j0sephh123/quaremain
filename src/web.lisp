@@ -109,23 +109,26 @@
                       :status (status-code-success
                                +status-code-definition+))))))
 
+;; FIXME: amount is not received
+;; workaround, uses stock-amount as parameter key
+;; for route
 (defroute ("/api/0.1/app/list/create" :method :POST) (&key
                                                       |stock-category|
+                                                      |stock-amount|
                                                       |name|
                                                       |description|
-                                                      |amount|
                                                       |cost-per-package|
                                                       |calories-per-package|
                                                       |millilitre-per-package|)
   (handler-case
       (progn
-        (create-new-stock |stock-category|
-                          |name|
-                          |description|
-                          |amount|
-                          |cost-per-package|
-                          |calories-per-package|
-                          |millilitre-per-package|)
+        (create-new-stock :stock-category |stock-category|
+                          :name |name|
+                          :description |description|
+                          :amount |stock-amount|
+                          :cost-per-package |cost-per-package|
+                          :calories-per-package |calories-per-package|
+                          :millilitre-per-package |millilitre-per-package|)
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
@@ -190,13 +193,13 @@
                                          |millilitre-per-package|)
   (handler-case
       (progn
-        (create-new-stock |stock-category|
-                          |name|
-                          |description|
-                          |amount|
-                          |cost-per-package|
-                          |calories-per-package|
-                          |millilitre-per-package|)
+        (create-new-stock :stock-category |stock-category|
+                          :name |name|
+                          :description |description|
+                          :amount |amount|
+                          :cost-per-package |cost-per-package|
+                          :calories-per-package |calories-per-package|
+                          :millilitre-per-package |millilitre-per-package|)
         (redirect
          (format nil "/app/list/~A" |stock-category|)))
     (error (exception)
