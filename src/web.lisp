@@ -145,14 +145,14 @@
 ;; FIXME: amount is not received
 ;; workaround, uses stock-amount as parameter key
 ;; for route
-(defroute ("/api/0.1/app/list/create" :method :POST) (&key
-                                                      |stock-category|
-                                                      |stock-amount|
-                                                      |name|
-                                                      |description|
-                                                      |cost-per-package|
-                                                      |calories-per-package|
-                                                      |millilitre-per-package|)
+(defroute "/api/0.1/app/list/create" (&key
+                                      |stock-category|
+                                      |stock-amount|
+                                      |name|
+                                      |description|
+                                      |cost-per-package|
+                                      |calories-per-package|
+                                      |millilitre-per-package|)
   (cors-handler *response* *request*)
   (handler-case
       (progn
@@ -173,15 +173,15 @@
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
-(defroute ("/api/0.1/app/list/update/:id" :method :POST) (&key
-                                                          id
-                                                          |stock-category|
-                                                          |stock-amount|
-                                                          |name|
-                                                          |description|
-                                                          |cost-per-package|
-                                                          |calories-per-package|
-                                                          |millilitre-per-package|)
+(defroute "/api/0.1/app/list/update/:id" (&key
+                                          id
+                                          |stock-category|
+                                          |stock-amount|
+                                          |name|
+                                          |description|
+                                          |cost-per-package|
+                                          |calories-per-package|
+                                          |millilitre-per-package|)
   (cors-handler *response* *request*)
   (handler-case
       (progn
