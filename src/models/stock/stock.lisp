@@ -225,14 +225,15 @@
   package)
 
 
-(defun update-stock-by-category-and-id (stock-category
-                                        id
-                                        name
-                                        description
-                                        amount
-                                        cost-per-package
-                                        calories-per-package
-                                        millilitre-per-package)
+(defun update-stock-by-category-and-id (&key
+                                          stock-category
+                                          id
+                                          name
+                                          description
+                                          amount
+                                          cost-per-package
+                                          calories-per-package
+                                          millilitre-per-package)
   (cond ((string-equal stock-category "food")
          (with-connection (db)
            (execute

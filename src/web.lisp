@@ -139,6 +139,35 @@
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
+(defroute ("/api/0.1/app/list/update/:id" :method :POST) (&key
+                                                          id
+                                                          |stock-category|
+                                                          |stock-amount|
+                                                          |name|
+                                                          |description|
+                                                          |cost-per-package|
+                                                          |calories-per-package|
+                                                          |millilitre-per-package|)
+  (handler-case
+      (progn
+        (update-stock-by-category-and-id :stock-category |stock-category|
+                                         :id id
+                                         :name |name|
+                                         :description |description|
+                                         :amount |stock-amount|
+                                         :cost-per-package |cost-per-package|
+                                         :calories-per-package |calories-per-package|
+                                         :millilitre-per-package |millilitre-per-package|)
+        (render-json (list
+                      :status (status-code-success
+                               +status-code-definition+))))
+    (error (exception)
+      (log:error "~A" exception)
+      (render-json (list
+                    :error "Updating stock list failed."
+                    :status (status-code-not-found
+                             +status-code-definition+))))))
+
 (defroute "/api/0.1/app/list/delete/:id" (&key id |stock-category|)
   (handler-case
       (progn
@@ -227,13 +256,14 @@
   (let* ((id (gethash 'session-stock-id *session*))
          (stock-category
           (gethash 'session-stock-category *session*)))
-    (update-stock-by-category-and-id stock-category
-                                     id
-                                     |name|
-                                     |description|
-                                     |amount|
-                                     |cost-per-package|
-                                     |calories-per-package|
+    (update-stock-by-category-and-id :stock-category stock-category
+                                     :id id
+                                     :name |name|
+                                     :description |description|
+                                     :amount |amount|
+                                     :cost-per-package |cost-per-package|
+                                     :calories-per-package |calories-per-package|
+                                     :millilitre-per-package
                                      |millilitre-per-package|)
     (redirect
      (format nil "/app/list/~A" stock-category))))
