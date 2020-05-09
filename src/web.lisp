@@ -62,7 +62,37 @@
 
 (defparameter +status-code-definition+ (make-status-code))
 
+
+(defun get-cors-headers (allow-origin allow-methods allow-headers)
+  (list :access-control-allow-origin allow-origin
+        :access-control-allow-methods allow-methods
+        :access-control-allow-headers allow-headers))
+
+(defun set-header-origin (response allow-origin allow-methods allow-headers)
+  (setf (response-headers response)
+        (append (response-headers response)
+                (get-cors-headers allow-origin
+                                  allow-methods
+                                  allow-headers))))
+
+(defun cors-handler (response
+                     request
+                     &key
+                       (allow-origin "*")                       
+                       (allow-headers "Content-Type"))
+  "Handling CORS requests. By default, accepts 'any' origin."
+
+  (cond ((eq (request-method request) :GET)
+         (set-header-origin response allow-origin "GET, OPTIONS" allow-headers))
+        ((eq (request-method request) :POST)
+         (set-header-origin response allow-origin "POST, OPTIONS" allow-headers))
+        ((eq (request-method request) :PUT)
+         (set-header-origin response allow-origin "PUT, OPTIONS" allow-headers))
+        ((eq (request-method request) :DELETE)
+         (set-header-origin response allow-origin "DELETE, OPTIONS" allow-headers))))
+
 (defroute "/api/0.1/app/list/food" ()
+  (cors-handler *response* *request*)
   (let ((food-stocks (sum-stocks-from-table :food)))
     (if (null food-stocks)
         (render-json (list
@@ -74,6 +104,7 @@
                                +status-code-definition+))))))
 
 (defroute "/api/0.1/app/list/water" ()
+  (cors-handler *response* *request*)
   (let ((water-stocks (sum-stocks-from-table :water)))
     (if (null water-stocks)
         (render-json (list
@@ -86,6 +117,7 @@
                                +status-code-definition+))))))
 
 (defroute "/api/0.1/app/list/medicine" ()
+  (cors-handler *response* *request*)
   (let ((medicine-stocks (sum-stocks-from-table :medicine)))
     (if (null medicine-stocks)
         (render-json (list
@@ -98,6 +130,7 @@
                                +status-code-definition+))))))
 
 (defroute "/api/0.1/app/list/weapon" ()
+  (cors-handler *response* *request*)
   (let ((weapon-stocks (sum-stocks-from-table :weapon)))
     (if (null weapon-stocks)
         (render-json (list
@@ -120,6 +153,7 @@
                                                       |cost-per-package|
                                                       |calories-per-package|
                                                       |millilitre-per-package|)
+  (cors-handler *response* *request*)
   (handler-case
       (progn
         (create-new-stock :stock-category |stock-category|
@@ -148,6 +182,7 @@
                                                           |cost-per-package|
                                                           |calories-per-package|
                                                           |millilitre-per-package|)
+  (cors-handler *response* *request*)
   (handler-case
       (progn
         (update-stock-by-category-and-id :stock-category |stock-category|
@@ -169,6 +204,7 @@
                              +status-code-definition+))))))
 
 (defroute "/api/0.1/app/list/delete/:id" (&key id |stock-category|)
+  (cors-handler *response* *request*)
   (handler-case
       (progn
         ;; actually returns nothing even if id is not exist?

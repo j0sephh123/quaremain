@@ -14,7 +14,6 @@ VERSION=0.7.5
 all: server webkit-client
 
 	mkdir -p bin/var
-	rm -f $(EXECUTABLE)
 	cp bin/$(EXECUTABLE) .
 	cp -f $(CLIENT_EXECUTABLE) bin/
 	cp dist-data/* bin/
@@ -27,6 +26,7 @@ all: server webkit-client
 
 
 server: $(EXECUTABLE).asd
+	rm -f $(EXECUTABLE)
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE))" \
                 --eval "(asdf:make :$(EXECUTABLE))" \
 		--eval "(uiop:quit)"
