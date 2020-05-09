@@ -60,6 +60,12 @@ For client
 - pkg-config
 - libwebkit2gtk-4.0-dev
 
+#### Git Cloning
+
+This project depends on submodule at https://github.com/momozor/quaremain-vue-client
+
+Use `git clone --recursive https://github.com/momozor/quaremain` to clone
+this project with the submodule automatically.
 
 ##### Build And Run
 
