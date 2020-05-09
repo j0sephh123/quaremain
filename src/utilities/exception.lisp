@@ -25,7 +25,10 @@
 (define-condition quaremain-error (simple-error)
   ())
 
-(define-condition stock-missing-property-value-error (quaremain-error)
+(define-condition database-error (quaremain-error)
+  ())
+
+(define-condition stock-missing-property-value-error (database-error)
   ((property-value
     :reader property-value
     :initarg :property-value
@@ -35,7 +38,7 @@
                      "Property value of ~A is empty."
                      (property-value condition)))))
 
-(define-condition row-doesnt-exist-error (quaremain-error)
+(define-condition row-doesnt-exist-error (database-error)
   ((table-name
     :reader table-name
     :initarg :table-name

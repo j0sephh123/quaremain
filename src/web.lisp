@@ -21,6 +21,9 @@
         :caveman2
         :quaremain.utilities.config
         :quaremain.view)
+  (:import-from :quaremain.utilities.exception
+                :stock-missing-property-value-error
+                :row-doesnt-exist-error)
   (:import-from :quaremain.models.stock.stock
                 :create-new-stock
                 :update-stock-by-category-and-id
@@ -166,10 +169,10 @@
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
-    (error (exception)
+    (stock-missing-property-value-error (exception)
       (log:error "~A" exception)
       (render-json (list
-                    :error "New stock list creation failed."
+                    :error "Stock is missing unique property value!"
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
@@ -212,7 +215,7 @@
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
-    (error (exception)
+    (row-doesnt-exist-error (exception)
       (log:error "~A" exception)
       (render-json (list
                     :error "Item doesn't exist to be deleted!"
