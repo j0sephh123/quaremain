@@ -215,7 +215,7 @@
     (error (exception)
       (log:error "~A" exception)
       (render-json (list
-                    :error exception
+                    :error "Item doesn't exist to be deleted!"
                     :status (status-code-not-found
                              +status-code-definition+))))))
 

@@ -31,9 +31,12 @@
                 :drop-table
                 :from
                 :select
-                :where)
+                :where
+                :delete-from)
   (:import-from :quaremain.utilities.config
                 :+database-path+)
+  (:import-from :quaremain.utilities.exception
+                :row-doesnt-exist-error)
 
   ;; Exceptions.
   (:import-from :sqlite
@@ -159,8 +162,19 @@
                 ,@sxql-column-specifier-forms)
      (sxql:where (:= :id ,id))))
 
+(defun row-exist? (table-name id)
+  (if (null
+       (get-datum-from-table table-name id))
+      nil
+      t))
+
+
 (defun delete-datum-from-table (table-name id)
   (with-connection (db)
-    (execute
-     (sxql:delete-from table-name
-       (sxql:where (:= :id id))))))
+    (if (row-exist? table-name id)
+        (execute
+         (delete-from table-name
+           (where (:= :id id))))
+        (error 'row-doesnt-exist-error
+               :table-name table-name
+               :id id))))

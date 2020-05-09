@@ -28,7 +28,7 @@
                           :components
                           ((:file "string")
                            (:file "config")
-                           (:file "database" :depends-on ("config"))
+                           (:file "database" :depends-on ("config" "exception"))
                            (:file "exception")))
                  
                  (:module "src"

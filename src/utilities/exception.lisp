@@ -18,7 +18,8 @@
 (defpackage quaremain.utilities.exception
   (:documentation "High level and concrete custom exceptions.")
   (:use :cl)
-  (:export :stock-missing-property-value-error))
+  (:export :stock-missing-property-value-error
+           :row-doesnt-exist-error))
 (in-package :quaremain.utilities.exception)
 
 (define-condition quaremain-error (simple-error)
@@ -33,3 +34,18 @@
              (format stream
                      "Property value of ~A is empty."
                      (property-value condition)))))
+
+(define-condition row-doesnt-exist-error (quaremain-error)
+  ((table-name
+    :reader table-name
+    :initarg :table-name
+    :initform nil)
+   (id
+    :reader id
+    :initarg :id
+    :initform nil))
+  (:report (lambda (condition stream)
+             (format stream
+                     "Row with unique ID ~A from table ~A doesn't exist!"
+                     (id condition)
+                     (table-name condition)))))
