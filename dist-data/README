@@ -7,7 +7,7 @@ calories. Spend and stock wisely for the unexpected with Quaremain.
 
 Version
 --------
-
+0.7.6
 
 Usage
 ------
@@ -33,15 +33,16 @@ control system.
 
 Author
 ------
-Momozor <skelic3@gmail.com, momozor4@gmail.com>
+- Back-end author & maintainer
+  - Momozor <skelic3@gmail.com, momozor4@gmail.com>
+  - https://github.com/momozor
+  
+- Front-end author & maintainer
+  - j0sephh123 https://github.com/j0sephh123
 
 License
 
 This software is released under the GPL-3.0 or later license.
 For further information, see COPYING.quaremain.
-
-For JQuery, Bootstrap, PopperJS, and Sweetalert code licenses, see 
-COPYING.jquery, COPYING.bootstrap, COPYING.popper, and COPYING.sweetalert in 
-static/js directory.
 
 For libz.so license, see COPYING.libz file.

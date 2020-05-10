@@ -11,7 +11,7 @@ Available on GNU/Linux Ubuntu 20.04 as a graphical desktop application.
 
 
 ## Version
-0.7.5
+0.7.6
 
 ## Status
 
@@ -167,7 +167,3 @@ control system.
 
 This software is released under the GPL-3.0 or any later version.
 Please see COPYING file for more details.
-
-For JQuery, Bootstrap, PopperJS, and Sweetalert code licenses, see 
-COPYING.jquery, COPYING.bootstrap, COPYING.popper, and COPYING.sweetalert in 
-static/js directory.

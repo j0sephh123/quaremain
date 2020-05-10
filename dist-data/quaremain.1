@@ -11,7 +11,7 @@ Spend and stock wisely for the unexpected with Quaremain\.
 Available on GNU/Linux Ubuntu 20\.04 as a graphical desktop application\.
 .
 .SH "Version"
-0\.7\.5
+0\.7\.6
 .
 .SH "Status"
 Unstable
@@ -101,6 +101,12 @@ libwebkit2gtk\-4\.0\-dev
 .IP "" 0
 .
 .P
+This project depends on submodule at https://github\.com/momozor/quaremain\-vue\-client
+.
+.P
+Use \fBgit clone \-\-recursive https://github\.com/momozor/quaremain\fR to clone this project with the submodule automatically\.
+.
+.P
 By default, Quaremain uses SBCL compiler to build a small sized self\-contained executable with the trade off of high\-memory usage\.
 .
 .P
@@ -160,16 +166,16 @@ if you want to build for OpenSUSE Tumbleweed\.
 .
 .SH "Known Issues"
 .
-.IP "1." 4
+.IP "\(bu" 4
 Server build with Clozure Common Lisp implementation [Version 1\.11\.5/v1\.11\.5 (LinuxX8664)] quitting phase ends up in the debugger instead of actually exiting program\.
 .
-.IP "2." 4
-Smaller client window (if resized) will likely hide the navigation toolbars\. Maybe set a minimal default size to fix this issue?
+.IP "\(bu" 4
+[x] Smaller client window (if resized) will likely hide the navigation toolbars\. Maybe set a minimal default size to fix this issue?
 .
-.IP "3." 4
+.IP "\(bu" 4
 You always need to (slime\-cd) in SLIME to the project directory\. This should be resolved soon since it seems Deploy handles the relative path for the end executable automatically\. We can go back to use merge\-pathnames and current project directory if my assumption about Deploy is correct\.
 .
-.IP "4." 4
+.IP "\(bu" 4
 Memory usage of SBCL\'s built executable is unnecesarily high\. I tried it with CCL and it uses around 20\-30MB+ compared to SBCL\'s 100MB+ for the same version of the program\. It seems this issue caused by the SBCL garbage collector type usage (sacrificing memory for the excellent execution speed, I believe?)\.
 .
 .IP "" 0
@@ -186,11 +192,15 @@ If you don\'t prefer to use Github, consider email me your questions or patches 
 .P
 Quaremain uses git as the primary version control system\.
 .
-.SH "Author"
-Momozor \fIhttps://github\.com/momozor\fR <skelic3@gmail\.com, momozor4@gmail\.com>
+.SH "Maintainers"
+.
+.IP "\(bu" 4
+Quaremain\'s back\-end project author & maintainer \- Momozor \fIhttps://github\.com/momozor\fR <skelic3@gmail\.com, momozor4@gmail\.com>
+.
+.IP "\(bu" 4
+Quaremain\'s front\-end project author & maintainer \- j0sephh123 \fIhttps://github\.com/j0seph123\fR
+.
+.IP "" 0
 .
 .SH "License"
 This software is released under the GPL\-3\.0 or any later version\. Please see COPYING file for more details\.
-.
-.P
-For JQuery, Bootstrap, PopperJS, and Sweetalert code licenses, see COPYING\.jquery, COPYING\.bootstrap, COPYING\.popper, and COPYING\.sweetalert in static/js directory\.

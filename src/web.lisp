@@ -42,19 +42,14 @@
 
 (defparameter *session* (make-hash-table))
 
-;;; EXPERIMENTAL ENDPOINTS
-
-
 (defroute "/" ()
   (render #p"experimental.html"))
-;;; Experimental client-side index page
+
 (defroute "/experimental" ()
   (render #p"experimental.html"))
 
 ;; (defroute "/api/0.1/os/")
 ;; for OS commands calls
-
-;;; GET/SHOW/LIST
 
 (defstruct status-code
   (not-found 404)
@@ -235,95 +230,3 @@
                     :error "Item doesn't exist to be deleted!"
                     :status (status-code-not-found
                              +status-code-definition+))))))
-
-;;; EXPERIMENTAL ENDPOINTS
-
-(defroute "/about" ()
-  (render #p"about.html"))
-
-
-(defroute "/app/list/food" ()
-  (render #p"app/list.html"
-          `(:data ,(sum-stocks-from-table :food)
-                  :list-type "food")))
-
-(defroute "/app/list/water" ()
-  (render #p"app/list.html"
-          `(:data ,(sum-stocks-from-table :water)
-                  :list-type "water")))
-
-(defroute "/app/list/medicine" ()
-  (render #p"app/list.html"
-          `(:data ,(sum-stocks-from-table :medicine)
-                  :list-type "medicine")))
-
-(defroute "/app/list/weapon" ()
-  (render #p"app/list.html"
-          `(:data ,(sum-stocks-from-table :weapon)
-                  :list-type "weapon")))
-
-(defroute "/app/create-form" ()
-  (render #p"app/create-form.html"))
-
-(defroute ("/app/create" :method :POST) (&key
-                                         |stock-category|
-                                         |name|
-                                         |description|
-                                         |amount|
-                                         |cost-per-package|
-                                         |calories-per-package|
-                                         |millilitre-per-package|)
-  (handler-case
-      (progn
-        (create-new-stock :stock-category |stock-category|
-                          :name |name|
-                          :description |description|
-                          :amount |amount|
-                          :cost-per-package |cost-per-package|
-                          :calories-per-package |calories-per-package|
-                          :millilitre-per-package |millilitre-per-package|)
-        (redirect
-         (format nil "/app/list/~A" |stock-category|)))
-    (error (exception)
-      (log:error "~A" exception)
-      (redirect (format nil "/app/list/~A" |stock-category|)))))
-
-(defroute "/app/update-form/:id" (&key id
-                                       |stock-category|)
-  (setf (gethash 'session-stock-id *session*) id)
-  (setf (gethash 'session-stock-category *session*) |stock-category|)
-
-  (render #p"app/update-form.html"
-          (let ((coerced-stock
-                 (get-coerced-stock-by-category-and-id |stock-category| id)))
-            (list :datum coerced-stock
-                  :list-type |stock-category|))))
-
-(defroute ("/app/update" :method :POST) (&key |name|
-                                              |description|
-                                              |amount|
-                                              |cost-per-package|
-                                              |calories-per-package|
-                                              |millilitre-per-package|)
-
-  (let* ((id (gethash 'session-stock-id *session*))
-         (stock-category
-          (gethash 'session-stock-category *session*)))
-    (update-stock-by-category-and-id :stock-category stock-category
-                                     :id id
-                                     :name |name|
-                                     :description |description|
-                                     :amount |amount|
-                                     :cost-per-package |cost-per-package|
-                                     :calories-per-package |calories-per-package|
-                                     :millilitre-per-package
-                                     |millilitre-per-package|)
-    (redirect
-     (format nil "/app/list/~A" stock-category))))
-
-(defroute ("/app/delete/:id" :method :GET) (&key id
-                                                 |stock-category|)
-  
-  (delete-stock-by-category-and-id |stock-category| id)
-  (redirect (format nil "/app/list/~A"
-                    |stock-category|)))
