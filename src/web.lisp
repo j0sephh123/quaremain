@@ -180,7 +180,7 @@
     (row-with-same-name-already-exist-error (exception)
       (log:error "~A" exception)
       (render-json (list
-                    :error "Stock with same already exist! Duplication is not allowed!"
+                    :error "Stock with same name already exist! Duplication is not allowed!"
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
