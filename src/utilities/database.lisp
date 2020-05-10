@@ -50,6 +50,7 @@
            :insert-datum-into-table
            :get-all-datum-from-table
            :get-datum-from-table
+           :get-datum-from-table-by-name
            :generate-update-datum
            :delete-datum-from-table))
 (in-package :quaremain.utilities.database)
@@ -147,6 +148,12 @@
      (select :* (from table-name)
              (where (:= :id id))))))
 
+(defun get-datum-from-table-by-name (table-name name)
+  (with-connection (db)
+    (retrieve-one
+     (select :* (from table-name)
+             (where (:= :name name))))))
+
 (defmacro generate-update-datum (table-name
                                  id
                                  name
@@ -162,16 +169,22 @@
                 ,@sxql-column-specifier-forms)
      (sxql:where (:= :id ,id))))
 
-(defun row-exist? (table-name id)
+(defun row-exist-by-id? (table-name id)
   (if (null
        (get-datum-from-table table-name id))
+      nil
+      t))
+
+(defun row-exist-by-name? (table-name name)
+  (if (null
+       (get-datum-from-table-by-name table-name name))
       nil
       t))
 
 
 (defun delete-datum-from-table (table-name id)
   (with-connection (db)
-    (if (row-exist? table-name id)
+    (if (row-exist-by-id? table-name id)
         (execute
          (delete-from table-name
            (where (:= :id id))))

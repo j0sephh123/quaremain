@@ -30,10 +30,12 @@
                 :get-all-datum-from-table
                 :get-datum-from-table
                 :generate-update-datum
-                :delete-datum-from-table)
+                :delete-datum-from-table
+                :row-exist-by-name?)
 
   (:import-from :quaremain.utilities.exception
-                :stock-missing-property-value-error)
+                :stock-missing-property-value-error
+                :row-with-same-name-already-exist-error)
   
   (:export :create-new-stock
            :update-stock-by-category-and-id
@@ -112,19 +114,25 @@
   (or (null (get-millilitre-per-package water))
       (string-equal "" (get-millilitre-per-package water))))
 
+
 (defmethod new ((food <food>))
   (when (unique-property-value-empty? food)
     (error 'stock-missing-property-value-error
            :property-value :calories-per-package))
+
+  (when (row-exist-by-name? :food (get-name food))
+    (error 'row-with-same-name-already-exist-error
+           :name (get-name food)
+           :table-name :food))
   
   (with-connection (db)
     (execute
      (insert-datum-into-table :food
-                              :name (get-name food)
-                              :description (get-description food)
-                              :amount (get-amount food)
-                              :cost-per-package (get-cost-per-package food)
-                              :calories-per-package (get-calories-per-package food)))))
+       :name (get-name food)
+       :description (get-description food)
+       :amount (get-amount food)
+       :cost-per-package (get-cost-per-package food)
+       :calories-per-package (get-calories-per-package food)))))
 
 (defmethod new ((water <water>))
   (when (unique-property-value-empty? water)

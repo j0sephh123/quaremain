@@ -19,7 +19,8 @@
   (:documentation "High level and concrete custom exceptions.")
   (:use :cl)
   (:export :stock-missing-property-value-error
-           :row-doesnt-exist-error))
+           :row-doesnt-exist-error
+           :row-with-same-name-already-exist-error))
 (in-package :quaremain.utilities.exception)
 
 (define-condition quaremain-error (simple-error)
@@ -49,6 +50,21 @@
     :initform nil))
   (:report (lambda (condition stream)
              (format stream
-                     "Row with unique ID ~A from table ~A doesn't exist!"
+                     "Row with unique ID ~A from TABLE ~A doesn't exist!"
                      (id condition)
+                     (table-name condition)))))
+
+(define-condition row-with-same-name-already-exist-error (database-error)
+  ((table-name
+    :reader table-name
+    :initarg :table-name
+    :initform nil)
+   (name
+    :reader name
+    :initarg :name
+    :initform nil))
+  (:report (lambda (condition stream)
+             (format stream
+                     "Row with NAME ~A from TABLE ~A already exist! No duplication allowed!"
+                     (name condition)
                      (table-name condition)))))
