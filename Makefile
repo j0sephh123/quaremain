@@ -44,6 +44,11 @@ ubuntu20.04-tarball: all
 	tar -acf $(EXECUTABLE)-$(VERSION)-ubuntu20.04.tar.gz $(EXECUTABLE)-$(VERSION)-ubuntu20.04/
 	rm -rf $(EXECUTABLE)-$(VERSION)-ubuntu20.04/
 
+ubuntu18.04-tarball: all
+	cp -r bin/ $(EXECUTABLE)-$(VERSION)-ubuntu18.04
+	tar -acf $(EXECUTABLE)-$(VERSION)-ubuntu18.04.tar.gz $(EXECUTABLE)-$(VERSION)-ubuntu18.04/
+	rm -rf $(EXECUTABLE)-$(VERSION)-ubuntu18.04/
+
 opensusetumbleweed-tarball: all
 	cp -r bin/ $(EXECUTABLE)-$(VERSION)-opensusetumbleweed
 	tar -acf $(EXECUTABLE)-$(VERSION)-opensusetumbleweed.tar.gz $(EXECUTABLE)-$(VERSION)-opensusetumbleweed/
