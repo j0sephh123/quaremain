@@ -186,24 +186,24 @@
 
 (defroute "/api/0.1/app/list/update/:id" (&key
                                           id
-                                          |stock-category|
-                                          |stock-amount|
+                                          |stockCategory|
+                                          |stockAmount|
                                           |name|
                                           |description|
-                                          |cost-per-package|
-                                          |calories-per-package|
-                                          |millilitre-per-package|)
+                                          |costPerPackage|
+                                          |caloriesPerPackage|
+                                          |millilitrePerPackage|)
   (cors-handler *response* *request*)
   (handler-case
       (progn
-        (update-stock-by-category-and-id :stock-category |stock-category|
+        (update-stock-by-category-and-id :stock-category |stockCategory|
                                          :id id
                                          :name |name|
                                          :description |description|
-                                         :amount |stock-amount|
-                                         :cost-per-package |cost-per-package|
-                                         :calories-per-package |calories-per-package|
-                                         :millilitre-per-package |millilitre-per-package|)
+                                         :amount |stockAmount|
+                                         :cost-per-package |costPerPackage|
+                                         :calories-per-package |caloriesPerPackage|
+                                         :millilitre-per-package |millilitrePerPackage|)
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
