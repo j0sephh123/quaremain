@@ -31,10 +31,12 @@
                 :get-datum-from-table
                 :generate-update-datum
                 :delete-datum-from-table
-                :row-exist-by-name?)
+                :row-exist-by-name?
+                :row-exist-by-id?)
 
   (:import-from :quaremain.utilities.exception
                 :stock-missing-property-value-error
+                :row-doesnt-exist-error
                 :row-with-same-name-already-exist-error)
   
   (:export :create-new-stock
@@ -260,6 +262,11 @@
                                           calories-per-package
                                           millilitre-per-package)
   (cond ((string-equal stock-category "food")
+         (unless (row-exist-by-id? (string-to-keyword stock-category) id)
+           (error 'row-doesnt-exist-error
+                  :table-name (string-to-keyword stock-category)
+                  :id id))
+         
          (with-connection (db)
            (execute
             (generate-update-datum
@@ -272,6 +279,12 @@
               :calories-per-package calories-per-package))))
 
         ((string-equal stock-category "water")
+
+         (unless (row-exist-by-id? (string-to-keyword stock-category) id)
+           (error 'row-doesnt-exist-error
+                  :table-name (string-to-keyword stock-category)
+                  :id id))
+         
          (with-connection (db)
            (execute
             (generate-update-datum
@@ -284,6 +297,12 @@
               :millilitre-per-package millilitre-per-package))))
 
         (t
+
+         (unless (row-exist-by-id? (string-to-keyword stock-category) id)
+           (error 'row-doesnt-exist-error
+                  :table-name (string-to-keyword stock-category)
+                  :id id))
+         
          (with-connection (db)
            (execute
             (generate-update-datum

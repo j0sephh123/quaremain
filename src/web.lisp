@@ -208,6 +208,12 @@
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
+    (row-doesnt-exist-error (exception)
+      (log:error "~A" exception)
+      (render-json (list
+                    :error "Cannot update stock that doesn't exist!"
+                    :status (status-code-not-found
+                             +status-code-definition+))))
     (error (exception)
       (log:error "~A" exception)
       (render-json (list
