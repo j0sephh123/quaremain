@@ -176,7 +176,7 @@ control system.
 ## Maintainers
 
 - Quaremain's back-end project author & maintainer - [Momozor](https://github.com/momozor) <skelic3@gmail.com, momozor4@gmail.com>
-- Quaremain's front-end project author & maintainer - [j0sephh123](https://github.com/j0seph123)
+- Quaremain's front-end project author & maintainer - [j0sephh123](https://github.com/j0sephh123)
 
 
 ## License
