@@ -55,6 +55,13 @@ manpage: README.md
 	ronn -r README.md
 	mv README dist-data/quaremain.1
 
+migrate-client:
+	cd client
+	npm run build
+	cd ..
+	mv client/dist/index.html templates/experimental.html
+	cp -r client/dist/* static/
+
 install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
 	mkdir -p $(DESTDIR)/var
 	mkdir $(DESTDIR)/bin
