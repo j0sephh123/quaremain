@@ -169,7 +169,16 @@
                           :millilitre-per-package |millilitre-per-package|)
         (render-json (list
                       :status (status-code-success
-                               +status-code-definition+))))
+                               +status-code-definition+)
+                      :registered-stock
+                      (list
+                       :stock-category |stock-category|
+                       :name |name|
+                       :description |description|
+                       :amount |stock-amount|
+                       :cost-per-package |cost-per-package|
+                       :calories-per-package |calories-per-package|
+                       :millilitre-per-package |millilitre-per-package|))))
     (stock-missing-property-value-error (exception)
       (log:error "~A" exception)
       (render-json (list
