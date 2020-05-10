@@ -60,6 +60,22 @@ For client
 - pkg-config
 - libwebkit2gtk-4.0-dev
 
+### Ubuntu 18.04
+
+For server
+
+- sbcl (or ccl from Clozure Common Lisp official website)
+- quicklisp (manually install and download from Quicklisp's official website)
+- libsqlite3-dev
+- zlib1g-dev
+
+For client
+
+- build-essential (for most make and C compilers dependencies)
+- pkg-config
+- libwebkit2gtk-3.0-dev
+
+
 #### Git Cloning
 
 This project depends on submodule at https://github.com/momozor/quaremain-vue-client
