@@ -138,17 +138,28 @@
   (when (unique-property-value-empty? water)
     (error 'stock-missing-property-value-error
            :property-value :millilitre-per-package))
+
+  (when (row-exist-by-name? :water (get-name water))
+    (error 'row-with-same-name-already-exist-error
+           :name (get-name water)
+           :table-name :water))
   
   (with-connection (db)
     (execute
      (insert-datum-into-table :water
-                              :name (get-name water)
-                              :description (get-description water)
-                              :amount (get-amount water)
-                              :cost-per-package (get-cost-per-package water)
-                              :millilitre-per-package (get-millilitre-per-package water)))))
+       :name (get-name water)
+       :description (get-description water)
+       :amount (get-amount water)
+       :cost-per-package (get-cost-per-package water)
+       :millilitre-per-package (get-millilitre-per-package water)))))
 
 (defmethod new ((medicine <medicine>))
+
+  (when (row-exist-by-name? :medicine (get-name medicine))
+    (error 'row-with-same-name-already-exist-error
+           :name (get-name medicine)
+           :table-name :medicine))
+  
   (with-connection (db)
     (execute
      (insert-datum-into-table :medicine
@@ -158,6 +169,12 @@
        :cost-per-package (get-cost-per-package medicine)))))
 
 (defmethod new ((weapon <weapon>))
+
+  (when (row-exist-by-name? :weapon (get-name weapon))
+    (error 'row-with-same-name-already-exist-error
+           :name (get-name weapon)
+           :table-name :medicine))
+  
   (with-connection (db)
     (execute
      (insert-datum-into-table :weapon

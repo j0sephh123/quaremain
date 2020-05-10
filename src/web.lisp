@@ -23,7 +23,8 @@
         :quaremain.view)
   (:import-from :quaremain.utilities.exception
                 :stock-missing-property-value-error
-                :row-doesnt-exist-error)
+                :row-doesnt-exist-error
+                :row-with-same-name-already-exist-error)
   (:import-from :quaremain.models.stock.stock
                 :create-new-stock
                 :update-stock-by-category-and-id
@@ -173,6 +174,13 @@
       (log:error "~A" exception)
       (render-json (list
                     :error "Stock is missing unique property value!"
+                    :status (status-code-not-found
+                             +status-code-definition+))))
+
+    (row-with-same-name-already-exist-error (exception)
+      (log:error "~A" exception)
+      (render-json (list
+                    :error "Stock with same already exist! Duplication is not allowed!"
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
