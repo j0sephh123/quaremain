@@ -150,35 +150,35 @@
 ;; workaround, uses stock-amount as parameter key
 ;; for route
 (defroute "/api/0.1/app/list/create" (&key
-                                      |stock-category|
-                                      |stock-amount|
+                                      |stockCategory|
+                                      |stockAmount|
                                       |name|
                                       |description|
-                                      |cost-per-package|
-                                      |calories-per-package|
-                                      |millilitre-per-package|)
+                                      |costPerPackage|
+                                      |caloriesPerPackage|
+                                      |millilitrePerPackage|)
   (cors-handler *response* *request*)
   (handler-case
       (progn
-        (create-new-stock :stock-category |stock-category|
+        (create-new-stock :stock-category |stockCategory|
                           :name |name|
                           :description |description|
-                          :amount |stock-amount|
-                          :cost-per-package |cost-per-package|
-                          :calories-per-package |calories-per-package|
-                          :millilitre-per-package |millilitre-per-package|)
+                          :amount |stockAmount|
+                          :cost-per-package |costPerPackage|
+                          :calories-per-package |caloriesPerPackage|
+                          :millilitre-per-package |millilitrePerPackage|)
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+)
                       :registered-stock
                       (list
-                       :stock-category |stock-category|
+                       :stock-category |stockCategory|
                        :name |name|
                        :description |description|
-                       :amount |stock-amount|
-                       :cost-per-package |cost-per-package|
-                       :calories-per-package |calories-per-package|
-                       :millilitre-per-package |millilitre-per-package|))))
+                       :amount |stockAmount|
+                       :cost-per-package |costPerPackage|
+                       :calories-per-package |caloriesPerPackage|
+                       :millilitre-per-package |millilitrePerPackage|))))
     (stock-missing-property-value-error (exception)
       (log:error "~A" exception)
       (render-json (list
@@ -223,12 +223,12 @@
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
-(defroute "/api/0.1/app/list/delete/:id" (&key id |stock-category|)
+(defroute "/api/0.1/app/list/delete/:id" (&key id |stockCategory|)
   (cors-handler *response* *request*)
   (handler-case
       (progn
         ;; actually returns nothing even if id is not exist?
-        (delete-stock-by-category-and-id |stock-category| id)
+        (delete-stock-by-category-and-id |stockCategory| id)
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
