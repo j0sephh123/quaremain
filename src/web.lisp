@@ -42,14 +42,11 @@
 
 (defparameter *session* (make-hash-table))
 
-(defroute "/" ()
-  (render #p"app/list.html"
-          `(:data ,(sum-stocks-from-table :food)
-                  :list-type "food")))
-
-
 ;;; EXPERIMENTAL ENDPOINTS
 
+
+(defroute "/" ()
+  (render #p"experimental.html"))
 ;;; Experimental client-side index page
 (defroute "/experimental" ()
   (render #p"experimental.html"))
