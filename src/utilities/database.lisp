@@ -35,10 +35,10 @@
                 :delete-from)
   (:import-from :quaremain.utilities.config
                 :+database-path+)
-  (:import-from :quaremain.utilities.exception
-                :row-doesnt-exist-error)
 
   ;; Exceptions.
+  (:import-from :quaremain.utilities.exception
+                :row-doesnt-exist-error)
   (:import-from :sqlite
                 :sqlite-error)
   (:import-from :dbi.error
@@ -135,6 +135,23 @@
 (defmacro insert-datum-into-table (table-name &body key-and-value)
   `(sxql:insert-into ,table-name
      (sxql:set= ,@key-and-value)))
+
+(defparameter +seeds-directory+ "seeds")
+
+(defun food-seed ()
+  (let* ((all-data
+          (uiop:read-file-string
+           (format nil "~A/food.json" +seeds-directory+)))
+         (json-data
+          (cl-json:decode-json-from-string all-data)))
+
+    (mapcar #'(lambda (item)
+                (format t "~A:~%" (second item)))
+            json-data)))
+
+
+(defun migrate-database-seeds ()
+  nil)
 
 (defun get-all-datum-from-table (table-name)
   (with-connection (db)
