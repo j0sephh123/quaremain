@@ -136,7 +136,7 @@
   `(sxql:insert-into ,table-name
      (sxql:set= ,@key-and-value)))
 
-(defparameter +seeds-directory+ "seeds")
+(defparameter +seeds-directory+ "seeds/stocks")
 
 (defun food-seed-migrator ()
   (let* ((all-data
