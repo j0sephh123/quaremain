@@ -39,6 +39,11 @@ test: $(EXECUTABLE).asd
 		--eval "(asdf:test-system :$(EXECUTABLE))" \
 		--eval "(uiop:quit)"
 
+migrate-seeds: $(EXECUTABLE.asd)
+	$(LISP) --eval "(ql:quickload :$(EXECUTABLE) :silent t)" \
+		--eval "($(EXECUTABLE).utilities.database::migrate-seeds)" \
+		--eval "(uiop:quit)"
+
 ubuntu20.04-tarball: all
 	cp -r bin/ $(EXECUTABLE)-$(VERSION)-ubuntu20.04
 	tar -acf $(EXECUTABLE)-$(VERSION)-ubuntu20.04.tar.gz $(EXECUTABLE)-$(VERSION)-ubuntu20.04/

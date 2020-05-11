@@ -219,17 +219,24 @@
               json-data))))
 
 (defun migrate-seeds ()
-  (food-seed-migrator)
-  (water-seed-migrator)
-  (medicine-seed-migrator)
-  (weapon-seed-migrator))
+  (handler-case
+      (progn
+        (log:info "Migrating seeds...")
+        (food-seed-migrator)
+        (water-seed-migrator)
+        (medicine-seed-migrator)
+        (weapon-seed-migrator)
+        (log:info "Seeds migration complete"))
+    (error (exception)
+      (log:error exception)
+      (log:error "Failed to migrate database seeds.."))))
 
 
 (defun get-all-datum-from-table (table-name)
   (with-connection (db)
     (retrieve-all
      (select :*
-       (from table-name)))))
+             (from table-name)))))
 
 (defun get-datum-from-table (table-name id)
   (with-connection (db)
