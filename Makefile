@@ -10,7 +10,7 @@ CLIENT_EXECUTABLE=quaremain-client
 VERSION_BUMPER_SCRIPT=version-bumper.sh
 VERSION=0.7.6
 
-.PHONY: all server webkit-client ubuntu20.04-tarball opensusetumbleweed-tarball
+.PHONY: all server webkit-client ubuntu20.04-tarball opensusetumbleweed-tarball 
 all: server webkit-client
 
 	mkdir -p bin/var
@@ -41,6 +41,7 @@ test: $(EXECUTABLE).asd
 
 migrate-seeds: $(EXECUTABLE.asd)
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE) :silent t)" \
+		--eval "($(EXECUTABLE).utilities.database:migrate-tables)" \
 		--eval "($(EXECUTABLE).utilities.database::migrate-seeds)" \
 		--eval "(uiop:quit)"
 
