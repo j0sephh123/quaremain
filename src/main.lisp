@@ -41,24 +41,30 @@
 
 (defun start (&rest args &key server port debug &allow-other-keys)
   (declare (ignore server port debug))
+  
   (migrate-tables)
+  
   (log:info "Proceeding to launch the local server..")
   (when *handler*
     (restart-case (error "Server is already running.")
       (restart-server ()
         :report "Restart the server"
         (stop))))
+  
   (setf *handler*
-        (apply #'clackup (builder
-                          (:static
-                           :path (lambda (path)
-                                   (if (ppcre:scan "^(?:/img/|/fonts/|/css/|/js/|/robot\\.txt$|/favicon\\.ico$)" path)
-                                       path
-                                       nil))
-                           :root +static-directory+)
-                          :session
-                          *web*)
-               args)))
+        (apply
+         #'clackup
+         (builder
+          (:static
+           :path
+           (lambda (path)
+             (if (ppcre:scan "^(?:/img/|/fonts/|/css/|/js/|/robot\\.txt$|/favicon\\.ico$)" path)
+                 path
+                 nil))
+           :root +static-directory+)
+          :session
+          *web*)
+         args)))
 
 
 (defun stop ()
@@ -67,14 +73,17 @@
     (setf *handler* nil)))
 
 (defun main (&key (port 5000))
-  (start :port (let ((env-port (uiop:getenv "PORT")))
+  (start :port (let ((env-port (uiop:getenv "QUAREMAIN_PORT")))
                  (if (null env-port)
                      port
                      (parse-integer env-port))))
-  ;; with bordeaux-threads
-  (handler-case (bt:join-thread (find-if (lambda (th)
-                                           (search "hunchentoot" (bt:thread-name th)))
-                                         (bt:all-threads)))
+  
+  (handler-case (bt:join-thread
+                 (find-if (lambda (thread)
+                            (search "hunchentoot"
+                                    (bt:thread-name thread)))
+                          (bt:all-threads)))
+    
     (#+sbcl sb-sys:interactive-interrupt
       #+ccl  ccl:interrupt-signal-condition
       #+clisp system::simple-interrupt-condition
@@ -83,4 +92,4 @@
       () (progn
            (log:info "Aborting")
            (stop)
-           (uiop:quit 1)))))
+           (uiop:quit)))))
