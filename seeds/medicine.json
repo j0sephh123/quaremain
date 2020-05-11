@@ -1,0 +1,15 @@
+[
+    {
+        "name": "Penicilin IoX",
+        "description": "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,",
+        "amount": 4,
+        "costPerPackage": "12.02"
+    },
+
+    {
+        "name": "Paracetamol",
+        "description": "For fever (ASAP)",
+        "amount": 5,
+        "costPerPackage": "3.02"
+    }
+]

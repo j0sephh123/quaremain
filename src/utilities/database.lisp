@@ -138,20 +138,92 @@
 
 (defparameter +seeds-directory+ "seeds")
 
-(defun food-seed ()
+(defun food-seed-migrator ()
   (let* ((all-data
           (uiop:read-file-string
            (format nil "~A/food.json" +seeds-directory+)))
          (json-data
           (cl-json:decode-json-from-string all-data)))
 
-    (mapcar #'(lambda (item)
-                (format t "~A:~%" (second item)))
-            json-data)))
+    (with-connection (db)
+      
+      (mapcar
+       #'(lambda (item)
+           (execute
+            (insert-datum-into-table :food
+              :name (alexandria:assoc-value item :name)
+              :description (alexandria:assoc-value item :description)
+              :amount (alexandria:assoc-value item :amount)
+              :cost-per-package (alexandria:assoc-value item :cost-per-package)
+              :calories-per-package (alexandria:assoc-value item :calories-per-package))))
+       
+       json-data))))
 
+(defun water-seed-migrator ()
+  (let* ((all-data
+          (uiop:read-file-string
+           (format nil "~A/water.json" +seeds-directory+)))
+         (json-data
+          (cl-json:decode-json-from-string all-data)))
 
-(defun migrate-database-seeds ()
-  nil)
+    (with-connection (db)
+      
+      (mapcar
+       #'(lambda (item)
+           (execute
+            (insert-datum-into-table :water
+              :name (alexandria:assoc-value item :name)
+              :description (alexandria:assoc-value item :description)
+              :amount (alexandria:assoc-value item :amount)
+              :cost-per-package (alexandria:assoc-value item :cost-per-package)
+              :millilitre-per-package (alexandria:assoc-value item :millilitre-per-package))))
+       
+       json-data))))
+
+(defun medicine-seed-migrator ()
+  (let* ((all-data
+          (uiop:read-file-string
+           (format nil "~A/medicine.json" +seeds-directory+)))
+         (json-data
+          (cl-json:decode-json-from-string all-data)))
+
+    (with-connection (db)
+      
+      (mapcar #'(lambda (item)
+                  (execute
+                   (insert-datum-into-table :medicine
+                     :name (alexandria:assoc-value item :name)
+                     :description (alexandria:assoc-value item :description)
+                     :amount (alexandria:assoc-value item :amount)
+                     :cost-per-package (alexandria:assoc-value item :cost-per-package))))
+              
+              json-data))))
+
+(defun weapon-seed-migrator ()
+  (let* ((all-data
+          (uiop:read-file-string
+           (format nil "~A/weapon.json" +seeds-directory+)))
+         (json-data
+          (cl-json:decode-json-from-string all-data)))
+
+    (with-connection (db)
+      
+      (mapcar #'(lambda (item)
+                  (execute
+                   (insert-datum-into-table :weapon
+                     :name (alexandria:assoc-value item :name)
+                     :description (alexandria:assoc-value item :description)
+                     :amount (alexandria:assoc-value item :amount)
+                     :cost-per-package (alexandria:assoc-value item :cost-per-package))))
+              
+              json-data))))
+
+(defun migrate-seeds ()
+  (food-seed-migrator)
+  (water-seed-migrator)
+  (medicine-seed-migrator)
+  (weapon-seed-migrator))
+
 
 (defun get-all-datum-from-table (table-name)
   (with-connection (db)

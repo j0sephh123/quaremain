@@ -10,8 +10,7 @@
     {
         "name": "Cashews from Jerry's",
         "description": "",
-        "amount": 5
-        ,
+        "amount": 5,
         "costPerPackage": "12.02",
         "caloriesPerPackage": 200
     }
