@@ -62,6 +62,8 @@ manpage: README.md
 
 migrate-client:
 	cd client;npm run build;cd ..
+	rm -rf templates static
+	mkdir templates static
 	mv client/dist/index.html templates/experimental.html
 	cp -r client/dist/* static/
 
