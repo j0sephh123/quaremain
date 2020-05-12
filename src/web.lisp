@@ -248,7 +248,6 @@
   (cors-handler *response*)
   (handler-case
       (progn
-        ;; actually returns nothing even if id is not exist?
         (delete-stock-by-category-and-id |stockCategory| id)
         (render-json (list
                       :status (status-code-success
