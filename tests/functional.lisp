@@ -103,7 +103,7 @@
       (testing "id is equal to 1"
                (ok (= id 1)))))
 
-(deftest database-migration-medicine-test
+(deftest database-migration-weapon-test
     
     (let* ((stock (quaremain.utilities.database::get-datum-from-table :weapon 2))
            (id (getf stock :id))
