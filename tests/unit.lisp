@@ -24,57 +24,58 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :quaremain)' in your Lisp.
 
-(deftest sum-all-cost-per-package
-  (testing "(sum-all-cost-per-package '((:cost-per-package 2.2 :amount 3))) should equal to ((:cost-per-package 6.6000004 :amount 3)"
-           (let* ((raw-result
-                   (quaremain.models.stock.stock::sum-all-cost-per-package '((:cost-per-package 2.2 :amount 3))))
-                  (total-cost (getf (car raw-result) :cost-per-package))
-                  (amount (getf (car raw-result) :amount)))
+(deftest quaremain.utilities.string
+
+    (testing ""
              (ok
-              (and (= total-cost 6.6000004)
-                   (= amount 3))))))
+              (eql
+               (quaremain.utilities.string::string-to-keyword "fruitz")
+               :fruitz))))
 
-(deftest coerce-cost-per-package
-  (testing "(coerce-cost-per-package '(:id 1 :amount 3 :cost-per-package 9239.84)) should equal to '(:id 1 :amount 3 :cost-per-package 9239.84)"
-           (ok
-            (equal (quaremain.models.stock.stock::coerce-cost-per-package
-                    '(:id 1 :amount 4 :cost-per-package 9239.84))
-                   '(:id 1 :amount 4 :cost-per-package 9239.84)))))
+(deftest quaremain.models.stock.stock
+    (let* ((raw-result
+            (quaremain.models.stock.stock::sum-all-cost-per-package
+             '((:cost-per-package 2.2 :amount 3))))
+           (total-cost (getf (car raw-result) :cost-per-package))
+           (amount (getf (car raw-result) :amount))
+           
+           (food-result
+            (quaremain.models.stock.stock::sum-all-calories-per-package
+             '((:id 1 :amount 2 :calories-per-package 219))))
+           (calories-per-package
+            (getf (car food-result) :calories-per-package))
 
-(deftest sum-all-calories-per-package
-  (testing "(sum-all-calories-per-package '((:id 1 :amount 2 :calories-per-package 219))) first list :calories-per-package value should result to 438"
-           (let* ((raw-result
-                   (quaremain.models.stock.stock::sum-all-calories-per-package
-                    '((:id 1 :amount 2 :calories-per-package 219))))
-                  (calories-per-package
-                   (getf (car raw-result)
-                         :calories-per-package)))
-             (ok
-              (= calories-per-package 438)))))
+           (water-result
+            (quaremain.models.stock.stock::sum-all-millilitre-per-package
+             '((:id 2 :amount 9 :millilitre-per-package 9293))))
+           (millilitre-per-package
+            (getf (car water-result) :millilitre-per-package))
 
+           (unique-property-result
+            (quaremain.models.stock.stock::sum-unique-property-value-by-amount
+             '(:id 1 :amount 3 :fire 9823) :fire)))
+      
+      (testing ""
+               (ok
+                (and (= total-cost 6.6000004)
+                     (= amount 3))))
 
-(deftest string-to-keyword
-  (testing "(string-to-keyword \"fruitz\") should equal to :fruitz"
-           (ok
-            (eql (quaremain.utilities.string::string-to-keyword "fruitz")
-                 :fruitz))))
+      (testing ""
+               (ok
+                (equal (quaremain.models.stock.stock::coerce-cost-per-package
+                        '(:id 1 :amount 4 :cost-per-package 9239.84))
+                       '(:id 1 :amount 4 :cost-per-package 9239.84))))
 
-(deftest sum-all-millilitre-per-package
-  (testing "(sum-all-millilitre-per-package '((:id 1 :amount 2 :millilitre-per-package 219))) first list :millilitre-per-package value should result to 438"
-           (let* ((raw-result
-                   (quaremain.models.stock.stock::sum-all-millilitre-per-package
-                    '((:id 1 :amount 2 :millilitre-per-package 219))))
-                  (millilitre-per-package
-                   (getf (car raw-result)
-                         :millilitre-per-package)))
-             (ok
-              (= millilitre-per-package 438)))))
+      (testing ""
+               (ok
+                (= calories-per-package 438)))
 
-(deftest sum-unique-property-value-by-amount
-  (testing "(sum-unique-property-value-by-amount '(:id 1 :amount 3 :fire 9823) should equal to '(:ID 1 :AMOUNT 3 :FIRE 29469)"
-           (let* ((result
-                   (quaremain.models.stock.stock::sum-unique-property-value-by-amount '(:id 1 :amount 3 :fire 9823) :fire)))
-             (ok
-              (equal '(:id 1 :amount 3 :fire 29469)
-                     result)))))
+      (testing ""
+               (ok
+                (= millilitre-per-package 83637)))
+
+      (testing ""
+               (ok
+                (equal '(:id 1 :amount 3 :fire 29469)
+                       unique-property-result)))))
 
