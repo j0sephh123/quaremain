@@ -51,7 +51,7 @@
 (defroute "/experimental" ()
   (render #p"experimental.html"))
 
-;; (defroute "/api/0.1/os/")
+;; (defroute "/api/os/")
 ;; for OS commands calls
 
 (defstruct status-code
@@ -82,7 +82,7 @@
 
   (set-header-origin response allow-origin "GET, POST, OPTIONS" allow-headers))
 
-(defroute "/api/0.1/app/list/food" ()
+(defroute "/api/app/list/food" ()
   (cors-handler *response*)
   (let ((food-stocks (sum-stocks-from-table :food)))
     (if (null food-stocks)
@@ -94,7 +94,7 @@
                       :status (status-code-success
                                +status-code-definition+))))))
 
-(defroute "/api/0.1/app/list/water" ()
+(defroute "/api/app/list/water" ()
   (cors-handler *response*)
   (let ((water-stocks (sum-stocks-from-table :water)))
     (if (null water-stocks)
@@ -107,7 +107,7 @@
                       :status (status-code-success
                                +status-code-definition+))))))
 
-(defroute "/api/0.1/app/list/medicine" ()
+(defroute "/api/app/list/medicine" ()
   (cors-handler *response*)
   (let ((medicine-stocks (sum-stocks-from-table :medicine)))
     (if (null medicine-stocks)
@@ -120,7 +120,7 @@
                       :status (status-code-success
                                +status-code-definition+))))))
 
-(defroute "/api/0.1/app/list/weapon" ()
+(defroute "/api/app/list/weapon" ()
   (cors-handler *response*)
   (let ((weapon-stocks (sum-stocks-from-table :weapon)))
     (if (null weapon-stocks)
@@ -133,7 +133,7 @@
                       :status (status-code-success
                                +status-code-definition+))))))
 
-(defroute "/api/0.1/app/list/show/:id" (&key
+(defroute "/api/app/list/show/:id" (&key
                                         id
                                         |stockCategory|)
   (cors-handler *response*)
@@ -164,7 +164,7 @@
 ;; FIXME: amount is not received
 ;; workaround, uses stock-amount as parameter key
 ;; for route
-(defroute "/api/0.1/app/list/create" (&key
+(defroute "/api/app/list/create" (&key
                                       |stockCategory|
                                       |stockAmount|
                                       |name|
@@ -208,7 +208,7 @@
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
-(defroute "/api/0.1/app/list/update/:id" (&key
+(defroute "/api/app/list/update/:id" (&key
                                           id
                                           |stockCategory|
                                           |stockAmount|
@@ -244,7 +244,7 @@
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
-(defroute "/api/0.1/app/list/delete/:id" (&key id |stockCategory|)
+(defroute "/api/app/list/delete/:id" (&key id |stockCategory|)
   (cors-handler *response*)
   (handler-case
       (progn
@@ -259,7 +259,7 @@
                     :status (status-code-not-found
                              +status-code-definition+))))))
 
-(defroute "/api/0.1/app/list/reset-database" ()
+(defroute "/api/app/list/reset-database" ()
   (cors-handler *response*)
   (handler-case
       (progn
