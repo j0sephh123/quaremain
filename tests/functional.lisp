@@ -102,3 +102,24 @@
 
       (testing "id is equal to 1"
                (ok (= id 1)))))
+
+(deftest database-migration-medicine-test
+    
+    (let* ((stock (quaremain.utilities.database::get-datum-from-table :weapon 2))
+           (id (getf stock :id))
+           (cost (getf stock :cost-per-package))
+           (description (getf stock :description))
+           (name (getf stock :name))
+           (amount (getf stock :amount)))
+
+      (testing "name is equal to Magnum-192"
+               (ok (string= name "Magnum-192")))
+
+      (testing "amount is equal to 2"
+               (ok (= amount 2)))
+
+      (testing "cost-per-package is equal to 900.78d0"
+               (ok (= cost 900.78d0)))
+
+      (testing "id is equal to 2"
+               (ok (= id 2)))))
