@@ -329,13 +329,19 @@
             table-data)))
     table-data))
 
-(defun get-coerced-stock-by-category-and-id (category id)
+(defun get-coerced-stock-by-category-and-id (stock-category id)
+
+  (unless (row-exist-by-id? (string-to-keyword stock-category) id)
+    (error 'row-doesnt-exist-error
+           :table-name (string-to-keyword stock-category)
+           :id id))
+  
   (let ((package
-         (get-datum-from-table (string-to-keyword category) id)))
+         (get-datum-from-table (string-to-keyword stock-category) id)))
     (coerce-cost-per-package package)
     package))
 
-(defun delete-stock-by-category-and-id (category id)
-  (let ((table-name
-         (string-to-keyword category)))
-    (delete-datum-from-table table-name id)))
+  (defun delete-stock-by-category-and-id (stock-category id)
+    (let ((table-name
+           (string-to-keyword stock-category)))
+      (delete-datum-from-table table-name id)))

@@ -130,6 +130,33 @@
                       :status (status-code-success
                                +status-code-definition+))))))
 
+(defroute "/api/0.1/app/list/show/:id" (&key
+                                        id
+                                        |stockCategory|)
+  (handler-case
+      (let ((stock
+             (get-coerced-stock-by-category-and-id
+              |stockCategory|
+              id)))
+        (render-json (list
+                      :stock (list stock)
+                      :status (status-code-success
+                               +status-code-definition+))))
+    (row-doesnt-exist-error (exception)
+      (log:error "~A" exception)
+      (log:error "Row doesn't exist to retrieved!")
+      (render-json (list
+                    :error "Row doesn't exist to be retrieved!"
+                    :status (status-code-not-found
+                             +status-code-definition+))))
+    (error (exception)
+      (log:error "~A" exception)
+      (log:error "There was an error when executing this process!")
+      (render-json (list
+                    :error "There was an error when executing this process!"
+                    :status (status-code-not-found
+                             +status-code-definition+))))))
+
 ;; FIXME: amount is not received
 ;; workaround, uses stock-amount as parameter key
 ;; for route
