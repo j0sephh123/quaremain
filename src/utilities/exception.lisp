@@ -20,16 +20,14 @@
   (:use :cl)
   (:export :stock-missing-property-value-error
            :row-doesnt-exist-error
-           :row-with-same-name-already-exist-error))
+           :row-with-same-name-already-exist-error
+           :no-database-tables-to-be-found-error))
 (in-package :quaremain.utilities.exception)
 
 (define-condition quaremain-error (simple-error)
   ())
 
-(define-condition database-error (quaremain-error)
-  ())
-
-(define-condition stock-missing-property-value-error (database-error)
+(define-condition stock-missing-property-value-error (quaremain-error)
   ((property-value
     :reader property-value
     :initarg :property-value
@@ -39,7 +37,7 @@
                      "Property value of ~A is empty."
                      (property-value condition)))))
 
-(define-condition row-doesnt-exist-error (database-error)
+(define-condition row-doesnt-exist-error (quaremain-error)
   ((table-name
     :reader table-name
     :initarg :table-name
@@ -54,7 +52,7 @@
                      (id condition)
                      (table-name condition)))))
 
-(define-condition row-with-same-name-already-exist-error (database-error)
+(define-condition row-with-same-name-already-exist-error (quaremain-error)
   ((table-name
     :reader table-name
     :initarg :table-name
@@ -68,3 +66,10 @@
                      "Row with NAME ~A from TABLE ~A already exist! No duplication allowed!"
                      (name condition)
                      (table-name condition)))))
+
+
+(define-condition no-database-tables-to-be-found-error (quaremain-error)
+  ()
+  (:report (lambda (condition stream)
+             (declare (ignore condition))
+             (format stream "No database tables to be found!"))))

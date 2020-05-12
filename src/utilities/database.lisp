@@ -38,6 +38,7 @@
 
   ;; Exceptions.
   (:import-from :quaremain.utilities.exception
+                :no-database-tables-to-be-found-error
                 :row-doesnt-exist-error)
   (:import-from :sqlite
                 :sqlite-error)
@@ -124,7 +125,8 @@
     
     (dbi-programming-error (exception)
       (log:error "[DBI-PROGRAMMING-ERROR]: ~A" exception)
-      (log:error "No existing tables in the database found to be erased"))
+      (log:error "No existing tables in the database found to be erased")
+      (error 'no-database-tables-to-be-found-error))
     
     (sqlite-error (exception)
       (log:error "[SQLITE-ERROR]: ~A" exception)

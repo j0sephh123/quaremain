@@ -24,7 +24,9 @@
   (:import-from :quaremain.utilities.exception
                 :stock-missing-property-value-error
                 :row-doesnt-exist-error
-                :row-with-same-name-already-exist-error)
+                :row-with-same-name-already-exist-error
+                :no-database-tables-to-be-found-error)
+  
   (:import-from :quaremain.models.stock.stock
                 :create-new-stock
                 :update-stock-by-category-and-id
@@ -267,7 +269,13 @@
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
-    
+
+    (no-database-tables-to-be-found-error (exception)
+      (log:error "~A" exception)
+      (render-json (list
+                    :error "No existing tables to be deleted!"
+                    :status (status-code-not-found
+                             +status-code-definition+))))
     (error (exception)
       (log:error "~A" exception)
       (log:error "There was something wrong with resetting the database!")
