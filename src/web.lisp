@@ -35,6 +35,7 @@
                 :delete-stock-by-category-and-id)
 
   (:import-from :quaremain.utilities.database
+                :migrate-tables
                 :drop-tables)
   (:export :*web*))
 (in-package :quaremain.web)
@@ -266,6 +267,7 @@
   (handler-case
       (progn
         (drop-tables)
+        (migrate-tables)
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
