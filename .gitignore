@@ -20,3 +20,4 @@ bin/
 *tar.zst
 *tar.xz
 *zip
+.qlot/

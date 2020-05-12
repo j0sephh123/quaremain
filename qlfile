@@ -10,3 +10,4 @@ ql cl-dbi
 ql log4cl
 ql hunchentoot
 ql deploy
+ql cl-json
