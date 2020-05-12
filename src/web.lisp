@@ -31,6 +31,9 @@
                 :sum-stocks-from-table
                 :get-coerced-stock-by-category-and-id
                 :delete-stock-by-category-and-id)
+
+  (:import-from :quaremain.utilities.database
+                :drop-tables)
   (:export :*web*))
 (in-package :quaremain.web)
 
@@ -133,6 +136,7 @@
 (defroute "/api/0.1/app/list/show/:id" (&key
                                         id
                                         |stockCategory|)
+  (cors-handler *response*)
   (handler-case
       (let ((stock
              (get-coerced-stock-by-category-and-id
@@ -253,5 +257,22 @@
       (log:error "~A" exception)
       (render-json (list
                     :error "Item doesn't exist to be deleted!"
+                    :status (status-code-not-found
+                             +status-code-definition+))))))
+
+(defroute "/api/0.1/app/list/reset-database" ()
+  (cors-handler *response*)
+  (handler-case
+      (progn
+        (drop-tables)
+        (render-json (list
+                      :status (status-code-success
+                               +status-code-definition+))))
+    
+    (error (exception)
+      (log:error "~A" exception)
+      (log:error "There was something wrong with resetting the database!")
+      (render-json (list
+                    :error "There was something with resetting the database!"
                     :status (status-code-not-found
                              +status-code-definition+))))))
