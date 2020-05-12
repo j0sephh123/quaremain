@@ -81,3 +81,24 @@
 
       (testing "description is equal to empty string"
                (ok (string= description "")))))
+
+(deftest database-migration-medicine-test
+    
+    (let* ((stock (quaremain.utilities.database::get-datum-from-table :medicine 1))
+           (id (getf stock :id))
+           (cost (getf stock :cost-per-package))
+           (description (getf stock :description))
+           (name (getf stock :name))
+           (amount (getf stock :amount)))
+
+      (testing "name is equal to Penicilin IoX"
+               (ok (string= name "Penicilin IoX")))
+
+      (testing "amount is equal to 4"
+               (ok (= amount 4)))
+
+      (testing "cost-per-package is equal to 12.02d0"
+               (ok (= cost 12.02d0)))
+
+      (testing "id is equal to 1"
+               (ok (= id 1)))))
