@@ -22,18 +22,25 @@
         :rove))
 (in-package :quaremain/tests/functional)
 
+(setup
+ (quaremain.utilities.database::migrate-tables)
+ (quaremain.utilities.database::migrate-seeds))
+
+(teardown
+ (quaremain.utilities.database::drop-tables))
+
 (deftest database-migration-food
-  (quaremain.utilities.database::migrate-tables)
-  (quaremain.utilities.database::migrate-seeds)
+    
+    (let* ((stock (quaremain.utilities.database::get-datum-from-table :food 1))
+           (calories (getf stock :calories-per-package))
+           (id (getf stock :id))
+           (cost (getf stock :cost-per-package)))
 
-  (let* ((stock (quaremain.utilities.database::get-datum-from-table :food 1))
-         (calories (getf stock :calories-per-package))
-         (id (getf stock :id)))
+      (testing "cost-per-package is equal to 13.0d"
+               (ok (= cost 12.02d0)))
 
-    (testing "id is equal to 1"
-      (ok (= id 1)))
+      (testing "calories-per-package is equal to 500"
+               (ok (= calories 1200)))
 
-    (testing "calories is equal to 500"
-      (ok (= calories 1200))))
-
-  (quaremain.utilities.database::drop-tables))
+      (testing "id is equal to 1"
+               (ok (= id 1)))))
