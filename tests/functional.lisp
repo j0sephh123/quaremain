@@ -29,18 +29,47 @@
 (teardown
  (quaremain.utilities.database::drop-tables))
 
-(deftest database-migration-food
+(deftest database-migration-food-test
     
     (let* ((stock (quaremain.utilities.database::get-datum-from-table :food 1))
            (calories (getf stock :calories-per-package))
            (id (getf stock :id))
-           (cost (getf stock :cost-per-package)))
+           (cost (getf stock :cost-per-package))
+           (description (getf stock :description)))
 
-      (testing "cost-per-package is equal to 13.0d"
+      (testing "cost-per-package is equal to 12.02d0"
                (ok (= cost 12.02d0)))
 
-      (testing "calories-per-package is equal to 500"
+      (testing "calories-per-package is equal to 1200"
                (ok (= calories 1200)))
 
       (testing "id is equal to 1"
                (ok (= id 1)))))
+
+(deftest database-migration-water-test
+    
+    (let* ((stock (quaremain.utilities.database::get-datum-from-table :water 2))
+           (millilitre (getf stock :millilitre-per-package))
+           (id (getf stock :id))
+           (cost (getf stock :cost-per-package))
+           (amount (getf stock :amount))
+           (name (getf stock :name))
+           (description (getf stock :description)))
+
+      (testing "millilitre-per-package is equal to 923"
+               (ok (= millilitre 923)))
+
+      (testing "cost-per-package is equal to 12.02d0"
+               (ok (= cost 12.02d0)))
+
+      (testing "amount is equal to 5"
+               (ok (= amount 5)))
+
+      (testing "id is equal to 2"
+               (ok (= id 2)))
+
+      (testing "name is equal to ICOLITE from Jerry's"
+               (ok (string= name "ICOLITE from Jerry's")))
+
+      (testing "description is equal to empty string"
+               (ok (string= description "")))))
