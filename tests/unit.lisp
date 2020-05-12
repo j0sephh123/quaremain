@@ -16,11 +16,11 @@
 
 ;;;; quaremain/tests/main - Primary unit tests.
 
-(defpackage quaremain/tests/main
+(defpackage quaremain/tests/unit
   (:use :cl
         :quaremain
         :rove))
-(in-package :quaremain/tests/main)
+(in-package :quaremain/tests/unit)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :quaremain)' in your Lisp.
 

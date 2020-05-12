@@ -58,12 +58,13 @@ for preparation of emergency times"
   :in-order-to ((test-op (test-op "quaremain/tests"))))
 
 (defsystem "quaremain/tests"
-    :author "Momozor"
-    :license "GPL-3.0-or-later"
-    :depends-on ("quaremain"
-                 "rove")
-    :components ((:module "tests"
-                          :components
-                          ((:file "main"))))
-    :description "Test system for quaremain"
-    :perform (test-op (op c) (symbol-call :rove :run c)))
+  :author "Momozor"
+  :license "GPL-3.0-or-later"
+  :depends-on ("quaremain"
+               "rove")
+  :components ((:module "tests"
+                        :components
+                        ((:file "unit")
+                         (:file "functional"))))
+  :description "Test system for quaremain"
+  :perform (test-op (op c) (symbol-call :rove :run c)))
