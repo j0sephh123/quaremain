@@ -35,7 +35,15 @@
            (calories (getf stock :calories-per-package))
            (id (getf stock :id))
            (cost (getf stock :cost-per-package))
-           (description (getf stock :description)))
+           (description (getf stock :description))
+           (name (getf stock :name))
+           (amount (getf stock :amount)))
+
+      (testing "name is equal to Sed neque. Sed eget lacus. Mauris"
+               (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
+
+      (testing "amount is equal to 12"
+               (ok (= amount 12)))
 
       (testing "cost-per-package is equal to 12.02d0"
                (ok (= cost 12.02d0)))
