@@ -88,7 +88,7 @@
 (defun migrate-tables ()
   (handler-case
       (progn
-        (log:info "Attempting to migrate all models schemas if not exist.")
+        (log:info "Attempting to migrate all tables schemas if not exist.")
         (with-connection (db)
           (mapcar (lambda (generated-sxql-schema)
                     (execute generated-sxql-schema))
