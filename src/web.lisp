@@ -30,7 +30,7 @@
   (:import-from :quaremain.models.stock.stock
                 :create-new-stock
                 :update-stock-by-category-and-id
-                :sum-stocks-from-table
+                :get-stocks-sum
                 :get-coerced-stock-cost-by-id
                 :delete-stock-by-id)
 
@@ -87,7 +87,7 @@
 
 (defroute "/api/app/list/food" ()
   (cors-handler *response*)
-  (let ((food-stocks (sum-stocks-from-table :food)))
+  (let ((food-stocks (get-stocks-sum :food)))
     (if (null food-stocks)
         (render-json (list
                       :error "No food stocks available."
@@ -99,7 +99,7 @@
 
 (defroute "/api/app/list/water" ()
   (cors-handler *response*)
-  (let ((water-stocks (sum-stocks-from-table :water)))
+  (let ((water-stocks (get-stocks-sum :water)))
     (if (null water-stocks)
         (render-json (list
                       :error "No water stocks available."
@@ -112,7 +112,7 @@
 
 (defroute "/api/app/list/medicine" ()
   (cors-handler *response*)
-  (let ((medicine-stocks (sum-stocks-from-table :medicine)))
+  (let ((medicine-stocks (get-stocks-sum :medicine)))
     (if (null medicine-stocks)
         (render-json (list
                       :error "No medicine stocks available."
@@ -125,7 +125,7 @@
 
 (defroute "/api/app/list/weapon" ()
   (cors-handler *response*)
-  (let ((weapon-stocks (sum-stocks-from-table :weapon)))
+  (let ((weapon-stocks (get-stocks-sum :weapon)))
     (if (null weapon-stocks)
         (render-json (list
                       :error "No weapon stocks available."

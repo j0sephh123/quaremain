@@ -346,6 +346,38 @@
 
 ;;; quaremain.models.stock.stock
 
+(deftest get-stocks-sum
+    (let* ((food-result
+            (quaremain.models.stock.stock::get-stocks-sum
+             :food))
+           (medicine-result
+            (quaremain.models.stock.stock::get-stocks-sum
+             :medicine)))
+
+      (testing "food"
+               (ok
+                (equal
+                 food-result
+                 '((:ID 1 :NAME "Sed neque. Sed eget lacus. Mauris"
+                    :DESCRIPTION
+                    "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                    :AMOUNT 12 :COST-PER-PACKAGE 144.24 :CALORIES-PER-PACKAGE
+                    14400)
+                   (:ID 2 :NAME "Cashews from Jerry's" :DESCRIPTION "" :AMOUNT
+                    5 :COST-PER-PACKAGE 60.1 :CALORIES-PER-PACKAGE 1000))
+                 )))
+
+      (testing "medicine"
+               (ok
+                (equal
+                 medicine-result
+                 '((:ID 1 :NAME "Penicilin IoX" :DESCRIPTION
+                    "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                    :AMOUNT 4 :COST-PER-PACKAGE 48.08)
+                   (:ID 2 :NAME "Paracetamol" :DESCRIPTION
+                    "For fever (ASAP)" :AMOUNT 5 :COST-PER-PACKAGE 15.1))
+                 )))))
+
 (deftest get-coerced-stock-cost-by-id
     (let* ((food-result
             (quaremain.models.stock.stock::get-coerced-stock-cost-by-id

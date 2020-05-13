@@ -39,7 +39,7 @@
   
   (:export :create-new-stock
            :update-stock-by-category-and-id
-           :sum-stocks-from-table
+           :get-stocks-sum
            :get-coerced-stock-cost-by-id
            :delete-stock-by-id))
 (in-package :quaremain.models.stock.stock)
@@ -308,22 +308,23 @@
             amount
             cost-per-package)))))
 
-(defun sum-stocks-from-table (table-name)
-  (let ((table-data
+(defun get-stocks-sum (table-name)
+  (let ((stocks
          (with-connection (db)
            (get-all-datum table-name))))
     
     (sum-all-cost-per-package     
      (cond ((eql table-name :food)
-            (sum-all-calories-per-package table-data)
-            table-data)
+            (sum-all-calories-per-package stocks)
+            stocks)
+           
            ((eql table-name :water)
-            (sum-all-millilitre-per-package table-data)
-            table-data)
+            (sum-all-millilitre-per-package stocks)
+            stocks)
 
            (t
-            table-data)))
-    table-data))
+            stocks)))
+    stocks))
 
 (defun get-coerced-stock-cost-by-id (stock-category id)
   (let ((table-name
