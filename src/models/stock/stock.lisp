@@ -38,7 +38,7 @@
                 :row-with-same-name-already-exist-error)
   
   (:export :create-new-stock
-           :update-stock-by-category-and-id
+           :update-stock-by-id
            :get-stocks-sum
            :get-coerced-stock-cost-by-id
            :delete-stock-by-id))
@@ -250,15 +250,15 @@
   package)
 
 
-(defun update-stock-by-category-and-id (&key
-                                          stock-category
-                                          id
-                                          name
-                                          description
-                                          amount
-                                          cost-per-package
-                                          calories-per-package
-                                          millilitre-per-package)
+(defun update-stock-by-id (&key
+                             stock-category
+                             id
+                             name
+                             description
+                             amount
+                             cost-per-package
+                             calories-per-package
+                             millilitre-per-package)
   (cond ((string-equal stock-category "food")
          (unless (row-exist-by-id? (string-to-keyword stock-category) id)
            (error 'row-doesnt-exist-error

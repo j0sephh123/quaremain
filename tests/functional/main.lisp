@@ -392,6 +392,30 @@
                  food-cost
                  12.02)))))
 
+(deftest update-stock-by-id
+    (with-connection (db)
+      
+      (quaremain.models.stock.stock::update-stock-by-id
+       :stock-category "weapon"
+       :id 1
+       :name "Firenzo"
+       :description "Ranimoul"
+       :amount 2
+       :cost-per-package 198.02d0)
+
+      (let* ((weapon-result
+              (quaremain.utilities.database::get-datum-by-id
+               :weapon
+               1))
+             (weapon-cost
+              (getf weapon-result :cost-per-package)))
+
+        (testing "weapon first row"
+                 (ok
+                  (=
+                   weapon-cost
+                   198.02d0))))))
+
 (deftest delete-stock-by-id
     (quaremain.models.stock.stock::delete-stock-by-id
      "weapon"

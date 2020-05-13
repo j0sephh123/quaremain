@@ -29,7 +29,7 @@
   
   (:import-from :quaremain.models.stock.stock
                 :create-new-stock
-                :update-stock-by-category-and-id
+                :update-stock-by-id
                 :get-stocks-sum
                 :get-coerced-stock-cost-by-id
                 :delete-stock-by-id)
@@ -212,25 +212,25 @@
                              +status-code-definition+))))))
 
 (defroute "/api/app/list/update/:id" (&key
-                                          id
-                                          |stockCategory|
-                                          |stockAmount|
-                                          |name|
-                                          |description|
-                                          |costPerPackage|
-                                          |caloriesPerPackage|
-                                          |millilitrePerPackage|)
+                                      id
+                                      |stockCategory|
+                                      |stockAmount|
+                                      |name|
+                                      |description|
+                                      |costPerPackage|
+                                      |caloriesPerPackage|
+                                      |millilitrePerPackage|)
   (cors-handler *response*)
   (handler-case
       (progn
-        (update-stock-by-category-and-id :stock-category |stockCategory|
-                                         :id id
-                                         :name |name|
-                                         :description |description|
-                                         :amount |stockAmount|
-                                         :cost-per-package |costPerPackage|
-                                         :calories-per-package |caloriesPerPackage|
-                                         :millilitre-per-package |millilitrePerPackage|)
+        (update-stock-by-id :stock-category |stockCategory|
+                            :id id
+                            :name |name|
+                            :description |description|
+                            :amount |stockAmount|
+                            :cost-per-package |costPerPackage|
+                            :calories-per-package |caloriesPerPackage|
+                            :millilitre-per-package |millilitrePerPackage|)
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
