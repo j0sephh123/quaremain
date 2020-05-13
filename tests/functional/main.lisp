@@ -350,7 +350,6 @@
 
 
 (deftest create-stock
-  (with-connection (db)
     
     (quaremain.models.stock.stock::create-stock
      :stock-category :food
@@ -360,13 +359,15 @@
      :cost-per-package 27.02d20
      :calories-per-package 923)
 
-    (quaremain.models.stock.stock::create-stock
-     :stock-category :water
-     :name "Fuviz"
-     :description "refreshing"
-     :amount 5
-     :cost-per-package 3.02d0
-     :millilitre-per-package 1100)
+  (quaremain.models.stock.stock::create-stock
+   :stock-category :water
+   :name "Fuviz"
+   :description "refreshing"
+   :amount 5
+   :cost-per-package 3.02d0
+   :millilitre-per-package 1100)
+
+  (with-connection (db)
 
     (let* ((food-result
             (quaremain.utilities.database::get-datum-by-id :food 3))
