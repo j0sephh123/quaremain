@@ -1,4 +1,4 @@
-![ci](https://github.com/momozor/quaremain/workflows/ci/badge.svg?branch=master)
+![CI](https://github.com/momozor/quaremain/workflows/ci/badge.svg?branch=master)
 
 # Quaremain
 
