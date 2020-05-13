@@ -32,7 +32,7 @@
                 :update-stock-by-category-and-id
                 :sum-stocks-from-table
                 :get-coerced-stock-by-category-and-id
-                :delete-stock-by-category-and-id)
+                :delete-stock-by-id)
 
   (:import-from :quaremain.utilities.database
                 :migrate-tables
@@ -251,7 +251,7 @@
   (cors-handler *response*)
   (handler-case
       (progn
-        (delete-stock-by-category-and-id |stockCategory| id)
+        (delete-stock-by-id |stockCategory| id)
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))

@@ -32,32 +32,34 @@
 (teardown
  (quaremain.utilities.database::drop-tables))
 
+;;; quaremain.utilities.database
+
 (deftest database-migration-food-test
-  
-  (let* ((stock
-          (with-connection (db)
-            (quaremain.utilities.database::get-datum-by-id :food 1)))
-         (calories (getf stock :calories-per-package))
-         (id (getf stock :id))
-         (cost (getf stock :cost-per-package))
-         (description (getf stock :description))
-         (name (getf stock :name))
-         (amount (getf stock :amount)))
+    
+    (let* ((stock
+            (with-connection (db)
+              (quaremain.utilities.database::get-datum-by-id :food 1)))
+           (calories (getf stock :calories-per-package))
+           (id (getf stock :id))
+           (cost (getf stock :cost-per-package))
+           (description (getf stock :description))
+           (name (getf stock :name))
+           (amount (getf stock :amount)))
 
-    (testing "name of first row"
-             (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
+      (testing "name of first row"
+               (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
 
-    (testing "amount of first row"
-             (ok (= amount 12)))
+      (testing "amount of first row"
+               (ok (= amount 12)))
 
-    (testing "cost-per-package of first row"
-             (ok (= cost 12.02d0)))
+      (testing "cost-per-package of first row"
+               (ok (= cost 12.02d0)))
 
-    (testing "calories-per-package of first row"
-             (ok (= calories 1200)))
+      (testing "calories-per-package of first row"
+               (ok (= calories 1200)))
 
-    (testing "id of first row"
-             (ok (= id 1)))))
+      (testing "id of first row"
+               (ok (= id 1)))))
 
 (deftest database-migration-water-test
   
@@ -335,4 +337,22 @@
 
       (testing "medicine second row"
                (ng
-                (quaremain.utilities.database::get-datum-by-id :medicine 2)))))
+                (quaremain.utilities.database::get-datum-by-id :medicine 2)))
+
+      ;; reset database for next package testing
+      (quaremain.utilities.database::drop-tables)
+      (quaremain.utilities.database::migrate-tables)
+      (quaremain.utilities.database::migrate-seeds)))
+
+;;; quaremain.models.stock.stock
+(deftest delete-stock-by-id
+    (quaremain.models.stock.stock::delete-stock-by-id
+     "weapon"
+     2)
+
+  (let ((weapon-result
+         (quaremain.utilities.database::row-exist-by-id?
+          :weapon 2)))
+
+    (testing "weapon second row"
+             (ng weapon-result))))

@@ -41,7 +41,7 @@
            :update-stock-by-category-and-id
            :sum-stocks-from-table
            :get-coerced-stock-by-category-and-id
-           :delete-stock-by-category-and-id))
+           :delete-stock-by-id))
 (in-package :quaremain.models.stock.stock)
 
 (defclass <stock> ()
@@ -338,9 +338,8 @@
     (coerce-cost-per-package package)
     package))
 
-(defun delete-stock-by-category-and-id (stock-category id)
-  (let ((table-name
-         (string-to-keyword stock-category)))
-
-    (with-connection (db)
-      (delete-datum-by-id table-name id))))
+(defun delete-stock-by-id (stock-category id)
+  (with-connection (db)
+    (delete-datum-by-id
+     (string-to-keyword stock-category)
+     id)))
