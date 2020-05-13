@@ -27,4 +27,4 @@ jobs:
 
     - name: Building executable
       run: |
-        cd $HOME/quicklisp/local-projects/quaremain; make test;
+        cd $HOME/quicklisp/local-projects/quaremain; make;
