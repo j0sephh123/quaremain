@@ -16,7 +16,7 @@
 
 (in-package :cl-user)
 (defpackage quaremain.utilities.database
-  (:documentation "Database access handler.")
+  (:documentation "Database utilities.")
   (:use :cl)
 
   (:import-from :alexandria
@@ -188,7 +188,18 @@
 (defmacro delete-datum (table-name id)
   `(execute
     (delete-from ,table-name
-      (where (:= :id ,id)))))
+                 (where (:= :id ,id)))))
+
+(defun row-exist-by-id? (table-name id)
+  (not (null
+        (with-connection (db)
+          (get-datum-by-id table-name id)))))
+
+(defun row-exist-by-name? (table-name name)
+  (not (null
+        (with-connection (db)
+          (get-datum-by-name table-name name)))))
+
 
 (defun food-seed-migrator ()
   (let* ((all-data
@@ -202,11 +213,11 @@
       (mapcar
        #'(lambda (item)
            (create-datum :food
-             :name (alexandria:assoc-value item :name)
-             :description (alexandria:assoc-value item :description)
-             :amount (alexandria:assoc-value item :amount)
-             :cost-per-package (alexandria:assoc-value item :cost-per-package)
-             :calories-per-package (alexandria:assoc-value item :calories-per-package)))
+                         :name (alexandria:assoc-value item :name)
+                         :description (alexandria:assoc-value item :description)
+                         :amount (alexandria:assoc-value item :amount)
+                         :cost-per-package (alexandria:assoc-value item :cost-per-package)
+                         :calories-per-package (alexandria:assoc-value item :calories-per-package)))
        
        json-data))))
 
@@ -278,17 +289,3 @@
     (error (exception)
       (log:error exception)
       (log:error "Failed to migrate database seeds.."))))
-
-(defun row-exist-by-id? (table-name id)
-  (if (null
-       (with-connection (db)
-         (get-datum-by-id table-name id)))
-      nil
-      t))
-
-(defun row-exist-by-name? (table-name name)
-  (if (null
-       (with-connection (db)
-         (get-datum-by-name table-name name)))
-      nil
-      t))
