@@ -190,6 +190,17 @@
     (delete-from ,table-name
       (where (:= :id ,id)))))
 
+(defun row-exist-by-id? (table-name id)
+  (not (null
+        (with-connection (db)
+          (get-datum-by-id table-name id)))))
+
+(defun row-exist-by-name? (table-name name)
+  (not (null
+        (with-connection (db)
+          (get-datum-by-name table-name name)))))
+
+
 (defun food-seed-migrator ()
   (let* ((all-data
           (uiop:read-file-string
@@ -278,17 +289,3 @@
     (error (exception)
       (log:error exception)
       (log:error "Failed to migrate database seeds.."))))
-
-(defun row-exist-by-id? (table-name id)
-  (if (null
-       (with-connection (db)
-         (get-datum-by-id table-name id)))
-      nil
-      t))
-
-(defun row-exist-by-name? (table-name name)
-  (if (null
-       (with-connection (db)
-         (get-datum-by-name table-name name)))
-      nil
-      t))

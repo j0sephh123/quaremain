@@ -83,28 +83,6 @@ migrate-client:
 	mv client/dist/index.html templates/experimental.html
 	cp -r client/dist/* static/
 
-install: $(EXECUTABLE) $(CLIENT_EXECUTABLE)
-	mkdir -p $(DESTDIR)/var
-	mkdir $(DESTDIR)/bin
-	install $(EXECUTABLE) $(DESTDIR)
-	install $(CLIENT_EXECUTABLE) $(DESTDIR)/bin
-	cp -r templates $(DESTDIR)
-	cp -r static $(DESTDIR)
-	touch $(DATABASE)
-	chmod -R o+rw $(DESTDIR)/var
-	echo "#!/bin/sh" >> $(DESTDIR)/bin/$(EXECUTABLE)
-	echo "cd $(DESTDIR) && ./$(EXECUTABLE)" >> $(DESTDIR)/bin/$(EXECUTABLE)
-	chmod o+rx $(DESTDIR)/bin/$(EXECUTABLE)
-
-uninstall:
-	rm -rf $(DESTDIR)/templates
-	rm -rf $(DESTDIR)/bin
-	rm -rf $(DESTDIR)/static
-	rm -f $(DATABASE)
-	rm -f $(DESTDIR)/$(EXECUTABLE)
-	rmdir $(DESTDIR)/var
-	rmdir $(DESTDIR)
-
 clean:
 	rm -rf bin/
 	rm -f $(EXECUTABLE)
