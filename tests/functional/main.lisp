@@ -346,6 +346,20 @@
 
 ;;; quaremain.models.stock.stock
 
+(deftest get-coerced-stock-cost-by-id
+    (let* ((food-result
+            (quaremain.models.stock.stock::get-coerced-stock-cost-by-id
+             "food"
+             1))
+           (food-cost
+            (getf food-result :cost-per-package)))
+      
+      (testing "first row of food"
+               (ok
+                (=
+                 food-cost
+                 12.02)))))
+
 (deftest delete-stock-by-id
     (quaremain.models.stock.stock::delete-stock-by-id
      "weapon"

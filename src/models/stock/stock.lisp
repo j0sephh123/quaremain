@@ -40,7 +40,7 @@
   (:export :create-new-stock
            :update-stock-by-category-and-id
            :sum-stocks-from-table
-           :get-coerced-stock-by-category-and-id
+           :get-coerced-stock-cost-by-id
            :delete-stock-by-id))
 (in-package :quaremain.models.stock.stock)
 
@@ -325,18 +325,20 @@
             table-data)))
     table-data))
 
-(defun get-coerced-stock-by-category-and-id (stock-category id)
+(defun get-coerced-stock-cost-by-id (stock-category id)
+  (let ((table-name
+         (string-to-keyword stock-category)))
+    
+    (unless (row-exist-by-id? table-name id)
+      (error 'row-doesnt-exist-error
+             :table-name stock-category
+             :id id))
 
-  (unless (row-exist-by-id? (string-to-keyword stock-category) id)
-    (error 'row-doesnt-exist-error
-           :table-name (string-to-keyword stock-category)
-           :id id))
-  
-  (let ((package
-         (with-connection (db)
-           (get-datum-by-id (string-to-keyword stock-category) id))))
-    (coerce-cost-per-package package)
-    package))
+    (let ((stock
+           (with-connection (db)
+             (get-datum-by-id table-name id))))
+      (coerce-cost-per-package stock)
+      stock)))
 
 (defun delete-stock-by-id (stock-category id)
   (with-connection (db)

@@ -31,7 +31,7 @@
                 :create-new-stock
                 :update-stock-by-category-and-id
                 :sum-stocks-from-table
-                :get-coerced-stock-by-category-and-id
+                :get-coerced-stock-cost-by-id
                 :delete-stock-by-id)
 
   (:import-from :quaremain.utilities.database
@@ -137,12 +137,12 @@
                                +status-code-definition+))))))
 
 (defroute "/api/app/list/show/:id" (&key
-                                        id
-                                        |stockCategory|)
+                                    id
+                                    |stockCategory|)
   (cors-handler *response*)
   (handler-case
       (let ((stock
-             (get-coerced-stock-by-category-and-id
+             (get-coerced-stock-cost-by-id
               |stockCategory|
               id)))
         (render-json (list
