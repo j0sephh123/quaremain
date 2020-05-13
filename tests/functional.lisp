@@ -217,3 +217,12 @@
                 (=
                  medicine-amount
                  923))))))
+
+(deftest delete-datum
+  (with-connection (db)
+    (quaremain.utilities.database::delete-datum :medicine 1)
+    (quaremain.utilities.database::delete-datum :medicine 2)
+
+    (testing "medicine"
+             (ng
+              (quaremain.utilities.database::get-datum-by-id :medicine 1)))))
