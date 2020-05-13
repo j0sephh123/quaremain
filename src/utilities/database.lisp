@@ -149,8 +149,9 @@
       (uiop:quit 1))))
 
 (defmacro create-datum (table-name &body key-and-value)
-  `(insert-into ,table-name
-     (set= ,@key-and-value)))
+  `(execute
+    (insert-into ,table-name
+      (set= ,@key-and-value))))
 
 (defmacro get-all-datum (table-name)
   `(retrieve-all
@@ -174,18 +175,20 @@
                         amount
                         cost-per-package
                         &body sxql-column-specifier-forms)
-  `(sxql:update ,table-name
-     (sxql:set= :name ,name
-                :description ,description
+  `(execute
+    (update ,table-name
+      (set= :name ,name
+            :description ,description
 
-                :amount ,amount
-                :cost-per-package ,cost-per-package
-                ,@sxql-column-specifier-forms)
-     (sxql:where (:= :id ,id))))
+            :amount ,amount
+            :cost-per-package ,cost-per-package
+            ,@sxql-column-specifier-forms)
+      (where (:= :id ,id)))))
 
 (defmacro delete-datum (table-name id)
-  `(delete-from ,table-name
-     (where (:= :id ,id))))
+  `(execute
+    (delete-from ,table-name
+      (where (:= :id ,id)))))
 
 (defun food-seed-migrator ()
   (let* ((all-data
@@ -198,13 +201,12 @@
       
       (mapcar
        #'(lambda (item)
-           (execute
-            (create-datum :food
-              :name (alexandria:assoc-value item :name)
-              :description (alexandria:assoc-value item :description)
-              :amount (alexandria:assoc-value item :amount)
-              :cost-per-package (alexandria:assoc-value item :cost-per-package)
-              :calories-per-package (alexandria:assoc-value item :calories-per-package))))
+           (create-datum :food
+             :name (alexandria:assoc-value item :name)
+             :description (alexandria:assoc-value item :description)
+             :amount (alexandria:assoc-value item :amount)
+             :cost-per-package (alexandria:assoc-value item :cost-per-package)
+             :calories-per-package (alexandria:assoc-value item :calories-per-package)))
        
        json-data))))
 
@@ -219,13 +221,12 @@
       
       (mapcar
        #'(lambda (item)
-           (execute
-            (create-datum :water
-              :name (alexandria:assoc-value item :name)
-              :description (alexandria:assoc-value item :description)
-              :amount (alexandria:assoc-value item :amount)
-              :cost-per-package (alexandria:assoc-value item :cost-per-package)
-              :millilitre-per-package (alexandria:assoc-value item :millilitre-per-package))))
+           (create-datum :water
+             :name (alexandria:assoc-value item :name)
+             :description (alexandria:assoc-value item :description)
+             :amount (alexandria:assoc-value item :amount)
+             :cost-per-package (alexandria:assoc-value item :cost-per-package)
+             :millilitre-per-package (alexandria:assoc-value item :millilitre-per-package)))
        
        json-data))))
 
@@ -239,12 +240,11 @@
     (with-connection (db)
       
       (mapcar #'(lambda (item)
-                  (execute
-                   (create-datum :medicine
-                     :name (alexandria:assoc-value item :name)
-                     :description (alexandria:assoc-value item :description)
-                     :amount (alexandria:assoc-value item :amount)
-                     :cost-per-package (alexandria:assoc-value item :cost-per-package))))
+                  (create-datum :medicine
+                    :name (alexandria:assoc-value item :name)
+                    :description (alexandria:assoc-value item :description)
+                    :amount (alexandria:assoc-value item :amount)
+                    :cost-per-package (alexandria:assoc-value item :cost-per-package)))
               
               json-data))))
 
@@ -257,13 +257,12 @@
 
     (with-connection (db)
       
-      (mapcar #'(lambda (item)
-                  (execute
-                   (create-datum :weapon
-                     :name (alexandria:assoc-value item :name)
-                     :description (alexandria:assoc-value item :description)
-                     :amount (alexandria:assoc-value item :amount)
-                     :cost-per-package (alexandria:assoc-value item :cost-per-package))))
+      (mapcar #'(lambda (item)                  
+                  (create-datum :weapon
+                    :name (alexandria:assoc-value item :name)
+                    :description (alexandria:assoc-value item :description)
+                    :amount (alexandria:assoc-value item :amount)
+                    :cost-per-package (alexandria:assoc-value item :cost-per-package)))
               
               json-data))))
 
@@ -283,15 +282,13 @@
 (defun row-exist-by-id? (table-name id)
   (if (null
        (with-connection (db)
-         (execute
-          (get-datum-by-id table-name id))))
+         (get-datum-by-id table-name id)))
       nil
       t))
 
 (defun row-exist-by-name? (table-name name)
   (if (null
        (with-connection (db)
-         (execute
-          (get-datum-by-name table-name name))))
+         (get-datum-by-name table-name name)))
       nil
       t))
