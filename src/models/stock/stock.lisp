@@ -227,6 +227,4 @@
                :table-name table-name
                :id id))
       
-      (delete-datum-by-id
-       (string-to-keyword stock-category)
-       id))))
+      (delete-datum-by-id table-name id))))
