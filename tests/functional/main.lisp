@@ -314,25 +314,25 @@
                  medicine-amount
                  923))))))
 
-(deftest delete-datum
-  (with-connection (db)
+(deftest delete-datum-by-id
+    (with-connection (db)
 
-    (quaremain.utilities.database::delete-datum :water 1)
-    (quaremain.utilities.database::delete-datum :medicine 1)
-    (quaremain.utilities.database::delete-datum :medicine 2)
+      (quaremain.utilities.database::delete-datum-by-id :water 1)
+      (quaremain.utilities.database::delete-datum-by-id :medicine 1)
+      (quaremain.utilities.database::delete-datum-by-id :medicine 2)
 
-    (testing "water first row"
-             (ng
-              (quaremain.utilities.database::get-datum-by-id :water 1)))
+      (testing "water first row"
+               (ng
+                (quaremain.utilities.database::get-datum-by-id :water 1)))
 
-    (testing "water second row"
-             (ok
-              (quaremain.utilities.database::get-datum-by-id :water 2)))
+      (testing "water second row"
+               (ok
+                (quaremain.utilities.database::get-datum-by-id :water 2)))
 
-    (testing "medicine first row"
-             (ng
-              (quaremain.utilities.database::get-datum-by-id :medicine 1)))
+      (testing "medicine first row"
+               (ng
+                (quaremain.utilities.database::get-datum-by-id :medicine 1)))
 
-    (testing "medicine second row"
-             (ng
-              (quaremain.utilities.database::get-datum-by-id :medicine 2)))))
+      (testing "medicine second row"
+               (ng
+                (quaremain.utilities.database::get-datum-by-id :medicine 2)))))

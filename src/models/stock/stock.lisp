@@ -28,7 +28,7 @@
                 :get-all-datum
                 :get-datum-by-id
                 :update-datum
-                :delete-datum
+                :delete-datum-by-id
                 :row-exist-by-name?
                 :row-exist-by-id?)
 
@@ -343,4 +343,4 @@
          (string-to-keyword stock-category)))
 
     (with-connection (db)
-      (delete-datum table-name id))))
+      (delete-datum-by-id table-name id))))

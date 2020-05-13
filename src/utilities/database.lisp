@@ -67,7 +67,7 @@
            :get-datum-by-id
            :get-datum-by-name
            :update-datum
-           :delete-datum))
+           :delete-datum-by-id))
 (in-package :quaremain.utilities.database)
 
 (defun db ()
@@ -185,7 +185,7 @@
             ,@sxql-column-specifier-forms)
       (where (:= :id ,id)))))
 
-(defmacro delete-datum (table-name id)
+(defmacro delete-datum-by-id (table-name id)
   `(execute
     (delete-from ,table-name
                  (where (:= :id ,id)))))
