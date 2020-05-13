@@ -134,3 +134,36 @@
 
     (testing "id is equal to 2"
              (ok (= id 2)))))
+
+(deftest get-datum-by-id
+  (with-connection (db)
+    (let* ((result
+            (quaremain.utilities.database::get-datum-by-id :medicine 1))
+           (amount (getf result :amount)))
+
+      (testing ""
+               (ok
+                (= amount
+                   4))))))
+
+(deftest create-new-row  
+  (with-connection (db)
+    (quaremain.utilities.database::create-datum
+        :food
+      :name "Jaguar"
+      :description "Food"
+      :amount 3
+      :cost-per-package 12.0
+      :calories-per-package 1492))
+
+  (with-connection (db)
+    (let* ((food-result
+            (quaremain.utilities.database::get-datum-by-id :food 3))
+           (food-description
+            (getf food-result :description)))
+
+      (testing "food"
+               (ok
+                (string=
+                 food-description
+                 "Food"))))))
