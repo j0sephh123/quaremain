@@ -111,7 +111,7 @@
       (string-equal "" (get-calories-per-package food))))
 
 (defmethod unique-property-value-empty? ((water <water>))
-  (or (null (get-millilitre-per-package water))
+  (or (null (get-millilitre-per-stock water))
       (string-equal "" (get-millilitre-per-package water))))
 
 
@@ -218,7 +218,7 @@
                              :amount amount
                              :cost-per-package cost-per-package)))))
 
-(defun sum-all-cost-per-package (packages)
+(defun sum-all-cost-per-stock (packages)
   (dolist (package packages)
     (setf (getf package :cost-per-package)
           (coerce (* (getf package :amount)
@@ -232,22 +232,24 @@
            (getf package property-key)))
   package)
 
-(defun sum-all-calories-per-package (packages)
-  (dolist (package packages)
-    (sum-unique-property-value-by-amount package :calories-per-package))
-  packages)
+(defun sum-all-calories-per-stock (stocks)
+  (dolist (stock stocks)
+    (sum-unique-property-value-by-amount stock :calories-per-package))
+  stocks)
 
-(defun sum-all-millilitre-per-package (packages)
-  (dolist (package packages)
-    (sum-unique-property-value-by-amount package :millilitre-per-package))
-  packages)
+(defun sum-all-millilitre-per-stock (stocks)
+  (dolist (stock stocks)
+    (sum-unique-property-value-by-amount stock :millilitre-per-package))
+  stocks)
 
 
-(defun coerce-cost-per-stock (package)
-  (let ((cost-per-package (getf package :cost-per-package)))
-    (setf (getf package :cost-per-package)
-          (coerce cost-per-package 'single-float)))
-  package)
+(defun coerce-cost-per-stock (stock)
+  (let ((cost-per-stock
+         (getf stock :cost-per-package)))
+    
+    (setf (getf stock :cost-per-package)
+          (coerce cost-per-stock 'single-float)))
+  stock)
 
 
 (defun update-stock-by-id (&key
@@ -313,13 +315,13 @@
          (with-connection (db)
            (get-all-datum table-name))))
     
-    (sum-all-cost-per-package     
+    (sum-all-cost-per-stock
      (cond ((eql table-name :food)
-            (sum-all-calories-per-package stocks)
+            (sum-all-calories-per-stock stocks)
             stocks)
            
            ((eql table-name :water)
-            (sum-all-millilitre-per-package stocks)
+            (sum-all-millilitre-per-stock stocks)
             stocks)
 
            (t

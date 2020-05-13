@@ -34,21 +34,21 @@
 
 (deftest quaremain.models.stock.stock
     (let* ((raw-result
-            (quaremain.models.stock.stock::sum-all-cost-per-package
+            (quaremain.models.stock.stock::sum-all-cost-per-stock
              '((:cost-per-package 2.2 :amount 3))))
            (total-cost (getf (car raw-result) :cost-per-package))
            (amount (getf (car raw-result) :amount))
            
            (food-result
-            (quaremain.models.stock.stock::sum-all-calories-per-package
+            (quaremain.models.stock.stock::sum-all-calories-per-stock
              '((:id 1 :amount 2 :calories-per-package 219))))
-           (calories-per-package
+           (calories-per-stock
             (getf (car food-result) :calories-per-package))
 
            (water-result
-            (quaremain.models.stock.stock::sum-all-millilitre-per-package
+            (quaremain.models.stock.stock::sum-all-millilitre-per-stock
              '((:id 2 :amount 9 :millilitre-per-package 9293))))
-           (millilitre-per-package
+           (millilitre-per-stock
             (getf (car water-result) :millilitre-per-package))
 
            (unique-property-result
@@ -68,11 +68,11 @@
 
       (testing ""
                (ok
-                (= calories-per-package 438)))
+                (= calories-per-stock 438)))
 
       (testing ""
                (ok
-                (= millilitre-per-package 83637)))
+                (= millilitre-per-stock 83637)))
 
       (testing ""
                (ok
