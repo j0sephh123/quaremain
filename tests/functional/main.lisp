@@ -360,18 +360,59 @@
      :cost-per-package 27.02d20
      :calories-per-package 923)
 
+    (quaremain.models.stock.stock::create-stock
+     :stock-category :water
+     :name "Fuviz"
+     :description "refreshing"
+     :amount 5
+     :cost-per-package 3.02d0
+     :millilitre-per-package 1100)
+
     (let* ((food-result
             (quaremain.utilities.database::get-datum-by-id :food 3))
            (food-amount
-            (getf food-result :amount)))
+            (getf food-result :amount))
+           (food-calories
+            (getf food-result :calories-per-package))
+
+           (water-result
+            (quaremain.utilities.database::get-datum-by-id :water 3))
+           (water-amount
+            (getf water-result :amount))
+           (water-millilitre
+            (getf water-result :millilitre-per-package))
+           (water-cost
+            (getf water-result :cost-per-package)))
 
       (testing "third row of food"
                (ok
                 (= food-amount
                    24)))
 
+      (testing "third row of food"
+               (ok
+                (= food-calories
+                   923)))
+
+      (testing "third row of water"
+               (ok
+                (= water-amount
+                   5)))
+
+      (testing "third row of water"
+               (ok
+                (= water-millilitre
+                   1100)))
+
+      (testing "third row of water"
+               (ok
+                (= water-cost
+                   3.02d0)))
+
       (quaremain.utilities.database::delete-datum-by-id
-       :food 3))))
+       :food 3)
+      (quaremain.utilities.database::delete-datum-by-id
+       :water 3))))
 
 (deftest get-stocks-sum
     (let* ((food-result
