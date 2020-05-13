@@ -340,6 +340,14 @@
 
 (defun delete-stock-by-id (stock-category id)
   (with-connection (db)
-    (delete-datum-by-id
-     (string-to-keyword stock-category)
-     id)))
+    (let ((table-name
+           (string-to-keyword stock-category)))
+      
+      (unless (row-exist-by-id? table-name id)
+        (error 'row-doesnt-exist-error
+               :table-name table-name
+               :id id))
+      
+      (delete-datum-by-id
+       (string-to-keyword stock-category)
+       id))))

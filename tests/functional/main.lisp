@@ -345,6 +345,7 @@
       (quaremain.utilities.database::migrate-seeds)))
 
 ;;; quaremain.models.stock.stock
+
 (deftest delete-stock-by-id
     (quaremain.models.stock.stock::delete-stock-by-id
      "weapon"
