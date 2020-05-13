@@ -54,53 +54,55 @@
                        calories-per-package
                        millilitre-per-package)
   
-  (cond ((string-equal stock-category "food")
-         (create-datum
-          :food
-          :name name
-          :description description
-          :amount amount
-          :cost-per-package cost-per-package
-          :calories-per-package calories-per-package))
+  (with-connection (db)
+    
+    (cond ((string-equal stock-category "food")
+           (create-datum
+            :food
+            :name name
+            :description description
+            :amount amount
+            :cost-per-package cost-per-package
+            :calories-per-package calories-per-package))
 
-        ((string-equal stock-category "water")
-         (create-datum
-          :water
-          :name name
-          :description description
-          :amount amount
-          :cost-per-package cost-per-package
-          :millilitre-per-package millilitre-per-package))
+          ((string-equal stock-category "water")
+           (create-datum
+            :water
+            :name name
+            :description description
+            :amount amount
+            :cost-per-package cost-per-package
+            :millilitre-per-package millilitre-per-package))
 
-        ((string-equal stock-category "medicine")
-         (create-datum
-          :medicine
-          :name name
-          :description description
-          :amount amount
-          :cost-per-package cost-per-package))
+          ((string-equal stock-category "medicine")
+           (create-datum
+            :medicine
+            :name name
+            :description description
+            :amount amount
+            :cost-per-package cost-per-package))
 
-        ((string-equal stock-category "weapon")
-         (create-datum
-          :weapon
-          :name name
-          :description description
-          :amount amount
-          :cost-per-package cost-per-package))))
+          ((string-equal stock-category "weapon")
+           (create-datum
+            :weapon
+            :name name
+            :description description
+            :amount amount
+            :cost-per-package cost-per-package)))))
 
-(defun sum-all-cost-per-stock (packages)
-  (dolist (package packages)
-    (setf (getf package :cost-per-package)
-          (coerce (* (getf package :amount)
-                     (getf package :cost-per-package))
+(defun sum-all-cost-per-stock (stocks)
+  (dolist (stock stocks)
+    (setf (getf stock :cost-per-package)
+          (coerce (* (getf stock :amount)
+                     (getf stock :cost-per-package))
                   'single-float)))
-  packages)
+  stocks)
 
-(defun sum-unique-property-value-by-amount (package property-key)
-  (setf (getf package property-key)
-        (* (getf package :amount)
-           (getf package property-key)))
-  package)
+(defun sum-unique-property-value-by-amount (stock property-key)
+  (setf (getf stock property-key)
+        (* (getf stock :amount)
+           (getf stock property-key)))
+  stock)
 
 (defun sum-all-calories-per-stock (stocks)
   (dolist (stock stocks)
@@ -209,12 +211,14 @@
 
     (let ((stock
            (with-connection (db)
+             
              (get-datum-by-id table-name id))))
       (coerce-cost-per-stock stock)
       stock)))
 
 (defun delete-stock-by-id (stock-category id)
   (with-connection (db)
+    
     (let ((table-name
            (string-to-keyword stock-category)))
       

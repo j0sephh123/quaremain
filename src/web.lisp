@@ -21,6 +21,7 @@
         :caveman2
         :quaremain.utilities.config
         :quaremain.view)
+  
   (:import-from :quaremain.utilities.exception
                 :stock-missing-property-value-error
                 :row-doesnt-exist-error
@@ -197,6 +198,7 @@
                        :cost-per-package |costPerPackage|
                        :calories-per-package |caloriesPerPackage|
                        :millilitre-per-package |millilitrePerPackage|))))
+    
     (stock-missing-property-value-error (exception)
       (log:error "~A" exception)
       (render-json (list
@@ -223,6 +225,7 @@
   (cors-handler *response*)
   (handler-case
       (progn
+        
         (update-stock-by-id :stock-category |stockCategory|
                             :id id
                             :name |name|
@@ -234,6 +237,7 @@
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
+    
     (row-doesnt-exist-error (exception)
       (log:error "~A" exception)
       (render-json (list
@@ -251,10 +255,12 @@
   (cors-handler *response*)
   (handler-case
       (progn
+        
         (delete-stock-by-id |stockCategory| id)
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+))))
+    
     (row-doesnt-exist-error (exception)
       (log:error "~A" exception)
       (render-json (list
@@ -266,6 +272,7 @@
   (cors-handler *response*)
   (handler-case
       (progn
+        
         (drop-tables)
         (migrate-tables)
         (render-json (list
