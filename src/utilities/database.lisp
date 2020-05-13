@@ -155,7 +155,7 @@
 (defun get-datum-by-name (table-name name)
   `(retrieve-one
     (select :* (from ,table-name)
-            (where (:= :name ,name))))))
+            (where (:= :name ,name)))))
 
 (defmacro update-datum (table-name
                         id
@@ -189,7 +189,7 @@
       (mapcar
        #'(lambda (item)
            (execute
-            (insert-datum-into-table :food
+            (create-datum :food
               :name (alexandria:assoc-value item :name)
               :description (alexandria:assoc-value item :description)
               :amount (alexandria:assoc-value item :amount)
@@ -210,7 +210,7 @@
       (mapcar
        #'(lambda (item)
            (execute
-            (insert-datum-into-table :water
+            (create-datum :water
               :name (alexandria:assoc-value item :name)
               :description (alexandria:assoc-value item :description)
               :amount (alexandria:assoc-value item :amount)
@@ -230,7 +230,7 @@
       
       (mapcar #'(lambda (item)
                   (execute
-                   (insert-datum-into-table :medicine
+                   (create-datum :medicine
                      :name (alexandria:assoc-value item :name)
                      :description (alexandria:assoc-value item :description)
                      :amount (alexandria:assoc-value item :amount)
@@ -249,7 +249,7 @@
       
       (mapcar #'(lambda (item)
                   (execute
-                   (insert-datum-into-table :weapon
+                   (create-datum :weapon
                      :name (alexandria:assoc-value item :name)
                      :description (alexandria:assoc-value item :description)
                      :amount (alexandria:assoc-value item :amount)
@@ -272,12 +272,12 @@
 
 (defun row-exist-by-id? (table-name id)
   (if (null
-       (get-datum-from-table table-name id))
+       (get-datum-by-id table-name id))
       nil
       t))
 
 (defun row-exist-by-name? (table-name name)
   (if (null
-       (get-datum-from-table-by-name table-name name))
+       (get-datum-by-name table-name name))
       nil
       t))
