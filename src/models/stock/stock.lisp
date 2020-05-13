@@ -243,7 +243,7 @@
   packages)
 
 
-(defun coerce-cost-per-package (package)
+(defun coerce-cost-per-stock (package)
   (let ((cost-per-package (getf package :cost-per-package)))
     (setf (getf package :cost-per-package)
           (coerce cost-per-package 'single-float)))
@@ -338,7 +338,7 @@
     (let ((stock
            (with-connection (db)
              (get-datum-by-id table-name id))))
-      (coerce-cost-per-package stock)
+      (coerce-cost-per-stock stock)
       stock)))
 
 (defun delete-stock-by-id (stock-category id)

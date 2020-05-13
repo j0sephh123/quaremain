@@ -62,7 +62,7 @@
 
       (testing ""
                (ok
-                (equal (quaremain.models.stock.stock::coerce-cost-per-package
+                (equal (quaremain.models.stock.stock::coerce-cost-per-stock
                         '(:id 1 :amount 4 :cost-per-package 9239.84))
                        '(:id 1 :amount 4 :cost-per-package 9239.84))))
 
