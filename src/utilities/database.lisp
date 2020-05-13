@@ -32,7 +32,10 @@
                 :from
                 :select
                 :where
-                :delete-from)
+                :delete-from
+                :insert-into
+                :set=
+                :update)
   (:import-from :quaremain.utilities.config
                 :+database-path+
                 :+seeds-directory+)
@@ -49,12 +52,12 @@
            :with-connection
            :migrate-tables
            :drop-tables
-           :insert-datum-into-table
-           :get-all-datum-from-table
-           :get-datum-from-table
-           :get-datum-from-table-by-name
-           :generate-update-datum
-           :delete-datum-from-table))
+           :create-datum
+           :get-all-datum
+           :get-datum-by-id
+           :get-datum-by-name
+           :update-datum
+           :delete-datum))
 (in-package :quaremain.utilities.database)
 
 (defun db ()
@@ -135,9 +138,44 @@
                   Quaremain's project directory?")
       (uiop:quit 1))))
 
-(defmacro insert-datum-into-table (table-name &body key-and-value)
-  `(sxql:insert-into ,table-name
-     (sxql:set= ,@key-and-value)))
+(defmacro create-datum (table-name &body key-and-value)
+  `(insert-into ,table-name
+     (set= ,@key-and-value)))
+
+(defun get-all-datum (table-name)
+  `(retrieve-all
+    (select :*
+      (from ,table-name))))
+
+(defun get-datum-by-id (table-name id)
+  `(retrieve-one
+    (select :* (from ,table-name)
+            (where (:= :id ,id)))))
+
+(defun get-datum-by-name (table-name name)
+  `(retrieve-one
+    (select :* (from ,table-name)
+            (where (:= :name ,name))))))
+
+(defmacro update-datum (table-name
+                        id
+                        name
+                        description
+                        amount
+                        cost-per-package
+                        &body sxql-column-specifier-forms)
+  `(sxql:update ,table-name
+     (sxql:set= :name ,name
+                :description ,description
+
+                :amount ,amount
+                :cost-per-package ,cost-per-package
+                ,@sxql-column-specifier-forms)
+     (sxql:where (:= :id ,id))))
+
+(defmacro delete-datum (table-name id)
+  `(delete-from ,table-name
+     (where (:= :id ,id))))
 
 (defun food-seed-migrator ()
   (let* ((all-data
@@ -232,40 +270,6 @@
       (log:error exception)
       (log:error "Failed to migrate database seeds.."))))
 
-
-(defun get-all-datum-from-table (table-name)
-  (with-connection (db)
-    (retrieve-all
-     (select :*
-             (from table-name)))))
-
-(defun get-datum-from-table (table-name id)
-  (with-connection (db)
-    (retrieve-one
-     (select :* (from table-name)
-             (where (:= :id id))))))
-
-(defun get-datum-from-table-by-name (table-name name)
-  (with-connection (db)
-    (retrieve-one
-     (select :* (from table-name)
-             (where (:= :name name))))))
-
-(defmacro generate-update-datum (table-name
-                                 id
-                                 name
-                                 description
-                                 amount
-                                 cost-per-package
-                                 &body sxql-column-specifier-forms)
-  `(sxql:update ,table-name
-     (sxql:set= :name ,name
-                :description ,description
-                :amount ,amount
-                :cost-per-package ,cost-per-package
-                ,@sxql-column-specifier-forms)
-     (sxql:where (:= :id ,id))))
-
 (defun row-exist-by-id? (table-name id)
   (if (null
        (get-datum-from-table table-name id))
@@ -277,14 +281,3 @@
        (get-datum-from-table-by-name table-name name))
       nil
       t))
-
-
-(defun delete-datum-from-table (table-name id)
-  (with-connection (db)
-    (if (row-exist-by-id? table-name id)
-        (execute
-         (delete-from table-name
-           (where (:= :id id))))
-        (error 'row-doesnt-exist-error
-               :table-name table-name
-               :id id))))
