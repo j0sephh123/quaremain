@@ -16,14 +16,14 @@
 
 ;;;; quaremain/tests/main - Primary functional tests.
 
-(defpackage quaremain/tests/functional
+(defpackage quaremain/tests/functional/main
   (:use :cl
         :quaremain
         :rove)
   (:import-from :quaremain.utilities.database
                 :with-connection
                 :db))
-(in-package :quaremain/tests/functional)
+(in-package :quaremain/tests/functional/main)
 
 (setup
  (quaremain.utilities.database::migrate-tables)

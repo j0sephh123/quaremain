@@ -55,16 +55,27 @@ for preparation of emergency times"
   :build-operation "deploy-op"
   :build-pathname "quaremain"
   :entry-point "quaremain:main"
-  :in-order-to ((test-op (test-op "quaremain/tests"))))
+  :in-order-to ((test-op (test-op "quaremain/tests/unit")
+                         (test-op "quaremain/tests/functional"))))
 
-(defsystem "quaremain/tests"
+(defsystem "quaremain/tests/functional"
   :author "Momozor"
   :license "GPL-3.0-or-later"
   :depends-on ("quaremain"
                "rove")
-  :components ((:module "tests"
+  :components ((:module "tests/functional"
                         :components
-                        ((:file "unit")
-                         (:file "functional"))))
-  :description "Test system for quaremain"
+                        ((:file "main"))))
+  :description "Functional test system for quaremain"
+  :perform (test-op (op c) (symbol-call :rove :run c)))
+
+(defsystem "quaremain/tests/unit"
+  :author "Momozor"
+  :license "GPL-3.0-or-later"
+  :depends-on ("quaremain"
+               "rove")
+  :components ((:module "tests/unit"
+                        :components
+                        ((:file "main"))))
+  :description "Unit test system for quaremain"
   :perform (test-op (op c) (symbol-call :rove :run c)))

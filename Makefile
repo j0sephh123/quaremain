@@ -10,7 +10,7 @@ CLIENT_EXECUTABLE=quaremain-client
 VERSION_BUMPER_SCRIPT=version-bumper.sh
 VERSION=0.7.7
 
-.PHONY: all server webkit-client ubuntu20.04-tarball opensusetumbleweed-tarball 
+.PHONY: all server webkit-client ubuntu20.04-tarball opensusetumbleweed-tarball
 all: server webkit-client
 
 	mkdir -p bin/var
@@ -34,9 +34,19 @@ server: $(EXECUTABLE).asd
 webkit-client: $(CLIENT_SOURCE)
 	$(CC) -Wall -Wextra $(CLIENT_SOURCE) -o $(CLIENT_EXECUTABLE) `$(CFLAGS)`
 
-test: $(EXECUTABLE).asd
-	$(LISP) --eval "(ql:quickload :$(EXECUTABLE)/tests :silent t)" \
-		--eval "(asdf:test-system :$(EXECUTABLE))" \
+test-unit:
+	$(LISP) --eval "(ql:quickload :$(EXECUTABLE)/tests/unit :silent t)" \
+		--eval "(asdf:test-system :$(EXECUTABLE)/tests/unit)" \
+		--eval "(uiop:quit)"
+
+test-functional:
+	$(LISP) --eval "(ql:quickload :$(EXECUTABLE)/tests/functional :silent t)" \
+		--eval "(asdf:test-system :$(EXECUTABLE)/tests/functional)" \
+		--eval "(uiop:quit)"
+
+test:
+	$(LISP) --eval "(ql:quickload '(\"quaremain/tests/unit\" \"quaremain/tests/functional\") )" \
+		--eval "(asdf:test-system :quaremain)" \
 		--eval "(uiop:quit)"
 
 migrate-seeds: $(EXECUTABLE.asd)
