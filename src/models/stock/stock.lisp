@@ -27,7 +27,7 @@
                 :create-datum
                 :get-all-datum
                 :get-datum-by-id
-                :update-datum
+                :update-datum-by-id
                 :delete-datum-by-id
                 :row-exist-by-name?
                 :row-exist-by-id?)
@@ -266,14 +266,14 @@
                   :id id))
          
          (with-connection (db)
-           (update-datum
-               (string-to-keyword stock-category)
-               id
-               name
-               description
-               amount
-               cost-per-package
-             :calories-per-package calories-per-package)))
+           (update-datum-by-id
+            (string-to-keyword stock-category)
+            id
+            name
+            description
+            amount
+            cost-per-package
+            :calories-per-package calories-per-package)))
 
         ((string-equal stock-category "water")
 
@@ -283,14 +283,14 @@
                   :id id))
          
          (with-connection (db)
-           (update-datum
-               (string-to-keyword stock-category)
-               id
-               name
-               description
-               amount
-               cost-per-package
-             :millilitre-per-package millilitre-per-package)))
+           (update-datum-by-id
+            (string-to-keyword stock-category)
+            id
+            name
+            description
+            amount
+            cost-per-package
+            :millilitre-per-package millilitre-per-package)))
 
         (t
 
@@ -300,13 +300,13 @@
                   :id id))
          
          (with-connection (db)
-           (update-datum
-               (string-to-keyword stock-category)
-               id
-               name
-               description
-               amount
-               cost-per-package)))))
+           (update-datum-by-id
+            (string-to-keyword stock-category)
+            id
+            name
+            description
+            amount
+            cost-per-package)))))
 
 (defun sum-stocks-from-table (table-name)
   (let ((table-data

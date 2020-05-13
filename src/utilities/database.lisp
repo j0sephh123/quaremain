@@ -66,7 +66,7 @@
            :get-all-datum
            :get-datum-by-id
            :get-datum-by-name
-           :update-datum
+           :update-datum-by-id
            :delete-datum-by-id))
 (in-package :quaremain.utilities.database)
 
@@ -168,22 +168,22 @@
     (select :* (from ,table-name)
             (where (:= :name ,name)))))
 
-(defmacro update-datum (table-name
-                        id
-                        name
-                        description
-                        amount
-                        cost-per-package
-                        &body sxql-column-specifier-forms)
+(defmacro update-datum-by-id (table-name
+                              id
+                              name
+                              description
+                              amount
+                              cost-per-package
+                              &body sxql-column-specifier-forms)
   `(execute
     (update ,table-name
-      (set= :name ,name
-            :description ,description
+            (set= :name ,name
+                  :description ,description
 
-            :amount ,amount
-            :cost-per-package ,cost-per-package
-            ,@sxql-column-specifier-forms)
-      (where (:= :id ,id)))))
+                  :amount ,amount
+                  :cost-per-package ,cost-per-package
+                  ,@sxql-column-specifier-forms)
+            (where (:= :id ,id)))))
 
 (defmacro delete-datum-by-id (table-name id)
   `(execute

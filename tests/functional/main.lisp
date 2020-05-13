@@ -274,45 +274,45 @@
                  food-description
                  "Food"))))))
 
-(deftest update-datum
-  (with-connection (db)
+(deftest update-datum-by-id
+    (with-connection (db)
 
-    (quaremain.utilities.database::update-datum :water
-        2
-        "Fuvi"
-        "Slurp"
-        223
-        12.0
-      :millilitre-per-package 1000)
-    
-    (quaremain.utilities.database::update-datum :medicine
-        1
-        "Cough-ed"
-        "Healer"
-        923
-        14.0)
+      (quaremain.utilities.database::update-datum-by-id :water
+                                                        2
+                                                        "Fuvi"
+                                                        "Slurp"
+                                                        223
+                                                        12.0
+                                                        :millilitre-per-package 1000)
+      
+      (quaremain.utilities.database::update-datum-by-id :medicine
+                                                        1
+                                                        "Cough-ed"
+                                                        "Healer"
+                                                        923
+                                                        14.0)
 
-    (let* ((water-result
-            (quaremain.utilities.database::get-datum-by-id :water 2))
-           (water-millilitre
-            (getf water-result :millilitre-per-package))
-           
-           (medicine-result
-            (quaremain.utilities.database::get-datum-by-id :medicine 1))
-           (medicine-amount
-            (getf medicine-result :amount)))
+      (let* ((water-result
+              (quaremain.utilities.database::get-datum-by-id :water 2))
+             (water-millilitre
+              (getf water-result :millilitre-per-package))
+             
+             (medicine-result
+              (quaremain.utilities.database::get-datum-by-id :medicine 1))
+             (medicine-amount
+              (getf medicine-result :amount)))
 
-      (testing "water millilitre-per-package of second row"
-               (ok
-                (=
-                 water-millilitre
-                 1000)))
+        (testing "water millilitre-per-package of second row"
+                 (ok
+                  (=
+                   water-millilitre
+                   1000)))
 
-      (testing "medicine amount of first row"
-               (ok
-                (=
-                 medicine-amount
-                 923))))))
+        (testing "medicine amount of first row"
+                 (ok
+                  (=
+                   medicine-amount
+                   923))))))
 
 (deftest delete-datum-by-id
     (with-connection (db)
