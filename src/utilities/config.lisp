@@ -20,11 +20,14 @@
   (:use :cl)
   (:export :+static-directory+
            :+template-directory+
+           :+seeds-directory+
            :+database-path+))
 (in-package :quaremain.utilities.config)
 
 (defparameter +static-directory+ (pathname "static/"))
 
 (defparameter +template-directory+ (pathname "templates/"))
+
+(defparameter +seeds-directory+ "seeds/stocks/")
 
 (defparameter +database-path+ "var/quaremain.db")

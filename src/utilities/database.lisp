@@ -34,7 +34,8 @@
                 :where
                 :delete-from)
   (:import-from :quaremain.utilities.config
-                :+database-path+)
+                :+database-path+
+                :+seeds-directory+)
 
   ;; Exceptions.
   (:import-from :quaremain.utilities.exception
@@ -137,8 +138,6 @@
 (defmacro insert-datum-into-table (table-name &body key-and-value)
   `(sxql:insert-into ,table-name
      (sxql:set= ,@key-and-value)))
-
-(defparameter +seeds-directory+ "seeds/stocks")
 
 (defun food-seed-migrator ()
   (let* ((all-data
