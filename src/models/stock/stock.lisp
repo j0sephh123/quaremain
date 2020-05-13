@@ -26,11 +26,11 @@
   (:import-from :quaremain.utilities.database
                 :db
                 :with-connection
-                :insert-datum-into-table
-                :get-all-datum-from-table
-                :get-datum-from-table
-                :generate-update-datum
-                :delete-datum-from-table
+                :create-datum
+                :get-all-datum
+                :get-datum-by-id
+                :update-datum
+                :delete-datum
                 :row-exist-by-name?
                 :row-exist-by-id?)
 
@@ -129,7 +129,7 @@
   
   (with-connection (db)
     (execute
-     (insert-datum-into-table :food
+     (create-datum :food
        :name (get-name food)
        :description (get-description food)
        :amount (get-amount food)
@@ -148,7 +148,7 @@
   
   (with-connection (db)
     (execute
-     (insert-datum-into-table :water
+     (create-datum :water
        :name (get-name water)
        :description (get-description water)
        :amount (get-amount water)
@@ -164,7 +164,7 @@
   
   (with-connection (db)
     (execute
-     (insert-datum-into-table :medicine
+     (create-datum :medicine
        :name (get-name medicine)
        :description (get-description medicine)
        :amount (get-amount medicine)
@@ -179,7 +179,7 @@
   
   (with-connection (db)
     (execute
-     (insert-datum-into-table :weapon
+     (create-datum :weapon
        :name (get-name weapon)
        :description (get-description weapon)
        :amount (get-amount weapon)
@@ -269,7 +269,7 @@
          
          (with-connection (db)
            (execute
-            (generate-update-datum
+            (update-datum
                 (string-to-keyword stock-category)
                 id
                 name
@@ -287,7 +287,7 @@
          
          (with-connection (db)
            (execute
-            (generate-update-datum
+            (update-datum
                 (string-to-keyword stock-category)
                 id
                 name
@@ -305,7 +305,7 @@
          
          (with-connection (db)
            (execute
-            (generate-update-datum
+            (update-datum
                 (string-to-keyword stock-category)
                 id
                 name
@@ -315,7 +315,9 @@
 
 (defun sum-stocks-from-table (table-name)
   (let ((table-data
-         (get-all-datum-from-table table-name)))
+         (with-connection (db)
+           (execute
+            (get-all-datum table-name)))))
     
     (sum-all-cost-per-package     
      (cond ((eql table-name :food)
@@ -337,11 +339,15 @@
            :id id))
   
   (let ((package
-         (get-datum-from-table (string-to-keyword stock-category) id)))
+         (with-connection (db)
+           (execute
+            (get-datum-by-id (string-to-keyword stock-category) id)))))
     (coerce-cost-per-package package)
     package))
 
-  (defun delete-stock-by-category-and-id (stock-category id)
-    (let ((table-name
-           (string-to-keyword stock-category)))
-      (delete-datum-from-table table-name id)))
+(defun delete-stock-by-category-and-id (stock-category id)
+  (let ((table-name
+         (string-to-keyword stock-category)))
+
+    (with-connection (db)
+      (delete-datum table-name id))))

@@ -18,6 +18,16 @@
 (defpackage quaremain.utilities.database
   (:documentation "Database access handler.")
   (:use :cl)
+
+  (:import-from :alexandria
+                :assoc-value)
+  (:import-from :uiop
+                :read-file-string)
+  (:import-from :quaremain.utilities.string
+                :string-to-keyword)
+
+  (:import-from :cl-json
+                :decode-json-from-string)
   (:import-from :cl-dbi
                 :connect-cached
                 :disconnect)
@@ -142,17 +152,17 @@
   `(insert-into ,table-name
      (set= ,@key-and-value)))
 
-(defun get-all-datum (table-name)
+(defmacro get-all-datum (table-name)
   `(retrieve-all
     (select :*
       (from ,table-name))))
 
-(defun get-datum-by-id (table-name id)
+(defmacro get-datum-by-id (table-name id)
   `(retrieve-one
     (select :* (from ,table-name)
             (where (:= :id ,id)))))
 
-(defun get-datum-by-name (table-name name)
+(defmacro get-datum-by-name (table-name name)
   `(retrieve-one
     (select :* (from ,table-name)
             (where (:= :name ,name)))))
@@ -272,12 +282,16 @@
 
 (defun row-exist-by-id? (table-name id)
   (if (null
-       (get-datum-by-id table-name id))
+       (with-connection (db)
+         (execute
+          (get-datum-by-id table-name id))))
       nil
       t))
 
 (defun row-exist-by-name? (table-name name)
   (if (null
-       (get-datum-by-name table-name name))
+       (with-connection (db)
+         (execute
+          (get-datum-by-name table-name name))))
       nil
       t))
