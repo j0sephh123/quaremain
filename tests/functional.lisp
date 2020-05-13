@@ -200,6 +200,15 @@
 
 (deftest update-datum
   (with-connection (db)
+
+    (quaremain.utilities.database::update-datum :water
+        2
+        "Fuvi"
+        "Slurp"
+        223
+        12.0
+      :millilitre-per-package 1000)
+    
     (quaremain.utilities.database::update-datum :medicine
         1
         "Cough-ed"
@@ -207,10 +216,21 @@
         923
         14.0)
 
-    (let* ((medicine-result
+    (let* ((water-result
+            (quaremain.utilities.database::get-datum-by-id :water 2))
+           (water-millilitre
+            (getf water-result :millilitre-per-package))
+           
+           (medicine-result
             (quaremain.utilities.database::get-datum-by-id :medicine 1))
            (medicine-amount
             (getf medicine-result :amount)))
+
+      (testing "water millilitre-per-package of second row"
+               (ok
+                (=
+                 water-millilitre
+                 1000)))
 
       (testing "medicine amount of first row"
                (ok
@@ -220,9 +240,23 @@
 
 (deftest delete-datum
   (with-connection (db)
+
+    (quaremain.utilities.database::delete-datum :water 1)
     (quaremain.utilities.database::delete-datum :medicine 1)
     (quaremain.utilities.database::delete-datum :medicine 2)
 
-    (testing "medicine"
+    (testing "water first row"
              (ng
-              (quaremain.utilities.database::get-datum-by-id :medicine 1)))))
+              (quaremain.utilities.database::get-datum-by-id :water 1)))
+
+    (testing "water second row"
+             (ok
+              (quaremain.utilities.database::get-datum-by-id :water 2)))
+
+    (testing "medicine first row"
+             (ng
+              (quaremain.utilities.database::get-datum-by-id :medicine 1)))
+
+    (testing "medicine second row"
+             (ng
+              (quaremain.utilities.database::get-datum-by-id :medicine 2)))))
