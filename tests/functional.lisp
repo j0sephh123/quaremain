@@ -176,7 +176,7 @@
                 (= amount
                    4))))))
 
-(deftest create-new-row  
+(deftest create-new-row
   (with-connection (db)
     (quaremain.utilities.database::create-datum
         :food
@@ -197,3 +197,23 @@
                 (string=
                  food-description
                  "Food"))))))
+
+(deftest update-datum
+  (with-connection (db)
+    (quaremain.utilities.database::update-datum :medicine
+        1
+        "Cough-ed"
+        "Healer"
+        923
+        14.0)
+
+    (let* ((medicine-result
+            (quaremain.utilities.database::get-datum-by-id :medicine 1))
+           (medicine-amount
+            (getf medicine-result :amount)))
+
+      (testing "medicine amount of first row"
+               (ok
+                (=
+                 medicine-amount
+                 923))))))
