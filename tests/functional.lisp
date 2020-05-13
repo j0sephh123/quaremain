@@ -44,19 +44,19 @@
          (name (getf stock :name))
          (amount (getf stock :amount)))
 
-    (testing "name is equal to Sed neque. Sed eget lacus. Mauris"
+    (testing "name of first row"
              (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
 
-    (testing "amount is equal to 12"
+    (testing "amount of first row"
              (ok (= amount 12)))
 
-    (testing "cost-per-package is equal to 12.02d0"
+    (testing "cost-per-package of first row"
              (ok (= cost 12.02d0)))
 
-    (testing "calories-per-package is equal to 1200"
+    (testing "calories-per-package of first row"
              (ok (= calories 1200)))
 
-    (testing "id is equal to 1"
+    (testing "id of first row"
              (ok (= id 1)))))
 
 (deftest database-migration-water-test
@@ -71,22 +71,22 @@
          (name (getf stock :name))
          (description (getf stock :description)))
 
-    (testing "millilitre-per-package is equal to 923"
+    (testing "millilitre-per-package of second row"
              (ok (= millilitre 923)))
 
-    (testing "cost-per-package is equal to 12.02d0"
+    (testing "cost-per-package of second row"
              (ok (= cost 12.02d0)))
 
-    (testing "amount is equal to 5"
+    (testing "amount of second row"
              (ok (= amount 5)))
 
-    (testing "id is equal to 2"
+    (testing "id of second row"
              (ok (= id 2)))
 
-    (testing "name is equal to ICOLITE from Jerry's"
+    (testing "name of second row"
              (ok (string= name "ICOLITE from Jerry's")))
 
-    (testing "description is equal to empty string"
+    (testing "description of second row"
              (ok (string= description "")))))
 
 (deftest database-migration-medicine-test
@@ -100,16 +100,16 @@
          (name (getf stock :name))
          (amount (getf stock :amount)))
 
-    (testing "name is equal to Penicilin IoX"
+    (testing "name of first row"
              (ok (string= name "Penicilin IoX")))
 
-    (testing "amount is equal to 4"
+    (testing "amount of first row"
              (ok (= amount 4)))
 
-    (testing "cost-per-package is equal to 12.02d0"
+    (testing "cost-per-package of first row"
              (ok (= cost 12.02d0)))
 
-    (testing "id is equal to 1"
+    (testing "id of first row"
              (ok (= id 1)))))
 
 (deftest database-migration-weapon-test
@@ -123,17 +123,47 @@
          (name (getf stock :name))
          (amount (getf stock :amount)))
 
-    (testing "name is equal to Magnum-192"
+    (testing "name of second row"
              (ok (string= name "Magnum-192")))
 
-    (testing "amount is equal to 2"
+    (testing "amount of second row"
              (ok (= amount 2)))
 
-    (testing "cost-per-package is equal to 900.78d0"
+    (testing "cost-per-package of second row"
              (ok (= cost 900.78d0)))
 
-    (testing "id is equal to 2"
+    (testing "id of second row"
              (ok (= id 2)))))
+
+(deftest get-all-datum
+  (with-connection (db)
+    (let* ((results
+            (quaremain.utilities.database::get-all-datum :weapon))
+           (first-row
+            (first results))
+           (second-row
+            (second results)))
+
+      (testing "first row of weapon"
+               (ok
+                (equal
+                 first-row
+                 '(:id 1
+                   :name "AK-47"
+                   :description "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                   :amount 1
+                   :cost-per-package 1200.0d0)
+                 )))
+
+      (testing "second row of weapon"
+               (ok
+                (equal
+                 second-row
+                 '(:id 2
+                   :name "Magnum-192"
+                   :description "Poweful shockburst"
+                   :amount 2
+                   :cost-per-package 900.78d0)))))))
 
 (deftest get-datum-by-id
   (with-connection (db)
@@ -141,7 +171,7 @@
             (quaremain.utilities.database::get-datum-by-id :medicine 1))
            (amount (getf result :amount)))
 
-      (testing ""
+      (testing "amount of first row of medicine"
                (ok
                 (= amount
                    4))))))
