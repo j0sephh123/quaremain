@@ -166,15 +166,48 @@
                    :cost-per-package 900.78d0)))))))
 
 (deftest get-datum-by-id
-  (with-connection (db)
-    (let* ((result
-            (quaremain.utilities.database::get-datum-by-id :medicine 1))
-           (amount (getf result :amount)))
+    (with-connection (db)
+      (let* ((result
+              (quaremain.utilities.database::get-datum-by-id
+               :medicine 1))
+             (amount (getf result :amount)))
 
-      (testing "amount of first row of medicine"
-               (ok
-                (= amount
-                   4))))))
+        (testing "amount of first row of medicine"
+                 (ok
+                  (= amount
+                     4))))))
+
+(deftest get-datum-by-name
+    (with-connection (db)
+      (let* ((result
+              (quaremain.utilities.database::get-datum-by-name
+               :food
+               "Cashews from Jerry's"))
+             (amount (getf result :amount)))
+
+        (testing "food by Cashews from Jerry's"
+                 (ok
+                  (= amount
+                     5))))))
+
+(deftest row-exist-by-id?
+    (with-connection (db)
+      (let ((result
+             (quaremain.utilities.database::row-exist-by-id?
+              :food 1)))
+
+        (testing "first row of food"
+                 (ok result)))))
+
+(deftest row-exist-by-name?
+    (with-connection (db)
+      (let ((result
+             (quaremain.utilities.database::row-exist-by-name?
+              :weapon
+              "Magnum-192")))
+
+        (testing "weapon by Magnum-192"
+                 (ok result)))))
 
 (deftest get-datum-by-name
   (with-connection (db)
@@ -220,14 +253,14 @@
                (ok weapon-result)))))
 
 (deftest create-new-row
-  (with-connection (db)
-    (quaremain.utilities.database::create-datum
-        :food
-      :name "Jaguar"
-      :description "Food"
-      :amount 3
-      :cost-per-package 12.0
-      :calories-per-package 1492))
+    (with-connection (db)
+      (quaremain.utilities.database::create-datum
+       :food
+       :name "Jaguar"
+       :description "Food"
+       :amount 3
+       :cost-per-package 12.0
+       :calories-per-package 1492))
 
   (with-connection (db)
     (let* ((food-result
