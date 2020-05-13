@@ -176,6 +176,32 @@
                 (= amount
                    4))))))
 
+(deftest get-datum-by-name
+  (with-connection (db)
+    (let* ((result
+            (quaremain.utilities.database::get-datum-by-name
+             :food
+             "Cashews from Jerry's"))
+           (amount (getf result :amount)))
+
+      (testing "amount of first row of food"
+               (ok
+                (= amount
+                   5))))))
+
+(deftest row-exist-by-id?
+  (with-connection (db)
+    (let* ((food-result
+            (quaremain.utilities.database::row-exist-by-id? :food 1))
+           (weapon-result
+            (quaremain.utilities.database::row-exist-by-id? :weapon 2)))
+      
+      (testing "first row of food exist?"
+               (ok food-result))
+
+      (testing "second row of food exist?"
+               (ok weapon-result)))))
+
 (deftest create-new-row
   (with-connection (db)
     (quaremain.utilities.database::create-datum
