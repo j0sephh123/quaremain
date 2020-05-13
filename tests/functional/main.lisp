@@ -196,10 +196,27 @@
            (weapon-result
             (quaremain.utilities.database::row-exist-by-id? :weapon 2)))
       
-      (testing "first row of food exist?"
+      (testing "first row of food"
                (ok food-result))
 
-      (testing "second row of food exist?"
+      (testing "second row of food"
+               (ok weapon-result)))))
+
+(deftest row-exist-by-name?
+  (with-connection (db)
+    (let* ((food-result
+            (quaremain.utilities.database::row-exist-by-name?
+             :food
+             "Sed neque. Sed eget lacus. Mauris"))
+           (weapon-result
+            (quaremain.utilities.database::row-exist-by-name?
+             :weapon
+             "Magnum-192")))
+
+      (testing "by name Sed neque. Sed eget lacus. Mauris"
+               (ok food-result))
+
+      (testing "by name Magnum-192"
                (ok weapon-result)))))
 
 (deftest create-new-row
