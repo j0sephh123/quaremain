@@ -1,0 +1,30 @@
+name: ci
+
+on: [push]
+      
+jobs:
+  run:
+    name: Run
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        sudo apt install sbcl cl-quicklisp libsqlite3-dev zlib1g-dev build-essential pkg-config libwekit2gtk-4.0-dev
+    - name: Install and init quicklisp
+      run: |
+        sbcl --load /usr/share/cl-quicklisp/quicklisp.lisp --eval '(quicklisp-quickstart:install)' --eval '(uiop:quit)'
+        echo '  #-quicklisp (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp" (user-homedir-pathname)))) (when (probe-file quicklisp-init) (load quicklisp-init)))' > $HOME/.sbclrc
+    - name: Move checkout repo to $HOME/quicklisp/local-projects
+      run: |
+        echo $HOME;
+        cd ..; cp -r quaremain $HOME/quicklisp/local-projects/quaremain; cd quaremain;
+        
+    - name: Testing
+      run: |
+        cd $HOME/quicklisp/local-projects/quaremain; make test;
+
+    - name: Building executable
+      run: |
+        cd $HOME/quicklisp/local-projects/quaremain; make test;
