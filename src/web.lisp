@@ -28,7 +28,7 @@
                 :no-database-tables-to-be-found-error)
   
   (:import-from :quaremain.models.stock.stock
-                :create-new-stock
+                :create-stock
                 :update-stock-by-id
                 :get-stocks-sum
                 :get-coerced-stock-cost-by-id
@@ -168,23 +168,23 @@
 ;; workaround, uses stock-amount as parameter key
 ;; for route
 (defroute "/api/app/list/create" (&key
-                                      |stockCategory|
-                                      |stockAmount|
-                                      |name|
-                                      |description|
-                                      |costPerPackage|
-                                      |caloriesPerPackage|
-                                      |millilitrePerPackage|)
+                                  |stockCategory|
+                                  |stockAmount|
+                                  |name|
+                                  |description|
+                                  |costPerPackage|
+                                  |caloriesPerPackage|
+                                  |millilitrePerPackage|)
   (cors-handler *response*)
   (handler-case
       (progn
-        (create-new-stock :stock-category |stockCategory|
-                          :name |name|
-                          :description |description|
-                          :amount |stockAmount|
-                          :cost-per-package |costPerPackage|
-                          :calories-per-package |caloriesPerPackage|
-                          :millilitre-per-package |millilitrePerPackage|)
+        (create-stock :stock-category |stockCategory|
+                      :name |name|
+                      :description |description|
+                      :amount |stockAmount|
+                      :cost-per-package |costPerPackage|
+                      :calories-per-package |caloriesPerPackage|
+                      :millilitre-per-package |millilitrePerPackage|)
         (render-json (list
                       :status (status-code-success
                                +status-code-definition+)

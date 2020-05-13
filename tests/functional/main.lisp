@@ -279,20 +279,22 @@
 (deftest update-datum-by-id
     (with-connection (db)
 
-      (quaremain.utilities.database::update-datum-by-id :water
-                                                        2
-                                                        "Fuvi"
-                                                        "Slurp"
-                                                        223
-                                                        12.0
-                                                        :millilitre-per-package 1000)
+      (quaremain.utilities.database::update-datum-by-id
+       :water
+       2
+       "Fuvi"
+       "Slurp"
+       223
+       12.0
+       :millilitre-per-package 1000)
       
-      (quaremain.utilities.database::update-datum-by-id :medicine
-                                                        1
-                                                        "Cough-ed"
-                                                        "Healer"
-                                                        923
-                                                        14.0)
+      (quaremain.utilities.database::update-datum-by-id
+       :medicine
+       1
+       "Cough-ed"
+       "Healer"
+       923
+       14.0)
 
       (let* ((water-result
               (quaremain.utilities.database::get-datum-by-id :water 2))
@@ -345,6 +347,31 @@
       (quaremain.utilities.database::migrate-seeds)))
 
 ;;; quaremain.models.stock.stock
+
+
+(deftest create-stock
+  (with-connection (db)
+    
+    (quaremain.models.stock.stock::create-stock
+     :stock-category :food
+     :name "RANMIZ"
+     :description "slurpy"
+     :amount 24
+     :cost-per-package 27.02d20
+     :calories-per-package 923)
+
+    (let* ((food-result
+            (quaremain.utilities.database::get-datum-by-id :food 3))
+           (food-amount
+            (getf food-result :amount)))
+
+      (testing "third row of food"
+               (ok
+                (= food-amount
+                   24)))
+
+      (quaremain.utilities.database::delete-datum-by-id
+       :food 3))))
 
 (deftest get-stocks-sum
     (let* ((food-result

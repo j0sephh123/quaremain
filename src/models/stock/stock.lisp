@@ -37,186 +37,56 @@
                 :row-doesnt-exist-error
                 :row-with-same-name-already-exist-error)
   
-  (:export :create-new-stock
+  (:export :create-stock
            :update-stock-by-id
            :get-stocks-sum
            :get-coerced-stock-cost-by-id
            :delete-stock-by-id))
+
 (in-package :quaremain.models.stock.stock)
 
-(defclass <stock> ()
-  ((id
-    :initform nil
-    :initarg :id
-    :reader get-id
-    :writer set-id)
-
-   (name
-    :initform nil
-    :initarg :name
-    :reader get-name
-    :writer set-name)
-
-   (description
-    :initform nil
-    :initarg :description
-    :reader get-description
-    :writer set-description)
-
-   (amount
-    :initform nil
-    :initarg :amount
-    :reader get-amount
-    :writer set-amount)
-
-   (cost-per-package
-    :initform nil
-    :initarg :cost-per-package
-    :reader get-cost-per-package
-    :writer set-cost-per-package)))
-
-(defclass <food> (<stock>)
-  ((calories-per-package
-    :initform nil
-    :initarg :calories-per-package
-    :reader get-calories-per-package
-    :writer set-calories-per-package)))
-
-(defclass <water> (<stock>)
-  ((millilitre-per-package
-    :initform nil
-    :initarg :millilitre-per-package
-    :reader get-millilitre-per-package
-    :writer set-millilitre-per-package)))
-
-(defclass <medicine> (<stock>) ())
-(defclass <weapon> (<stock>) ())
-
-(defclass <calculator> ()
-  ((stock-instance
-    :initform nil
-    :initarg :stock-instance
-    :reader get-stock-instance)))
-
-(defclass <stock-creator> ()
-  ((stock-instance
-    :initform nil
-    :initarg :stock-instance
-    :reader get-stock-instance)))
-
-(defmethod new ((stock <stock>)))
-
-(defmethod unique-property-value-empty? ((food <food>))
-  (or (null (get-calories-per-package food))
-      (string-equal "" (get-calories-per-package food))))
-
-(defmethod unique-property-value-empty? ((water <water>))
-  (or (null (get-millilitre-per-stock water))
-      (string-equal "" (get-millilitre-per-package water))))
-
-
-(defmethod new ((food <food>))
-  (when (unique-property-value-empty? food)
-    (error 'stock-missing-property-value-error
-           :property-value :calories-per-package))
-
-  (when (row-exist-by-name? :food (get-name food))
-    (error 'row-with-same-name-already-exist-error
-           :name (get-name food)
-           :table-name :food))
-  
-  (with-connection (db)
-    (create-datum :food
-      :name (get-name food)
-      :description (get-description food)
-      :amount (get-amount food)
-      :cost-per-package (get-cost-per-package food)
-      :calories-per-package (get-calories-per-package food))))
-
-(defmethod new ((water <water>))
-  (when (unique-property-value-empty? water)
-    (error 'stock-missing-property-value-error
-           :property-value :millilitre-per-package))
-
-  (when (row-exist-by-name? :water (get-name water))
-    (error 'row-with-same-name-already-exist-error
-           :name (get-name water)
-           :table-name :water))
-  
-  (with-connection (db)
-    (create-datum :water
-      :name (get-name water)
-      :description (get-description water)
-      :amount (get-amount water)
-      :cost-per-package (get-cost-per-package water)
-      :millilitre-per-package (get-millilitre-per-package water))))
-
-(defmethod new ((medicine <medicine>))
-
-  (when (row-exist-by-name? :medicine (get-name medicine))
-    (error 'row-with-same-name-already-exist-error
-           :name (get-name medicine)
-           :table-name :medicine))
-  
-  (with-connection (db)
-    (create-datum :medicine
-      :name (get-name medicine)
-      :description (get-description medicine)
-      :amount (get-amount medicine)
-      :cost-per-package (get-cost-per-package medicine))))
-
-(defmethod new ((weapon <weapon>))
-
-  (when (row-exist-by-name? :weapon (get-name weapon))
-    (error 'row-with-same-name-already-exist-error
-           :name (get-name weapon)
-           :table-name :medicine))
-  
-  (with-connection (db)
-    (create-datum :weapon
-      :name (get-name weapon)
-      :description (get-description weapon)
-      :amount (get-amount weapon)
-      :cost-per-package (get-cost-per-package weapon))))
-
-(defun create-new-stock (&key
-                           stock-category
-                           name
-                           description
-                           amount
-                           cost-per-package
-                           calories-per-package
-                           millilitre-per-package)
+(defun create-stock (&key
+                       stock-category
+                       name
+                       description
+                       amount
+                       cost-per-package
+                       calories-per-package
+                       millilitre-per-package)
   
   (cond ((string-equal stock-category "food")
-         (new (make-instance '<food>
-                             :name name
-                             :description description
-                             :amount amount
-                             :cost-per-package cost-per-package
-                             :calories-per-package calories-per-package)))
+         (create-datum
+          :food
+          :name name
+          :description description
+          :amount amount
+          :cost-per-package cost-per-package
+          :calories-per-package calories-per-package))
 
         ((string-equal stock-category "water")
-         (new (make-instance '<water>
-                             :name name
-                             :description description
-                             :amount amount
-                             :cost-per-package cost-per-package
-                             :millilitre-per-package millilitre-per-package)))
+         (create-datum
+          :water
+          :name name
+          :description description
+          :amount amount
+          :cost-per-package cost-per-package
+          :millilitre-per-package millilitre-per-package))
 
         ((string-equal stock-category "medicine")
-         (new (make-instance '<medicine>
-                             :name name
-                             :description description
-                             :amount amount
-                             :cost-per-package cost-per-package)))
+         (create-datum
+          :medicine
+          :name name
+          :description description
+          :amount amount
+          :cost-per-package cost-per-package))
 
         ((string-equal stock-category "weapon")
-         (new (make-instance '<weapon>
-                             :name name
-                             :description description
-                             :amount amount
-                             :cost-per-package cost-per-package)))))
+         (create-datum
+          :weapon
+          :name name
+          :description description
+          :amount amount
+          :cost-per-package cost-per-package))))
 
 (defun sum-all-cost-per-stock (packages)
   (dolist (package packages)
