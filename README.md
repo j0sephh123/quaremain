@@ -1,3 +1,5 @@
+![ci](https://github.com/momozor/quaremain/workflows/ci/badge.svg?branch=master)
+
 # Quaremain
 
 Manage your basic survival resources like food and water
