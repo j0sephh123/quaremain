@@ -49,6 +49,9 @@ test:
 		--eval "(asdf:test-system :quaremain)" \
 		--eval "(uiop:quit)"
 
+test-ci:
+	~/.roswell/bin/rove $(EXECUTABLE).asd
+
 migrate-seeds: $(EXECUTABLE.asd)
 	$(LISP) --eval "(ql:quickload :$(EXECUTABLE) :silent t)" \
 		--eval "($(EXECUTABLE).utilities.database:migrate-tables)" \

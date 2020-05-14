@@ -11,19 +11,32 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: |
-        sudo apt install sbcl cl-quicklisp libsqlite3-dev zlib1g-dev build-essential pkg-config libwebkit2gtk-4.0-dev
-    - name: Install and init quicklisp
+        sudo apt install sbcl cl-quicklisp libsqlite3-dev zlib1g-dev build-essential pkg-config libwebkit2gtk-4.0-dev git automake libcurl4-openssl-dev
+    - name: Install and init quicklisp for system's SBCL
       run: |
         sbcl --load /usr/share/cl-quicklisp/quicklisp.lisp --eval '(quicklisp-quickstart:install)' --eval '(uiop:quit)'
         echo '  #-quicklisp (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp" (user-homedir-pathname)))) (when (probe-file quicklisp-init) (load quicklisp-init)))' > $HOME/.sbclrc
-    - name: Move checkout repo to $HOME/quicklisp/local-projects
+    - name: Install and setup for roswell (SBCL and rove)
+      run: |
+        git clone -b release https://github.com/roswell/roswell.git
+        cd roswell
+        sh bootstrap
+        ./configure
+        make
+        make install
+        ros setup
+        ros install rove
+    - name: Copy checkout repo to $HOME/quicklisp/local-projects and $HOME/.roswell/local-projects
       run: |
         echo $HOME;
-        cd ..; cp -r quaremain $HOME/quicklisp/local-projects/quaremain; cd quaremain;
+        cd ..;
+
+        cp -r quaremain $HOME/.roswell/local-projects/quaremain;
+        cp -r quaremain $HOME/quicklisp/local-projects/quaremain;
         
     - name: Testing
       run: |
-        cd $HOME/quicklisp/local-projects/quaremain; make test;
+        cd $HOME/.roswell/local-projects/quaremain; make test-ci;
 
     - name: Building executable
       run: |
