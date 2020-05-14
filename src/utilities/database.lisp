@@ -23,8 +23,6 @@
                 :assoc-value)
   (:import-from :uiop
                 :read-file-string)
-  (:import-from :quaremain.utilities.string
-                :string-to-keyword)
 
   (:import-from :cl-json
                 :decode-json-from-string)
