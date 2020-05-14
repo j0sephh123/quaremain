@@ -284,7 +284,7 @@
                  (ok
                   (=
                    medicine-amount
-                   921))))))
+                   923))))))
 
 (deftest delete-datum-by-id
     (with-connection (db)
