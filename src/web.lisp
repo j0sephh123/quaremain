@@ -287,8 +287,8 @@
                              +status-code-definition+))))
     (error (exception)
       (log:error "~A" exception)
-      (log:error "There was something wrong with resetting the database!")
+      (log:error "There was something wrong when resetting the database!")
       (render-json (list
-                    :error "There was something with resetting the database!"
+                    :error "There was something wrong when resetting the database!"
                     :status (status-code-not-found
                              +status-code-definition+))))))

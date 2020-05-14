@@ -133,54 +133,60 @@
                              cost-per-package
                              calories-per-package
                              millilitre-per-package)
-  (cond ((string-equal stock-category "food")
-         (unless (row-exist-by-id? (string-to-keyword stock-category) id)
-           (error 'row-doesnt-exist-error
-                  :table-name (string-to-keyword stock-category)
-                  :id id))
-         
-         (with-connection (db)
-           (update-datum-by-id
-            (string-to-keyword stock-category)
-            id
-            name
-            description
-            amount
-            cost-per-package
-            :calories-per-package calories-per-package)))
 
-        ((string-equal stock-category "water")
+  (let ((table-name
+         (string-to-keyword stock-category)))
+    
+    (cond
+      ((eql table-name :food)
+       
+       (unless (row-exist-by-id? table-name id)
+         (error 'row-doesnt-exist-error
+                :table-name table-name
+                :id id))
+       
+       (with-connection (db)
+         (update-datum-by-id
+             table-name
+             id
+             name
+             description
+             amount
+             cost-per-package
+           :calories-per-package calories-per-package)))
 
-         (unless (row-exist-by-id? (string-to-keyword stock-category) id)
-           (error 'row-doesnt-exist-error
-                  :table-name (string-to-keyword stock-category)
-                  :id id))
-         
-         (with-connection (db)
-           (update-datum-by-id
-            (string-to-keyword stock-category)
-            id
-            name
-            description
-            amount
-            cost-per-package
-            :millilitre-per-package millilitre-per-package)))
+      ((eql table-name :food)
 
-        (t
+       (unless (row-exist-by-id? table-name id)
+         (error 'row-doesnt-exist-error
+                :table-name table-name
+                :id id))
+       
+       (with-connection (db)
+         (update-datum-by-id
+             table-name
+             id
+             name
+             description
+             amount
+             cost-per-package
+           :millilitre-per-package millilitre-per-package)))
 
-         (unless (row-exist-by-id? (string-to-keyword stock-category) id)
-           (error 'row-doesnt-exist-error
-                  :table-name (string-to-keyword stock-category)
-                  :id id))
-         
-         (with-connection (db)
-           (update-datum-by-id
-            (string-to-keyword stock-category)
-            id
-            name
-            description
-            amount
-            cost-per-package)))))
+      (t
+
+       (unless (row-exist-by-id? table-name id)
+         (error 'row-doesnt-exist-error
+                :table-name table-name
+                :id id))
+       
+       (with-connection (db)
+         (update-datum-by-id
+             table-name
+             id
+             name
+             description
+             amount
+             cost-per-package))))))
 
 (defun get-stocks-sum (table-name)
   (let ((stocks
