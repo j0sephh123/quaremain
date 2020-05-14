@@ -31,6 +31,12 @@ skelic3@gmail.com or momozor4@gmail.com
 Quaremain uses git as the primary version
 control system.
 
+The back-end system is largely
+made in Common Lisp.
+
+The front-end system is mostly
+made with Vue + nodejs ecosystem, HTML5, CSS3 and Javascript.
+
 Author
 ------
 - Back-end author & maintainer
