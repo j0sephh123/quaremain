@@ -23,7 +23,7 @@ jobs:
         sh bootstrap
         ./configure
         make
-        make install
+        sudo make install
         ros setup
         ros install rove
     - name: Copy checkout repo to $HOME/quicklisp/local-projects and $HOME/.roswell/local-projects
