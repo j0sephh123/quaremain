@@ -155,7 +155,7 @@
              cost-per-package
            :calories-per-package calories-per-package)))
 
-      ((eql table-name :food)
+      ((eql table-name :water)
 
        (unless (row-exist-by-id? table-name id)
          (error 'row-doesnt-exist-error

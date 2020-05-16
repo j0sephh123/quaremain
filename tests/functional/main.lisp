@@ -430,28 +430,50 @@
                  12.02)))))
 
 (deftest update-stock-by-id
-    (with-connection (db)
-      
-      (quaremain.models.stock.stock::update-stock-by-id
-       :stock-category "weapon"
-       :id 1
-       :name "Firenzo"
-       :description "Ranimoul"
-       :amount 2
-       :cost-per-package 198.02d0)
+  (with-connection (db)
+    
+    (quaremain.models.stock.stock::update-stock-by-id
+     :stock-category "weapon"
+     :id 1
+     :name "Firenzo"
+     :description "Ranimoul"
+     :amount 2
+     :cost-per-package 198.02d0)
 
-      (let* ((weapon-result
-              (quaremain.utilities.database::get-datum-by-id
-               :weapon
-               1))
-             (weapon-cost
-              (getf weapon-result :cost-per-package)))
+    (quaremain.models.stock.stock::update-stock-by-id
+     :stock-category "water"
+     :id 1
+     :name "Yaml"
+     :description "Farapa"
+     :amount 4
+     :cost-per-package 192.02d0
+     :millilitre-per-package 912)
 
-        (testing "weapon first row"
-                 (ok
-                  (=
-                   weapon-cost
-                   198.02d0))))))
+    (let* ((weapon-result
+            (quaremain.utilities.database::get-datum-by-id
+             :weapon
+             1))
+           (weapon-cost
+            (getf weapon-result :cost-per-package))
+
+           (water-result
+            (quaremain.utilities.database::get-datum-by-id
+             :water
+             1))
+
+           (water-millilitre
+            (getf water-result :millilitre-per-package)))
+
+      (testing "weapon first row"
+               (ok
+                (=
+                 weapon-cost
+                 198.02d0)))
+
+      (testing "water first row"
+               (ok
+                (= water-millilitre
+                   912))))))
 
 (deftest delete-stock-by-id
     (quaremain.models.stock.stock::delete-stock-by-id
