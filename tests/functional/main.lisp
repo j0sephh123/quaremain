@@ -434,10 +434,20 @@
 (deftest get-total-food-calories
   (let* ((result
           (quaremain.models.stock.stock::get-total-food-calories)))
+    
     (testing ""
              (ok
               (= result
                  15400)))))
+
+(deftest get-total-water-millilitre
+  (let* ((result
+          (quaremain.models.stock.stock::get-total-water-millilitre)))
+
+    (testing ""
+             (ok
+              (= result
+                 22615)))))
 
 
 

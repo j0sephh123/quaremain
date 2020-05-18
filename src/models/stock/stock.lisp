@@ -249,3 +249,19 @@
              (setf sum (+ calories sum))))
        food-stocks)
       sum)))
+
+(defun get-total-water-millilitre ()
+  (with-connection (db)
+    (let* ((water-stocks
+            (sum-all-millilitre-per-stock
+             (get-all-datum :water)))
+           (sum 0))
+
+      (mapcar
+       #'(lambda (stock)
+           (let ((millilitre
+                  (getf stock :millilitre-per-package)))
+             (setf sum (+ millilitre sum))))
+       water-stocks)
+
+      sum)))
