@@ -42,7 +42,8 @@
            :update-stock-by-id
            :get-stocks-sum
            :get-coerced-stock-cost-by-id
-           :delete-stock-by-id))
+           :delete-stock-by-id
+           :get-total-survival-days))
 
 (in-package :quaremain.models.stock.stock)
 
@@ -267,8 +268,8 @@
 
       sum)))
 
-(defun get-total-survival-days (calories-sum
-                                millilitre-sum)
+(defun calculate-total-survival-days (calories-sum
+                                      millilitre-sum)
   (let ((minimal-calories 1500)
         (minimal-millilitre 2300)
         
@@ -293,3 +294,8 @@
         (setf sum
               (floor
                calories-sum minimal-calories)))))
+
+(defun get-total-survival-days ()
+  (calculate-total-survival-days
+   (get-total-food-calories)
+   (get-total-water-millilitre)))

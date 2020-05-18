@@ -26,14 +26,16 @@
                 :stock-missing-property-value-error
                 :row-doesnt-exist-error
                 :row-with-same-name-already-exist-error
-                :no-database-tables-to-be-found-error)
+                :no-database-tables-to-be-found-error
+                :total-required-survival-resources-is-too-low-error)
   
   (:import-from :quaremain.models.stock.stock
                 :create-stock
                 :update-stock-by-id
                 :get-stocks-sum
                 :get-coerced-stock-cost-by-id
-                :delete-stock-by-id)
+                :delete-stock-by-id
+                :get-total-survival-days)
 
   (:import-from :quaremain.utilities.database
                 :migrate-tables
