@@ -35,7 +35,8 @@
   (:import-from :quaremain.utilities.exception
                 :stock-missing-property-value-error
                 :row-doesnt-exist-error
-                :row-with-same-name-already-exist-error)
+                :row-with-same-name-already-exist-error
+                :total-required-survival-resources-is-too-low-error)
   
   (:export :create-stock
            :update-stock-by-id
@@ -275,7 +276,7 @@
 
     (when (or (<= calories-sum minimal-calories)
               (<= millilitre-sum minimal-millilitre))
-      (error "Food and water intake is too low!"))
+      (error 'total-required-survival-resources-is-too-low-error))
 
     
     ;; Calculate water intake first due to how

@@ -21,7 +21,8 @@
   (:export :stock-missing-property-value-error
            :row-doesnt-exist-error
            :row-with-same-name-already-exist-error
-           :no-database-tables-to-be-found-error))
+           :no-database-tables-to-be-found-error
+           :total-required-survival-resources-is-too-low-error))
 (in-package :quaremain.utilities.exception)
 
 (define-condition quaremain-error (simple-error)
@@ -73,3 +74,10 @@
   (:report (lambda (condition stream)
              (declare (ignore condition))
              (format stream "No database tables to be found!"))))
+
+(define-condition total-required-survival-resources-is-too-low-error (quaremain-error)
+  ()
+  (:report (lambda (condition stream)
+             (declare (ignore condition))
+             (format stream "Total required survival resources is too low! Consider stocking more food and water!"))))
+
