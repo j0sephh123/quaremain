@@ -265,3 +265,30 @@
        water-stocks)
 
       sum)))
+
+(defun get-total-survival-days (calories-sum
+                                millilitre-sum)
+  (let ((minimal-calories 1500)
+        (minimal-millilitre 2300)
+        
+        (sum 0))
+
+    (when (or (<= calories-sum minimal-calories)
+              (<= millilitre-sum minimal-millilitre))
+      (error "Food and water intake is too low!"))
+
+    
+    ;; Calculate water intake first due to how
+    ;; important it is to sustain a life of
+    ;; a human being. A human being can survive
+    ;; far longer with enough water even without
+    ;; food compared to vice-versa (unless the
+    ;; food contains enough water)
+    (if (< millilitre-sum calories-sum)
+        (setf sum
+              (floor
+               millilitre-sum minimal-millilitre))
+
+        (setf sum
+              (floor
+               calories-sum minimal-calories)))))

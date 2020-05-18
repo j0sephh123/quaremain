@@ -449,7 +449,28 @@
               (= result
                  22615)))))
 
+(deftest get-total-survival-days
+  (let* ((result
+          (quaremain.models.stock.stock::get-total-survival-days
+           (quaremain.models.stock.stock::get-total-food-calories)
+           (quaremain.models.stock.stock::get-total-water-millilitre)))
 
+         (result-two
+          (quaremain.models.stock.stock::get-total-survival-days
+           (- (quaremain.models.stock.stock::get-total-food-calories)
+              3000)
+           (- (quaremain.models.stock.stock::get-total-water-millilitre)
+              4000))))
+
+    (testing ""
+             (ok
+              (= result
+                 10)))
+
+    (testing ""
+             (ok
+              (= result-two
+                 8)))))
 
 (deftest update-stock-by-id
   (with-connection (db)
