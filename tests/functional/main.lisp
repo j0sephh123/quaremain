@@ -416,18 +416,30 @@
                  )))))
 
 (deftest get-coerced-stock-cost-by-id
-    (let* ((food-result
-            (quaremain.models.stock.stock::get-coerced-stock-cost-by-id
-             "food"
-             1))
-           (food-cost
-            (getf food-result :cost-per-package)))
-      
-      (testing "first row of food"
-               (ok
-                (=
-                 food-cost
-                 12.02)))))
+  (let* ((food-result
+          (quaremain.models.stock.stock::get-coerced-stock-cost-by-id
+           "food"
+           1))
+         (food-cost
+          (getf food-result :cost-per-package)))
+    
+    (testing "first row of food"
+             (ok
+              (=
+               food-cost
+               12.02)))))
+
+
+
+(deftest get-total-food-calories
+  (let* ((result
+          (quaremain.models.stock.stock::get-total-food-calories)))
+    (testing ""
+             (ok
+              (= result
+                 15400)))))
+
+
 
 (deftest update-stock-by-id
   (with-connection (db)

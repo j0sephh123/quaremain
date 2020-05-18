@@ -234,3 +234,18 @@
                :id id))
       
       (delete-datum-by-id table-name id))))
+
+(defun get-total-food-calories ()
+  (with-connection (db)
+    (let* ((food-stocks
+            (sum-all-calories-per-stock
+             (get-all-datum :food)))
+           (sum 0))
+      
+      (mapcar
+       #'(lambda (stock)
+           (let ((calories
+                  (getf stock :calories-per-package)))
+             (setf sum (+ calories sum))))
+       food-stocks)
+      sum)))
