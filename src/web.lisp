@@ -294,3 +294,19 @@
                     :error "There was something wrong when resetting the database!"
                     :status (status-code-not-found
                              +status-code-definition+))))))
+
+(defroute "/api/app/list/total-survival-days" ()
+  (cors-handler *response*)
+  (handler-case
+      (render-json
+       (list :total-survival-days
+             (get-total-survival-days)
+             :status (status-code-success
+                      +status-code-definition+)))
+    
+    (total-required-survival-resources-is-too-low-error (exception)
+      (log:error "~A" exception)
+      (render-json
+       (list :error "Total required survival resources is too low! Consider stocking more food and water!"
+             :status (status-code-not-found
+                      +status-code-definition+))))))
