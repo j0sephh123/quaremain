@@ -13,7 +13,7 @@ Available on GNU/Linux Ubuntu 20.04 as a graphical desktop application.
 
 
 ## Version
-0.7.8
+0.8.0
 
 ## Status
 
