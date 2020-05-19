@@ -60,37 +60,37 @@
     
     (cond ((string-equal stock-category "food")
            (create-datum
-            :food
-            :name name
-            :description description
-            :amount amount
-            :cost-per-package cost-per-package
-            :calories-per-package calories-per-package))
+               :food
+             :name name
+             :description description
+             :amount amount
+             :cost-per-package cost-per-package
+             :calories-per-package calories-per-package))
 
           ((string-equal stock-category "water")
            (create-datum
-            :water
-            :name name
-            :description description
-            :amount amount
-            :cost-per-package cost-per-package
-            :millilitre-per-package millilitre-per-package))
+               :water
+             :name name
+             :description description
+             :amount amount
+             :cost-per-package cost-per-package
+             :millilitre-per-package millilitre-per-package))
 
           ((string-equal stock-category "medicine")
            (create-datum
-            :medicine
-            :name name
-            :description description
-            :amount amount
-            :cost-per-package cost-per-package))
+               :medicine
+             :name name
+             :description description
+             :amount amount
+             :cost-per-package cost-per-package))
 
           ((string-equal stock-category "weapon")
            (create-datum
-            :weapon
-            :name name
-            :description description
-            :amount amount
-            :cost-per-package cost-per-package)))))
+               :weapon
+             :name name
+             :description description
+             :amount amount
+             :cost-per-package cost-per-package)))))
 
 (defun sum-all-cost-per-stock (stocks)
   (dolist (stock stocks)
@@ -208,20 +208,21 @@
     stocks))
 
 (defun get-coerced-stock-cost-by-id (stock-category id)
-  (let ((table-name
-         (string-to-keyword stock-category)))
+  (with-connection (db)
     
-    (unless (row-exist-by-id? table-name id)
-      (error 'row-doesnt-exist-error
-             :table-name stock-category
-             :id id))
+    (let ((table-name
+           (string-to-keyword stock-category)))
+      
+      (unless (row-exist-by-id? table-name id)
+        (error 'row-doesnt-exist-error
+               :table-name stock-category
+               :id id))
 
-    (let ((stock
-           (with-connection (db)
+      (let ((stock
              
-             (get-datum-by-id table-name id))))
-      (coerce-cost-per-stock stock)
-      stock)))
+             (get-datum-by-id table-name id)))
+        (coerce-cost-per-stock stock)
+        stock))))
 
 (defun delete-stock-by-id (stock-category id)
   (with-connection (db)
@@ -236,8 +237,12 @@
       
       (delete-datum-by-id table-name id))))
 
+(defun get-basic-total-unique-property-resource (table-name unique-property)
+  nil)
+
 (defun get-total-food-calories ()
   (with-connection (db)
+    
     (let* ((food-stocks
             (sum-all-calories-per-stock
              (get-all-datum :food)))
@@ -253,6 +258,7 @@
 
 (defun get-total-water-millilitre ()
   (with-connection (db)
+    
     (let* ((water-stocks
             (sum-all-millilitre-per-stock
              (get-all-datum :water)))
