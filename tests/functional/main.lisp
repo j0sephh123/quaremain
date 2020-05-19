@@ -429,6 +429,19 @@
                food-cost
                12.02)))))
 
+(deftest get-total-unique-property-stock-value-sum
+  (with-connection (db)
+    
+    (let* ((result
+            (quaremain.models.stock.stock::get-total-unique-property-stock-value-sum
+             :calories-per-package
+             (quaremain.models.stock.stock::sum-all-calories-per-stock
+              (quaremain.utilities.database::get-all-datum :food)))))
+
+      (testing "food"
+               (ok
+                (= result
+                   15400))))))
 
 
 (deftest get-total-food-calories

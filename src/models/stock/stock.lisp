@@ -237,41 +237,36 @@
       
       (delete-datum-by-id table-name id))))
 
-(defun get-basic-total-unique-property-resource (table-name unique-property)
-  nil)
+(defun get-total-unique-property-stock-value-sum (unique-property
+                                                  stocks)
+  (with-connection (db)
+
+    (let* ((sum 0))
+
+      (mapcar
+       #'(lambda (stock)
+           (let ((unique-value
+                  (getf stock unique-property)))
+             (setf sum (+ unique-value sum))))
+       stocks)
+
+      sum)))
 
 (defun get-total-food-calories ()
   (with-connection (db)
     
-    (let* ((food-stocks
-            (sum-all-calories-per-stock
-             (get-all-datum :food)))
-           (sum 0))
-      
-      (mapcar
-       #'(lambda (stock)
-           (let ((calories
-                  (getf stock :calories-per-package)))
-             (setf sum (+ calories sum))))
-       food-stocks)
-      sum)))
+    (get-total-unique-property-stock-value-sum
+     :calories-per-package
+     (sum-all-calories-per-stock
+      (get-all-datum :food)))))
 
 (defun get-total-water-millilitre ()
   (with-connection (db)
-    
-    (let* ((water-stocks
-            (sum-all-millilitre-per-stock
-             (get-all-datum :water)))
-           (sum 0))
 
-      (mapcar
-       #'(lambda (stock)
-           (let ((millilitre
-                  (getf stock :millilitre-per-package)))
-             (setf sum (+ millilitre sum))))
-       water-stocks)
-
-      sum)))
+    (get-total-unique-property-stock-value-sum
+     :millilitre-per-package
+     (sum-all-millilitre-per-stock
+      (get-all-datum :water)))))
 
 (defun calculate-total-survival-days (calories-sum
                                       millilitre-sum)
