@@ -138,16 +138,17 @@
 
   (let ((table-name
          (string-to-keyword stock-category)))
-    
-    (cond
-      ((eql table-name :food)
-       
-       (unless (row-exist-by-id? table-name id)
-         (error 'row-doesnt-exist-error
-                :table-name table-name
-                :id id))
-       
-       (with-connection (db)
+
+    (with-connection (db)
+      
+      (cond
+        ((eql table-name :food)
+         
+         (unless (row-exist-by-id? table-name id)
+           (error 'row-doesnt-exist-error
+                  :table-name table-name
+                  :id id))
+         
          (update-datum-by-id
              table-name
              id
@@ -155,16 +156,15 @@
              description
              amount
              cost-per-package
-           :calories-per-package calories-per-package)))
+           :calories-per-package calories-per-package))
 
-      ((eql table-name :water)
+        ((eql table-name :water)
 
-       (unless (row-exist-by-id? table-name id)
-         (error 'row-doesnt-exist-error
-                :table-name table-name
-                :id id))
-       
-       (with-connection (db)
+         (unless (row-exist-by-id? table-name id)
+           (error 'row-doesnt-exist-error
+                  :table-name table-name
+                  :id id))
+         
          (update-datum-by-id
              table-name
              id
@@ -172,16 +172,15 @@
              description
              amount
              cost-per-package
-           :millilitre-per-package millilitre-per-package)))
+           :millilitre-per-package millilitre-per-package))
 
-      (t
+        (t
 
-       (unless (row-exist-by-id? table-name id)
-         (error 'row-doesnt-exist-error
-                :table-name table-name
-                :id id))
-       
-       (with-connection (db)
+         (unless (row-exist-by-id? table-name id)
+           (error 'row-doesnt-exist-error
+                  :table-name table-name
+                  :id id))
+         
          (update-datum-by-id
              table-name
              id
