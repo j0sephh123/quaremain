@@ -76,17 +76,9 @@
              :cost-per-package cost-per-package
              :millilitre-per-package millilitre-per-package))
 
-          ((string-equal stock-category "medicine")
+          (t
            (create-datum
-               :medicine
-             :name name
-             :description description
-             :amount amount
-             :cost-per-package cost-per-package))
-
-          ((string-equal stock-category "weapon")
-           (create-datum
-               :weapon
+               (string-to-keyword stock-category)
              :name name
              :description description
              :amount amount
