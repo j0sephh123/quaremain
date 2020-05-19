@@ -140,14 +140,14 @@
          (string-to-keyword stock-category)))
 
     (with-connection (db)
+
+      (unless (row-exist-by-id? table-name id)
+        (error 'row-doesnt-exist-error
+               :table-name table-name
+               :id id))
       
       (cond
         ((eql table-name :food)
-         
-         (unless (row-exist-by-id? table-name id)
-           (error 'row-doesnt-exist-error
-                  :table-name table-name
-                  :id id))
          
          (update-datum-by-id
              table-name
@@ -160,11 +160,6 @@
 
         ((eql table-name :water)
 
-         (unless (row-exist-by-id? table-name id)
-           (error 'row-doesnt-exist-error
-                  :table-name table-name
-                  :id id))
-         
          (update-datum-by-id
              table-name
              id
@@ -175,11 +170,6 @@
            :millilitre-per-package millilitre-per-package))
 
         (t
-
-         (unless (row-exist-by-id? table-name id)
-           (error 'row-doesnt-exist-error
-                  :table-name table-name
-                  :id id))
          
          (update-datum-by-id
              table-name
