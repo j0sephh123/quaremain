@@ -23,6 +23,8 @@
                 :assoc-value)
   (:import-from :uiop
                 :read-file-string)
+  (:import-from :quaremain.utilities.string
+                :string-to-keyword)
 
   (:import-from :cl-json
                 :decode-json-from-string)
@@ -209,6 +211,27 @@
         (with-connection (db)
           (get-datum-by-name table-name name)))))
 
+(defun seeds-migrator (seed-category)
+  (let* ((seeds
+          (read-file-string
+           (format nil
+                   "~A/~A.json"
+                   +seeds-directory+
+                   seed-category)))
+         (parsed-from-json-seeds
+          (decode-json-from-string seeds)))
+
+    (with-connection (db)
+
+      (mapcar
+       #'(lambda (seed)
+           (create-datum (string-to-keyword seed-category)
+             :name (assoc-value seed :name)
+             :description (assoc-value seed :description)
+             :amount (assoc-value seed :amount)
+             :cost-per-package (assoc-value seed :cost-per-package)))
+       parsed-from-json-seeds))))
+
 
 (defun food-seed-migrator ()
   (let* ((all-data
@@ -222,11 +245,11 @@
       (mapcar
        #'(lambda (item)
            (create-datum :food
-                         :name (alexandria:assoc-value item :name)
-                         :description (alexandria:assoc-value item :description)
-                         :amount (alexandria:assoc-value item :amount)
-                         :cost-per-package (alexandria:assoc-value item :cost-per-package)
-                         :calories-per-package (alexandria:assoc-value item :calories-per-package)))
+             :name (alexandria:assoc-value item :name)
+             :description (alexandria:assoc-value item :description)
+             :amount (alexandria:assoc-value item :amount)
+             :cost-per-package (alexandria:assoc-value item :cost-per-package)
+             :calories-per-package (alexandria:assoc-value item :calories-per-package)))
        
        json-data))))
 
@@ -251,40 +274,10 @@
        json-data))))
 
 (defun medicine-seed-migrator ()
-  (let* ((all-data
-          (uiop:read-file-string
-           (format nil "~A/medicine.json" +seeds-directory+)))
-         (json-data
-          (cl-json:decode-json-from-string all-data)))
-
-    (with-connection (db)
-      
-      (mapcar #'(lambda (item)
-                  (create-datum :medicine
-                    :name (alexandria:assoc-value item :name)
-                    :description (alexandria:assoc-value item :description)
-                    :amount (alexandria:assoc-value item :amount)
-                    :cost-per-package (alexandria:assoc-value item :cost-per-package)))
-              
-              json-data))))
+  (seeds-migrator "medicine"))
 
 (defun weapon-seed-migrator ()
-  (let* ((all-data
-          (uiop:read-file-string
-           (format nil "~A/weapon.json" +seeds-directory+)))
-         (json-data
-          (cl-json:decode-json-from-string all-data)))
-
-    (with-connection (db)
-      
-      (mapcar #'(lambda (item)                  
-                  (create-datum :weapon
-                    :name (alexandria:assoc-value item :name)
-                    :description (alexandria:assoc-value item :description)
-                    :amount (alexandria:assoc-value item :amount)
-                    :cost-per-package (alexandria:assoc-value item :cost-per-package)))
-              
-              json-data))))
+  (seeds-migrator "weapon"))
 
 (defun migrate-seeds ()
   (handler-case
