@@ -60,20 +60,12 @@
 ;; (defroute "/api/os/")
 ;; for OS commands calls
 
-(defstruct status-code
-  (not-found 404)
-  (success 200)
-  (redirect 302))
-
 (defparameter +status-codes+
   '((:not-found 404)
     (:success 200)))
 
 (defun get-status-code (key)
   (second (assoc key +status-codes+)))
-
-(defparameter +status-code-definition+ (make-status-code))
-
 
 (defun get-cors-headers (allow-origin allow-methods allow-headers)
   (list :access-control-allow-origin allow-origin
@@ -150,22 +142,20 @@
               id)))
         (render-json (list
                       :stock (list stock)
-                      :status (status-code-success
-                               +status-code-definition+))))
+                      :status (get-status-code :success))))
+    
     (row-doesnt-exist-error (exception)
       (log:error "~A" exception)
       (log:error "Row doesn't exist to retrieved!")
       (render-json (list
                     :error "Row doesn't exist to be retrieved!"
-                    :status (status-code-not-found
-                             +status-code-definition+))))
+                    :status (get-status-code :not-found))))
     (error (exception)
       (log:error "~A" exception)
       (log:error "There was an error when executing this process!")
       (render-json (list
                     :error "There was an error when executing this process!"
-                    :status (status-code-not-found
-                             +status-code-definition+))))))
+                    :status (get-status-code :not-found))))))
 
 ;; FIXME: amount is not received
 ;; workaround, uses stock-amount as parameter key
@@ -189,8 +179,7 @@
                       :calories-per-package |caloriesPerPackage|
                       :millilitre-per-package |millilitrePerPackage|)
         (render-json (list
-                      :status (status-code-success
-                               +status-code-definition+)
+                      :status (get-status-code :success)
                       :registered-stock
                       (list
                        :stock-category |stockCategory|
@@ -205,15 +194,13 @@
       (log:error "~A" exception)
       (render-json (list
                     :error "Stock is missing unique property value!"
-                    :status (status-code-not-found
-                             +status-code-definition+))))
+                    :status (get-status-code :not-found))))
 
     (row-with-same-name-already-exist-error (exception)
       (log:error "~A" exception)
       (render-json (list
                     :error "Stock with same name already exist! Duplication is not allowed!"
-                    :status (status-code-not-found
-                             +status-code-definition+))))))
+                    :status (get-status-code :not-found))))))
 
 (defroute "/api/app/list/update/:id" (&key
                                       id
@@ -237,21 +224,18 @@
                             :calories-per-package |caloriesPerPackage|
                             :millilitre-per-package |millilitrePerPackage|)
         (render-json (list
-                      :status (status-code-success
-                               +status-code-definition+))))
+                      :status (get-status-code :success))))
     
     (row-doesnt-exist-error (exception)
       (log:error "~A" exception)
       (render-json (list
                     :error "Cannot update stock that doesn't exist!"
-                    :status (status-code-not-found
-                             +status-code-definition+))))
+                    :status (get-status-code :not-found))))
     (error (exception)
       (log:error "~A" exception)
       (render-json (list
                     :error "Updating stock list failed."
-                    :status (status-code-not-found
-                             +status-code-definition+))))))
+                    :status (get-status-code :not-found))))))
 
 (defroute "/api/app/list/delete/:id" (&key id |stockCategory|)
   (cors-handler *response*)
@@ -260,15 +244,15 @@
         
         (delete-stock-by-id |stockCategory| id)
         (render-json (list
-                      :status (status-code-success
-                               +status-code-definition+))))
+                      :status (get-status-code
+                               :success))))
     
     (row-doesnt-exist-error (exception)
       (log:error "~A" exception)
       (render-json (list
                     :error "Item doesn't exist to be deleted!"
-                    :status (status-code-not-found
-                             +status-code-definition+))))))
+                    :status (get-status-code
+                             :not-found))))))
 
 (defroute "/api/app/list/reset-database" ()
   (cors-handler *response*)
@@ -278,22 +262,22 @@
         (drop-tables)
         (migrate-tables)
         (render-json (list
-                      :status (status-code-success
-                               +status-code-definition+))))
+                      :status (get-status-code
+                               :success))))
 
     (no-database-tables-to-be-found-error (exception)
       (log:error "~A" exception)
       (render-json (list
                     :error "No existing tables to be deleted!"
-                    :status (status-code-not-found
-                             +status-code-definition+))))
+                    :status (get-status-code
+                             :not-found))))
     (error (exception)
       (log:error "~A" exception)
       (log:error "There was something wrong when resetting the database!")
       (render-json (list
                     :error "There was something wrong when resetting the database!"
-                    :status (status-code-not-found
-                             +status-code-definition+))))))
+                    :status (get-status-code
+                             :not-found))))))
 
 (defroute "/api/app/list/total-survival-days" ()
   (cors-handler *response*)
@@ -301,12 +285,11 @@
       (render-json
        (list :total-survival-days
              (get-total-survival-days)
-             :status (status-code-success
-                      +status-code-definition+)))
+             :status (get-status-code
+                      :success)))
     
     (total-required-survival-resources-is-too-low-error (exception)
       (log:error "~A" exception)
       (render-json
        (list :error "Total required survival resources is too low! Consider stocking more food and water!"
-             :status (status-code-not-found
-                      +status-code-definition+))))))
+             :status (get-status-code :not-found))))))
