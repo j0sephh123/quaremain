@@ -65,6 +65,13 @@
   (success 200)
   (redirect 302))
 
+(defparameter +status-codes+
+  '((:not-found 404)
+    (:success 200)))
+
+(defun get-status-code (key)
+  (second (assoc key +status-codes+)))
+
 (defparameter +status-code-definition+ (make-status-code))
 
 
@@ -94,11 +101,10 @@
     (if (null food-stocks)
         (render-json (list
                       :error "No food stocks available."
-                      :status (status-code-not-found +status-code-definition+)))
+                      :status (get-status-code :not-found)))
         (render-json (list
                       :stocks food-stocks
-                      :status (status-code-success
-                               +status-code-definition+))))))
+                      :status (get-status-code :success))))))
 
 (defroute "/api/app/list/water" ()
   (cors-handler *response*)
@@ -106,12 +112,10 @@
     (if (null water-stocks)
         (render-json (list
                       :error "No water stocks available."
-                      :status (status-code-not-found
-                               +status-code-definition+)))
+                      :status (get-status-code :not-found)))
         (render-json (list
                       :stocks water-stocks
-                      :status (status-code-success
-                               +status-code-definition+))))))
+                      :status (get-status-code :success))))))
 
 (defroute "/api/app/list/medicine" ()
   (cors-handler *response*)
@@ -119,12 +123,10 @@
     (if (null medicine-stocks)
         (render-json (list
                       :error "No medicine stocks available."
-                      :status (status-code-not-found
-                               +status-code-definition+)))
+                      :status (get-status-code :not-found)))
         (render-json (list
                       :stocks medicine-stocks
-                      :status (status-code-success
-                               +status-code-definition+))))))
+                      :status (get-status-code :success))))))
 
 (defroute "/api/app/list/weapon" ()
   (cors-handler *response*)
@@ -132,12 +134,10 @@
     (if (null weapon-stocks)
         (render-json (list
                       :error "No weapon stocks available."
-                      :status (status-code-not-found
-                               +status-code-definition+)))
+                      :status (get-status-code :not-found)))
         (render-json (list
                       :stocks weapon-stocks
-                      :status (status-code-success
-                               +status-code-definition+))))))
+                      :status (get-status-code :success))))))
 
 (defroute "/api/app/list/show/:id" (&key
                                     id
