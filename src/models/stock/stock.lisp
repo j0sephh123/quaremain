@@ -223,16 +223,10 @@
                                                   stocks)
   (with-connection (db)
 
-    (let* ((sum 0))
-
-      (mapcar
-       #'(lambda (stock)
-           (let ((unique-value
-                  (getf stock unique-property)))
-             (setf sum (+ unique-value sum))))
-       stocks)
-
-      sum)))
+    (reduce #'+
+            (mapcar #'(lambda (stock)
+                        (getf stock  unique-property))
+                    stocks))))
 
 (defun get-total-food-calories ()
   (with-connection (db)
