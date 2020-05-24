@@ -290,7 +290,7 @@
                         :success)
                :survival-alert-type (cond
 
-                                      ((< total-survival-days 7)
+                                      ((<= total-survival-days 7)
                                        "warning")
 
                                       ((> total-survival-days 7)
