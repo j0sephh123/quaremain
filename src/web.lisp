@@ -282,11 +282,23 @@
 (defroute "/api/app/list/total-survival-days" ()
   (cors-handler *response*)
   (handler-case
-      (render-json
-       (list :total-survival-days
-             (get-total-survival-days)
-             :status (get-status-code
-                      :success)))
+      (let ((total-survival-days (get-total-survival-days)))
+        (render-json
+         (list :total-survival-days
+               total-survival-days
+               :status (get-status-code
+                        :success)
+               :survival-alert-type (cond
+
+                                      ((< total-survival-days 7)
+                                       "warning")
+
+                                      ((> total-survival-days 7)
+                                       (< total-survival-days 30)
+                                       "info")
+
+                                      ((> total-survival-days 30)
+                                       "success")))))
     
     (total-required-survival-resources-is-too-low-error (exception)
       (log:error "~A" exception)

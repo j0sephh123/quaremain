@@ -251,8 +251,11 @@
         
         (sum 0))
 
-    (when (or (<= calories-sum minimal-calories)
-              (<= millilitre-sum minimal-millilitre))
+    (when
+
+        ;; Less than minimum
+        (or (<= calories-sum minimal-calories)
+            (<= millilitre-sum minimal-millilitre))
       (error 'total-required-survival-resources-is-too-low-error))
 
     
