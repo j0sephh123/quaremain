@@ -284,7 +284,7 @@
   (handler-case
       (let ((total-survival-days (get-total-survival-days))
             (week 7)
-            (month))
+            (month 30))
         
         (render-json
          (list :total-survival-days
