@@ -291,17 +291,18 @@
                total-survival-days
                :status (get-status-code
                         :success)
-               :survival-alert-type (cond
+               :survival-alert-type
+               (cond
 
-                                      ((<= total-survival-days week)
-                                       "warning")
+                 ((<= total-survival-days week)
+                  "warning")
 
-                                      ((> total-survival-days week)
-                                       (< total-survival-days month)
-                                       "info")
+                 ((and (> total-survival-days week)
+                       (< total-survival-days month))
+                  "info")
 
-                                      ((> total-survival-days month)
-                                       "success")))))
+                 ((> total-survival-days month)
+                  "success")))))
     
     (total-required-survival-resources-is-too-low-error (exception)
       (log:error "~A" exception)
