@@ -33,6 +33,9 @@
 static void destroyWindowCb();
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window);
 
+#define DEFAULT_HOST "http://127.0.0.1"
+#define DEFAULT_PORT "5000"
+
 int main(int argc, char* argv[])
 {
   // Initialize GTK+
@@ -57,11 +60,21 @@ int main(int argc, char* argv[])
   g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
   g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
+  char address_buffer[80];
+  char* port = getenv("QUAREMAIN_PORT");
+
+  if (port != NULL) {
+    sprintf(address_buffer, "%s:%s", DEFAULT_HOST, port);
+  }
+  else {
+    sprintf(address_buffer, "%s:%s", DEFAULT_HOST, DEFAULT_PORT);
+  }
+  
   // Load a web page into the browser instance
-  webkit_web_view_load_uri(webView, "http://127.0.0.1:5000");
+  webkit_web_view_load_uri(webView, address_buffer);
 
   // Make sure that when the browser area becomes visible, it will get mouse
-  // and keyboard events
+    // and keyboard events
   gtk_widget_grab_focus(GTK_WIDGET(webView));
 
   // Make sure the main window and all its contents are visible
