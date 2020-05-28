@@ -35,7 +35,8 @@
                 :get-stocks-sum
                 :get-coerced-stock-cost-by-id
                 :delete-stock-by-id
-                :get-total-survival-days)
+                :get-total-survival-days
+                :get-all-stocks)
 
   (:import-from :quaremain.utilities.database
                 :migrate-tables
@@ -251,6 +252,23 @@
       (log:error "~A" exception)
       (render-json (list
                     :error "Item doesn't exist to be deleted!"
+                    :status (get-status-code
+                             :not-found))))))
+
+(defroute "/api/app/list/get-all-stocks" ()
+  (cors-handler *response*)
+  (handler-case
+      (progn
+
+        (render-json (list
+                      :stocks (get-all-stocks)
+                      :status (get-status-code
+                               :success))))
+
+    (error (exception)
+      (log:error "~A" exception)
+      (render-json (list
+                    :error "Stocks not found!"
                     :status (get-status-code
                              :not-found))))))
 

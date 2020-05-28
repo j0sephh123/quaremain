@@ -35,31 +35,31 @@
 ;;; quaremain.utilities.database
 
 (deftest database-migration-food-test
-    
-    (let* ((stock
-            (with-connection (db)
-              (quaremain.utilities.database::get-datum-by-id :food 1)))
-           (calories (getf stock :calories-per-package))
-           (id (getf stock :id))
-           (cost (getf stock :cost-per-package))
-           (description (getf stock :description))
-           (name (getf stock :name))
-           (amount (getf stock :amount)))
+  
+  (let* ((stock
+          (with-connection (db)
+            (quaremain.utilities.database::get-datum-by-id :food 1)))
+         (calories (getf stock :calories-per-package))
+         (id (getf stock :id))
+         (cost (getf stock :cost-per-package))
+         (description (getf stock :description))
+         (name (getf stock :name))
+         (amount (getf stock :amount)))
 
-      (testing "name of first row"
-               (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
+    (testing "name of first row"
+             (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
 
-      (testing "amount of first row"
-               (ok (= amount 12)))
+    (testing "amount of first row"
+             (ok (= amount 12)))
 
-      (testing "cost-per-package of first row"
-               (ok (= cost 12.02d0)))
+    (testing "cost-per-package of first row"
+             (ok (= cost 12.02d0)))
 
-      (testing "calories-per-package of first row"
-               (ok (= calories 1200)))
+    (testing "calories-per-package of first row"
+             (ok (= calories 1200)))
 
-      (testing "id of first row"
-               (ok (= id 1)))))
+    (testing "id of first row"
+             (ok (= id 1)))))
 
 (deftest database-migration-water-test
   
@@ -168,42 +168,42 @@
                    :cost-per-package 900.78d0)))))))
 
 (deftest get-datum-by-id
-    (with-connection (db)
-      (let* ((result
-              (quaremain.utilities.database::get-datum-by-id
-               :medicine 1))
-             (amount (getf result :amount)))
+  (with-connection (db)
+    (let* ((result
+            (quaremain.utilities.database::get-datum-by-id
+             :medicine 1))
+           (amount (getf result :amount)))
 
-        (testing "amount of first row of medicine"
-                 (ok
-                  (= amount
-                     4))))))
+      (testing "amount of first row of medicine"
+               (ok
+                (= amount
+                   4))))))
 
 (deftest get-datum-by-name
-    (with-connection (db)
-      (let* ((result
-              (quaremain.utilities.database::get-datum-by-name
-               :food
-               "Cashews from Jerry's"))
-             (amount (getf result :amount)))
+  (with-connection (db)
+    (let* ((result
+            (quaremain.utilities.database::get-datum-by-name
+             :food
+             "Cashews from Jerry's"))
+           (amount (getf result :amount)))
 
-        (testing "food by Cashews from Jerry's"
-                 (ok
-                  (= amount
-                     5))))))
+      (testing "food by Cashews from Jerry's"
+               (ok
+                (= amount
+                   5))))))
 
 (deftest row-exist-by-id?
-    (with-connection (db)
-      (let* ((food-result
-              (quaremain.utilities.database::row-exist-by-id? :food 1))
-             (weapon-result
-              (quaremain.utilities.database::row-exist-by-id? :weapon 2)))
-        
-        (testing "first row of food"
-                 (ok food-result))
+  (with-connection (db)
+    (let* ((food-result
+            (quaremain.utilities.database::row-exist-by-id? :food 1))
+           (weapon-result
+            (quaremain.utilities.database::row-exist-by-id? :weapon 2)))
+      
+      (testing "first row of food"
+               (ok food-result))
 
-        (testing "second row of food"
-                 (ok weapon-result)))))
+      (testing "second row of food"
+               (ok weapon-result)))))
 
 (deftest row-exist-by-name?
   (with-connection (db)
@@ -223,14 +223,14 @@
                (ok weapon-result)))))
 
 (deftest create-new-row
-    (with-connection (db)
-      (quaremain.utilities.database::create-datum
-       :food
-       :name "Jaguar"
-       :description "Food"
-       :amount 3
-       :cost-per-package 12.0
-       :calories-per-package 1492))
+  (with-connection (db)
+    (quaremain.utilities.database::create-datum
+        :food
+      :name "Jaguar"
+      :description "Food"
+      :amount 3
+      :cost-per-package 12.0
+      :calories-per-package 1492))
 
   (with-connection (db)
     (let* ((food-result
@@ -245,87 +245,87 @@
                  "Food"))))))
 
 (deftest update-datum-by-id
-    (with-connection (db)
+  (with-connection (db)
 
-      (quaremain.utilities.database::update-datum-by-id
-       :water
-       2
-       "Fuvi"
-       "Slurp"
-       223
-       12.0
-       :millilitre-per-package 1000)
-      
-      (quaremain.utilities.database::update-datum-by-id
-       :medicine
-       1
-       "Cough-ed"
-       "Healer"
-       923
-       14.0)
+    (quaremain.utilities.database::update-datum-by-id
+        :water
+        2
+        "Fuvi"
+        "Slurp"
+        223
+        12.0
+      :millilitre-per-package 1000)
+    
+    (quaremain.utilities.database::update-datum-by-id
+        :medicine
+        1
+        "Cough-ed"
+        "Healer"
+        923
+        14.0)
 
-      (let* ((water-result
-              (quaremain.utilities.database::get-datum-by-id :water 2))
-             (water-millilitre
-              (getf water-result :millilitre-per-package))
-             
-             (medicine-result
-              (quaremain.utilities.database::get-datum-by-id :medicine 1))
-             (medicine-amount
-              (getf medicine-result :amount)))
+    (let* ((water-result
+            (quaremain.utilities.database::get-datum-by-id :water 2))
+           (water-millilitre
+            (getf water-result :millilitre-per-package))
+           
+           (medicine-result
+            (quaremain.utilities.database::get-datum-by-id :medicine 1))
+           (medicine-amount
+            (getf medicine-result :amount)))
 
-        (testing "water millilitre-per-package of second row"
-                 (ok
-                  (=
-                   water-millilitre
-                   1000)))
+      (testing "water millilitre-per-package of second row"
+               (ok
+                (=
+                 water-millilitre
+                 1000)))
 
-        (testing "medicine amount of first row"
-                 (ok
-                  (=
-                   medicine-amount
-                   923))))))
+      (testing "medicine amount of first row"
+               (ok
+                (=
+                 medicine-amount
+                 923))))))
 
 (deftest delete-datum-by-id
-    (with-connection (db)
+  (with-connection (db)
 
-      (quaremain.utilities.database::delete-datum-by-id :water 1)
-      (quaremain.utilities.database::delete-datum-by-id :medicine 1)
-      (quaremain.utilities.database::delete-datum-by-id :medicine 2)
+    (quaremain.utilities.database::delete-datum-by-id :water 1)
+    (quaremain.utilities.database::delete-datum-by-id :medicine 1)
+    (quaremain.utilities.database::delete-datum-by-id :medicine 2)
 
-      (testing "water first row"
-               (ng
-                (quaremain.utilities.database::get-datum-by-id :water 1)))
+    (testing "water first row"
+             (ng
+              (quaremain.utilities.database::get-datum-by-id :water 1)))
 
-      (testing "water second row"
-               (ok
-                (quaremain.utilities.database::get-datum-by-id :water 2)))
+    (testing "water second row"
+             (ok
+              (quaremain.utilities.database::get-datum-by-id :water 2)))
 
-      (testing "medicine first row"
-               (ng
-                (quaremain.utilities.database::get-datum-by-id :medicine 1)))
+    (testing "medicine first row"
+             (ng
+              (quaremain.utilities.database::get-datum-by-id :medicine 1)))
 
-      (testing "medicine second row"
-               (ng
-                (quaremain.utilities.database::get-datum-by-id :medicine 2)))
+    (testing "medicine second row"
+             (ng
+              (quaremain.utilities.database::get-datum-by-id :medicine 2)))
 
-      ;; reset database for next package testing
-      (quaremain.utilities.database::drop-tables)
-      (quaremain.utilities.database::migrate-tables)
-      (quaremain.utilities.database::migrate-seeds)))
+    ;; reset database for next package testing
+    (quaremain.utilities.database::drop-tables)
+    (quaremain.utilities.database::migrate-tables)
+    (quaremain.utilities.database::migrate-seeds)))
 
 ;;; quaremain.models.stock.stock
 
 
 (deftest create-stock
-    
-    (quaremain.models.stock.stock::create-stock
-     :stock-category :food
-     :name "RANMIZ"
-     :description "slurpy"
-     :amount 24
-     :cost-per-package 27.02d20
-     :calories-per-package 923)
+  
+  (quaremain.models.stock.stock::create-stock
+   :stock-category :food
+   :name "RANMIZ"
+   :description "slurpy"
+   :amount 24
+   :cost-per-package 27.02d20
+   :calories-per-package 923)
 
   (quaremain.models.stock.stock::create-stock
    :stock-category :water
@@ -384,36 +384,36 @@
        :water 3))))
 
 (deftest get-stocks-sum
-    (let* ((food-result
-            (quaremain.models.stock.stock::get-stocks-sum
-             :food))
-           (medicine-result
-            (quaremain.models.stock.stock::get-stocks-sum
-             :medicine)))
+  (let* ((food-result
+          (quaremain.models.stock.stock::get-stocks-sum
+           :food))
+         (medicine-result
+          (quaremain.models.stock.stock::get-stocks-sum
+           :medicine)))
 
-      (testing "food"
-               (ok
-                (equal
-                 food-result
-                 '((:ID 1 :NAME "Sed neque. Sed eget lacus. Mauris"
-                    :DESCRIPTION
-                    "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
-                    :AMOUNT 12 :COST-PER-PACKAGE 144.24 :CALORIES-PER-PACKAGE
-                    14400)
-                   (:ID 2 :NAME "Cashews from Jerry's" :DESCRIPTION "" :AMOUNT
-                    5 :COST-PER-PACKAGE 60.1 :CALORIES-PER-PACKAGE 1000))
-                 )))
+    (testing "food"
+             (ok
+              (equal
+               food-result
+               '((:ID 1 :NAME "Sed neque. Sed eget lacus. Mauris"
+                  :DESCRIPTION
+                  "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                  :AMOUNT 12 :COST-PER-PACKAGE 144.24 :CALORIES-PER-PACKAGE
+                  14400)
+                 (:ID 2 :NAME "Cashews from Jerry's" :DESCRIPTION "" :AMOUNT
+                  5 :COST-PER-PACKAGE 60.1 :CALORIES-PER-PACKAGE 1000))
+               )))
 
-      (testing "medicine"
-               (ok
-                (equal
-                 medicine-result
-                 '((:ID 1 :NAME "Penicilin IoX" :DESCRIPTION
-                    "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
-                    :AMOUNT 4 :COST-PER-PACKAGE 48.08)
-                   (:ID 2 :NAME "Paracetamol" :DESCRIPTION
-                    "For fever (ASAP)" :AMOUNT 5 :COST-PER-PACKAGE 15.1))
-                 )))))
+    (testing "medicine"
+             (ok
+              (equal
+               medicine-result
+               '((:ID 1 :NAME "Penicilin IoX" :DESCRIPTION
+                  "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                  :AMOUNT 4 :COST-PER-PACKAGE 48.08)
+                 (:ID 2 :NAME "Paracetamol" :DESCRIPTION
+                  "For fever (ASAP)" :AMOUNT 5 :COST-PER-PACKAGE 15.1))
+               )))))
 
 (deftest get-coerced-stock-cost-by-id
   (let* ((food-result
@@ -494,6 +494,41 @@
               (= result
                  10)))))
 
+(deftest get-all-stocks
+  (let ((result
+         (quaremain.models.stock.stock::get-all-stocks)))
+
+    (testing ""
+             (ok
+              (equal result
+
+                     '(:FOOD
+                       (((:ID 1 :NAME "Sed neque. Sed eget lacus. Mauris" :DESCRIPTION
+                              "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                              :AMOUNT 12 :COST-PER-PACKAGE 12.02d0 :CALORIES-PER-PACKAGE
+                              1200)
+                         (:ID 2 :NAME "Cashews from Jerry's" :DESCRIPTION "" :AMOUNT 5
+                              :COST-PER-PACKAGE 12.02d0 :CALORIES-PER-PACKAGE 200)))
+                       :WATER
+                       (((:ID 1 :NAME "Tasty drinking water" :DESCRIPTION
+                              "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                              :AMOUNT 12 :COST-PER-PACKAGE 12.02d0 :MILLILITRE-PER-PACKAGE
+                              1500)
+                         (:ID 2 :NAME "ICOLITE from Jerry's" :DESCRIPTION "" :AMOUNT 5
+                              :COST-PER-PACKAGE 12.02d0 :MILLILITRE-PER-PACKAGE 923)))
+                       :MEDICINE
+                       (((:ID 1 :NAME "Penicilin IoX" :DESCRIPTION
+                              "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                              :AMOUNT 4 :COST-PER-PACKAGE 12.02d0)
+                         (:ID 2 :NAME "Paracetamol" :DESCRIPTION "For fever (ASAP)"
+                              :AMOUNT 5 :COST-PER-PACKAGE 3.02d0)))
+                       :WEAPON
+                       (((:ID 1 :NAME "AK-47" :DESCRIPTION
+                              "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                              :AMOUNT 1 :COST-PER-PACKAGE 1200.0d0)
+                         (:ID 2 :NAME "Magnum-192" :DESCRIPTION "Poweful shockburst"
+                              :AMOUNT 2 :COST-PER-PACKAGE 900.78d0)))))))))
+
 (deftest update-stock-by-id
   (with-connection (db)
     
@@ -541,9 +576,9 @@
                    912))))))
 
 (deftest delete-stock-by-id
-    (quaremain.models.stock.stock::delete-stock-by-id
-     "weapon"
-     2)
+  (quaremain.models.stock.stock::delete-stock-by-id
+   "weapon"
+   2)
 
   (let ((weapon-result
          (quaremain.utilities.database::row-exist-by-id?

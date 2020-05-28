@@ -278,3 +278,12 @@
   (calculate-total-survival-days
    (get-total-food-calories)
    (get-total-water-millilitre)))
+
+(defun get-all-stocks ()
+  (with-connection (db)
+
+    (list
+     :food (get-all-datum :food)
+     :water (get-all-datum :water)
+     :medicine (get-all-datum :medicine)
+     :weapon (get-all-datum :weapon))))
