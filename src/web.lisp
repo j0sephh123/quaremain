@@ -268,7 +268,7 @@
     (error (exception)
       (log:error "~A" exception)
       (render-json (list
-                    :error "Stocks not found!"
+                    :error "All stocks are empty!"
                     :status (get-status-code
                              :not-found))))))
 

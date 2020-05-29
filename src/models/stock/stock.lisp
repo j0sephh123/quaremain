@@ -281,9 +281,24 @@
 
 (defun get-all-stocks ()
   (with-connection (db)
+    (let ((food-stocks
+           (get-all-datum :food))
+          (water-stocks
+           (get-all-datum :water))
+          (medicine-stocks
+           (get-all-datum :medicine))
+          (weapon-stocks
+           (get-all-datum :weapon)))
 
-    (list
-     :food (get-all-datum :food)
-     :water (get-all-datum :water)
-     :medicine (get-all-datum :medicine)
-     :weapon (get-all-datum :weapon))))
+      (when (and
+             (null food-stocks)
+             (null water-stocks)
+             (null medicine-stocks)
+             (null weapon-stocks))
+        (error "All stocks are empty!"))
+      
+      (list
+       :food food-stocks
+       :water water-stocks
+       :medicine medicine-stocks
+       :weapon weapon-stocks))))
