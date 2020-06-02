@@ -246,16 +246,13 @@
 
 (defun calculate-total-survival-days (calories-sum
                                       millilitre-sum)
-  (let ((minimal-calories 1500)
-        (minimal-millilitre 2300)
-        
-        (sum 0))
+  (let ((minimal-calories-per-day 1500)
+        (minimal-millilitre-per-day 2300))
 
     (when
-
         ;; Less than minimum
-        (or (<= calories-sum minimal-calories)
-            (<= millilitre-sum minimal-millilitre))
+        (or (<= calories-sum minimal-calories-per-day)
+            (<= millilitre-sum minimal-millilitre-per-day))
       (error 'total-required-survival-resources-is-too-low-error))
 
     
@@ -266,13 +263,13 @@
     ;; food compared to vice-versa (unless the
     ;; food contains enough water)
     (if (< millilitre-sum calories-sum)
-        (setf sum
-              (floor
-               millilitre-sum minimal-millilitre))
+        (floor
+         millilitre-sum
+         minimal-millilitre-per-day)
 
-        (setf sum
-              (floor
-               calories-sum minimal-calories)))))
+        (floor
+         calories-sum
+         minimal-calories-per-day))))
 
 (defun get-total-survival-days ()
   (calculate-total-survival-days
