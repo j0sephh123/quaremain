@@ -85,7 +85,6 @@
                        (allow-origin "*")                       
                        (allow-headers "Content-Type"))
   "Handling CORS requests. By default, accepts 'any' origin."
-
   (set-header-origin response allow-origin "GET, POST, OPTIONS" allow-headers))
 
 (defroute "/api/app/list/food" ()
@@ -143,8 +142,7 @@
               id)))
         (render-json (list
                       :stock (list stock)
-                      :status (get-status-code :success))))
-    
+                      :status (get-status-code :success))))    
     (row-doesnt-exist-error (exception)
       (log:error "~A" exception)
       (log:error "Row doesn't exist to retrieved!")
@@ -215,7 +213,6 @@
   (cors-handler *response*)
   (handler-case
       (progn
-        
         (update-stock-by-id :stock-category |stockCategory|
                             :id id
                             :name |name|
@@ -242,12 +239,10 @@
   (cors-handler *response*)
   (handler-case
       (progn
-        
         (delete-stock-by-id |stockCategory| id)
         (render-json (list
                       :status (get-status-code
                                :success))))
-    
     (row-doesnt-exist-error (exception)
       (log:error "~A" exception)
       (render-json (list
@@ -259,12 +254,10 @@
   (cors-handler *response*)
   (handler-case
       (progn
-
         (render-json (list
                       :stocks (get-all-stocks)
                       :status (get-status-code
                                :success))))
-
     (error (exception)
       (log:error "~A" exception)
       (render-json (list
@@ -276,13 +269,11 @@
   (cors-handler *response*)
   (handler-case
       (progn
-        
         (drop-tables)
         (migrate-tables)
         (render-json (list
                       :status (get-status-code
                                :success))))
-
     (no-database-tables-to-be-found-error (exception)
       (log:error "~A" exception)
       (render-json (list
@@ -301,14 +292,11 @@
   (let ((week 7)
         (month 30))
     (cond
-
       ((<= total-survival-days week)
        "warning")
-
       ((and (> total-survival-days week)
             (<= total-survival-days month))
        "info")
-
       ((> total-survival-days month)
        "success"))))
 
@@ -316,7 +304,6 @@
   (cors-handler *response*)
   (handler-case
       (let ((total-survival-days (get-total-survival-days)))
-        
         (render-json
          (list :total-survival-days
                total-survival-days

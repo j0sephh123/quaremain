@@ -58,7 +58,6 @@
                        millilitre-per-package)
   
   (with-connection (db)
-    
     (cond ((string-equal stock-category "food")
            (create-datum
                :food
@@ -67,7 +66,6 @@
              :amount amount
              :cost-per-package cost-per-package
              :calories-per-package calories-per-package))
-
           ((string-equal stock-category "water")
            (create-datum
                :water
@@ -76,7 +74,6 @@
              :amount amount
              :cost-per-package cost-per-package
              :millilitre-per-package millilitre-per-package))
-
           (t
            (create-datum
                (string->keyword stock-category)
@@ -113,7 +110,6 @@
 (defun coerce-cost-per-stock (stock)
   (let ((cost-per-stock
          (getf stock :cost-per-package)))
-    
     (setf (getf stock :cost-per-package)
           (coerce cost-per-stock 'single-float)))
   stock)
@@ -131,17 +127,13 @@
 
   (let ((table-name
          (string->keyword stock-category)))
-
     (with-connection (db)
-
       (unless (row-exist-by-id? table-name id)
         (error 'row-doesnt-exist-error
                :table-name table-name
                :id id))
-      
       (cond
         ((eql table-name :food)
-         
          (update-datum-by-id
              table-name
              id
@@ -150,9 +142,7 @@
              amount
              cost-per-package
            :calories-per-package calories-per-package))
-
         ((eql table-name :water)
-
          (update-datum-by-id
              table-name
              id
@@ -161,9 +151,7 @@
              amount
              cost-per-package
            :millilitre-per-package millilitre-per-package))
-
         (t
-         
          (update-datum-by-id
              table-name
              id
@@ -180,50 +168,41 @@
     (sum-all-cost-per-stock
      (cond ((eql table-name :food)
             (sum-all-calories-per-stock stocks)
-            stocks)
-           
+            stocks)           
            ((eql table-name :water)
             (sum-all-millilitre-per-stock stocks)
             stocks)
-
            (t
             stocks)))
     stocks))
 
 (defun get-coerced-stock-cost-by-id (stock-category id)
   (with-connection (db)
-    
     (let ((table-name
-           (string->keyword stock-category)))
-      
+           (string->keyword stock-category)))      
       (unless (row-exist-by-id? table-name id)
         (error 'row-doesnt-exist-error
                :table-name stock-category
                :id id))
 
       (let ((stock
-             
              (get-datum-by-id table-name id)))
         (coerce-cost-per-stock stock)
         stock))))
 
 (defun delete-stock-by-id (stock-category id)
   (with-connection (db)
-    
     (let ((table-name
            (string->keyword stock-category)))
-      
       (unless (row-exist-by-id? table-name id)
         (error 'row-doesnt-exist-error
                :table-name table-name
                :id id))
-      
       (delete-datum-by-id table-name id))))
 
 (defun get-total-unique-property-stock-value-sum (unique-property
                                                   stocks)
   (with-connection (db)
-
     (reduce #'+
             (mapcar #'(lambda (stock)
                         (getf stock  unique-property))
@@ -231,7 +210,6 @@
 
 (defun get-total-food-calories ()
   (with-connection (db)
-    
     (get-total-unique-property-stock-value-sum
      :calories-per-package
      (sum-all-calories-per-stock
@@ -239,7 +217,6 @@
 
 (defun get-total-water-millilitre ()
   (with-connection (db)
-
     (get-total-unique-property-stock-value-sum
      :millilitre-per-package
      (sum-all-millilitre-per-stock
@@ -249,7 +226,6 @@
                                       millilitre-sum)
   (let ((minimal-calories-per-day 1500)
         (minimal-millilitre-per-day 2300))
-
     (when
         ;; Less than minimum
         (or (<= calories-sum minimal-calories-per-day)
@@ -267,7 +243,6 @@
         (floor
          millilitre-sum
          minimal-millilitre-per-day)
-
         (floor
          calories-sum
          minimal-calories-per-day))))
@@ -287,14 +262,12 @@
            (get-all-datum :medicine))
           (weapon-stocks
            (get-all-datum :weapon)))
-
       (when (and
              (null food-stocks)
              (null water-stocks)
              (null medicine-stocks)
              (null weapon-stocks))
         (error 'all-stocks-empty-error))
-      
       (list
        :food food-stocks
        :water water-stocks

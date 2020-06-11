@@ -116,7 +116,6 @@
                            :not-null t))
                         (deftable :medicine)
                         (deftable :weapon)))))
-    
     (sqlite-error (exception)
       (log:error "Are you trying to run from the outside of
                   Quaremain's project directory?")
@@ -136,12 +135,10 @@
                         :medicine
                         :weapon)))
         (log:info "Database tables has been erased"))
-    
     (dbi-programming-error (exception)
       (log:error "[DBI-PROGRAMMING-ERROR]: ~A" exception)
       (log:error "No existing tables in the database found to be erased")
       (error 'no-database-tables-to-be-found-error))
-    
     (sqlite-error (exception)
       (log:error "[SQLITE-ERROR]: ~A" exception)
       (log:error "Are you trying to run from the outside of
@@ -209,9 +206,7 @@
                    seed-category)))
          (parsed-from-json-seeds
           (decode-json-from-string seeds)))
-
     (with-connection (db)
-
       (mapcar
        #'(lambda (seed)
            (create-datum (string->keyword seed-category)
@@ -228,9 +223,7 @@
            (format nil "~A/food.json" +seeds-directory+)))
          (json-data
           (cl-json:decode-json-from-string all-data)))
-
     (with-connection (db)
-      
       (mapcar
        #'(lambda (item)
            (create-datum :food
@@ -248,9 +241,7 @@
            (format nil "~A/water.json" +seeds-directory+)))
          (json-data
           (cl-json:decode-json-from-string all-data)))
-
-    (with-connection (db)
-      
+    (with-connection (db)      
       (mapcar
        #'(lambda (item)
            (create-datum :water
