@@ -36,7 +36,8 @@
                 :stock-missing-property-value-error
                 :row-doesnt-exist-error
                 :row-with-same-name-already-exist-error
-                :total-required-survival-resources-is-too-low-error)
+                :total-required-survival-resources-is-too-low-error
+                :all-stocks-empty-error)
   
   (:export :create-stock
            :update-stock-by-id
@@ -292,7 +293,7 @@
              (null water-stocks)
              (null medicine-stocks)
              (null weapon-stocks))
-        (error "All stocks are empty!"))
+        (error 'all-stocks-empty-error))
       
       (list
        :food food-stocks

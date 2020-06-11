@@ -22,7 +22,8 @@
            :row-doesnt-exist-error
            :row-with-same-name-already-exist-error
            :no-database-tables-to-be-found-error
-           :total-required-survival-resources-is-too-low-error))
+           :total-required-survival-resources-is-too-low-error
+           :all-stocks-empty-error))
 (in-package :quaremain.utilities.exception)
 
 (define-condition quaremain-error (simple-error)
@@ -81,3 +82,8 @@
              (declare (ignore condition))
              (format stream "Total required survival resources is too low! Consider stocking more food and water!"))))
 
+(define-condition all-stocks-empty-error (quaremain-error)
+  ()
+  (:report (lambda (condition stream)
+             (declare (ignore condition))
+             (format stream "All stocks are empty!"))))
