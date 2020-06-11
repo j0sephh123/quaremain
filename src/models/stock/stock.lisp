@@ -19,7 +19,7 @@
   (:documentation "Stock abstract model related procedures.")
   (:use :cl)
   (:import-from :quaremain.utilities.string
-                :string-to-keyword)
+                :string->keyword)
   
   (:import-from :quaremain.utilities.database
                 :db
@@ -79,7 +79,7 @@
 
           (t
            (create-datum
-               (string-to-keyword stock-category)
+               (string->keyword stock-category)
              :name name
              :description description
              :amount amount
@@ -130,7 +130,7 @@
                              millilitre-per-package)
 
   (let ((table-name
-         (string-to-keyword stock-category)))
+         (string->keyword stock-category)))
 
     (with-connection (db)
 
@@ -194,7 +194,7 @@
   (with-connection (db)
     
     (let ((table-name
-           (string-to-keyword stock-category)))
+           (string->keyword stock-category)))
       
       (unless (row-exist-by-id? table-name id)
         (error 'row-doesnt-exist-error
@@ -211,7 +211,7 @@
   (with-connection (db)
     
     (let ((table-name
-           (string-to-keyword stock-category)))
+           (string->keyword stock-category)))
       
       (unless (row-exist-by-id? table-name id)
         (error 'row-doesnt-exist-error

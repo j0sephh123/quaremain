@@ -18,9 +18,9 @@
 (defpackage quaremain.utilities.string
   (:documentation "String utilities.")
   (:use :cl)
-  (:export :string-to-keyword))
+  (:export :string->keyword))
 (in-package :quaremain.utilities.string)
 
-(defun string-to-keyword (string)
+(defun string->keyword (string)
   (read-from-string
    (format nil ":~A" string)))

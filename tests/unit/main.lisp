@@ -26,11 +26,11 @@
 
 (deftest quaremain.utilities.string
 
-    (testing ""
-             (ok
-              (eql
-               (quaremain.utilities.string::string-to-keyword "fruitz")
-               :fruitz))))
+  (testing ""
+           (ok
+            (eql
+             (quaremain.utilities.string::string->keyword "fruitz")
+             :fruitz))))
 
 (deftest quaremain.models.stock.stock
   (let* ((raw-result

@@ -24,7 +24,7 @@
   (:import-from :uiop
                 :read-file-string)
   (:import-from :quaremain.utilities.string
-                :string-to-keyword)
+                :string->keyword)
 
   (:import-from :cl-json
                 :decode-json-from-string)
@@ -214,7 +214,7 @@
 
       (mapcar
        #'(lambda (seed)
-           (create-datum (string-to-keyword seed-category)
+           (create-datum (string->keyword seed-category)
              :name (assoc-value seed :name)
              :description (assoc-value seed :description)
              :amount (assoc-value seed :amount)
