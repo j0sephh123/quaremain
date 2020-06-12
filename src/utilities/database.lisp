@@ -216,7 +216,6 @@
              :cost-per-package (assoc-value seed :cost-per-package)))
        parsed-from-json-seeds))))
 
-
 (defun food-seed-migrator ()
   (let* ((all-data
           (uiop:read-file-string
@@ -250,7 +249,6 @@
              :amount (alexandria:assoc-value item :amount)
              :cost-per-package (alexandria:assoc-value item :cost-per-package)
              :millilitre-per-package (alexandria:assoc-value item :millilitre-per-package)))
-       
        json-data))))
 
 (defun medicine-seed-migrator ()
