@@ -1,7 +1,7 @@
 (defsystem "quaremain"
-  :version "0.8.3"
+  :version "0.8.4"
   :author "Momozor"
-  :license "GPL-3.0-or-later"
+  :license "MIT"
   :depends-on ("clack"
                "lack"
                "caveman2"
@@ -60,7 +60,7 @@ for preparation of emergency times"
 
 (defsystem "quaremain/tests/functional"
   :author "Momozor"
-  :license "GPL-3.0-or-later"
+  :license "MIT"
   :depends-on ("quaremain"
                "rove")
   :components ((:module "tests/functional"

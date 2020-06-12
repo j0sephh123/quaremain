@@ -13,7 +13,7 @@ Available on GNU/Linux Ubuntu 20.04 as a graphical desktop application.
 
 
 ## Version
-0.8.3
+0.8.4
 
 ## Status
 
@@ -171,5 +171,5 @@ made with Vue + nodejs ecosystem, HTML5, CSS3 and Javascript.
 
 ## License
 
-This software is released under the GPL-3.0 or any later version.
-Please see COPYING file for more details.
+This software is released under the MIT or any later version.
+Please see LICENSE file for more details.
