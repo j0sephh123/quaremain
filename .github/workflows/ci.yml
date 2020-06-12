@@ -15,6 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: |
+        sudo apt update
         sudo apt install sbcl cl-quicklisp libsqlite3-dev zlib1g-dev build-essential pkg-config libwebkit2gtk-4.0-dev git automake libcurl4-openssl-dev
     - name: Install and init quicklisp for system's SBCL
       run: |
