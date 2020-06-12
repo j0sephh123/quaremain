@@ -41,16 +41,13 @@
 
 (defun start (&rest args &key server port debug &allow-other-keys)
   (declare (ignore server port debug))
-  
   (migrate-tables)
-  
   (log:info "Proceeding to launch the local server..")
   (when *handler*
     (restart-case (error "Server is already running.")
       (restart-server ()
         :report "Restart the server"
         (stop))))
-  
   (setf *handler*
         (apply
          #'clackup
@@ -66,7 +63,6 @@
           *web*)
          args)))
 
-
 (defun stop ()
   (prog1
       (clack:stop *handler*)
@@ -77,13 +73,11 @@
                  (if (null env-port)
                      port
                      (parse-integer env-port))))
-  
   (handler-case (bt:join-thread
                  (find-if (lambda (thread)
                             (search "hunchentoot"
                                     (bt:thread-name thread)))
-                          (bt:all-threads)))
-    
+                          (bt:all-threads)))    
     (#+sbcl sb-sys:interactive-interrupt
       #+ccl  ccl:interrupt-signal-condition
       #+clisp system::simple-interrupt-condition
@@ -93,3 +87,4 @@
            (log:info "Aborting")
            (stop)
            (uiop:quit)))))
+
