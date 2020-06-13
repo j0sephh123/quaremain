@@ -171,5 +171,5 @@ made with Vue + nodejs ecosystem, HTML5, CSS3 and Javascript.
 
 ## License
 
-This software is released under the MIT or any later version.
+This software is released under the MIT license.
 Please see LICENSE file for more details.
