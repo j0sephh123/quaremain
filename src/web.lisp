@@ -78,8 +78,11 @@
   "Handling CORS requests. By default, accepts 'any' origin."
   (set-header-origin response allow-origin "GET, POST, OPTIONS" allow-headers))
 
-(defroute "/api/app/list/food" ()
+(defroute "/api/app/*" ()
   (cors-handler *response*)
+  (next-route))
+
+(defroute "/api/app/list/food" ()
   (let ((food-stocks (get-stocks-sum :food)))
     (if (null food-stocks)
         (render-json (list
@@ -90,7 +93,6 @@
                       :status (get-status-code :success))))))
 
 (defroute "/api/app/list/water" ()
-  (cors-handler *response*)
   (let ((water-stocks (get-stocks-sum :water)))
     (if (null water-stocks)
         (render-json (list
@@ -101,7 +103,6 @@
                       :status (get-status-code :success))))))
 
 (defroute "/api/app/list/medicine" ()
-  (cors-handler *response*)
   (let ((medicine-stocks (get-stocks-sum :medicine)))
     (if (null medicine-stocks)
         (render-json (list
@@ -112,7 +113,6 @@
                       :status (get-status-code :success))))))
 
 (defroute "/api/app/list/weapon" ()
-  (cors-handler *response*)
   (let ((weapon-stocks (get-stocks-sum :weapon)))
     (if (null weapon-stocks)
         (render-json (list
@@ -125,7 +125,6 @@
 (defroute "/api/app/list/show/:id" (&key
                                     id
                                     |stockCategory|)
-  (cors-handler *response*)
   (handler-case
       (let ((stock
              (get-coerced-stock-cost-by-id
@@ -158,7 +157,6 @@
                                   |costPerPackage|
                                   |caloriesPerPackage|
                                   |millilitrePerPackage|)
-  (cors-handler *response*)
   (handler-case
       (progn
         (create-stock :stock-category |stockCategory|
@@ -201,7 +199,6 @@
                                       |costPerPackage|
                                       |caloriesPerPackage|
                                       |millilitrePerPackage|)
-  (cors-handler *response*)
   (handler-case
       (progn
         (update-stock-by-id :stock-category |stockCategory|
@@ -227,7 +224,6 @@
                     :status (get-status-code :not-found))))))
 
 (defroute "/api/app/list/delete/:id" (&key id |stockCategory|)
-  (cors-handler *response*)
   (handler-case
       (progn
         (delete-stock-by-id |stockCategory| id)
@@ -242,7 +238,6 @@
                              :not-found))))))
 
 (defroute "/api/app/list/get-all-stocks" ()
-  (cors-handler *response*)
   (handler-case
       (progn
         (render-json (list
@@ -257,7 +252,6 @@
                              :not-found))))))
 
 (defroute "/api/app/list/reset-database" ()
-  (cors-handler *response*)
   (handler-case
       (progn
         (drop-tables)
@@ -292,7 +286,6 @@
        "success"))))
 
 (defroute "/api/app/list/total-survival-days" ()
-  (cors-handler *response*)
   (handler-case
       (let ((total-survival-days (get-total-survival-days)))
         (render-json
