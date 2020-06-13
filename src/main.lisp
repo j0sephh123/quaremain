@@ -65,12 +65,13 @@
                      port
                      (parse-integer env-port))))
   (handler-case (bt:join-thread
-                 (find-if (lambda (thread)
-                            (search "hunchentoot"
-                                    (bt:thread-name thread)))
-                          (bt:all-threads)))    
+                 (find-if
+                  (lambda (thread)
+                    (search "hunchentoot"
+                            (bt:thread-name thread)))
+                  (bt:all-threads)))    
     (#+sbcl sb-sys:interactive-interrupt
-      #+ccl  ccl:interrupt-signal-condition
+      #+ccl ccl:interrupt-signal-condition
       #+clisp system::simple-interrupt-condition
       #+ecl ext:interactive-interrupt
       #+allegro excl:interrupt-signal

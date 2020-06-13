@@ -40,7 +40,6 @@
   "Quaremain's system wide application instance.")
 (clear-routing-rules *web*)
 
-
 (defparameter *session* (make-hash-table))
 
 (defroute "/" ()
@@ -48,9 +47,6 @@
 
 (defroute "/experimental" ()
   (render #p"experimental.html"))
-
-;; (defroute "/api/os/")
-;; for OS commands calls
 
 (defparameter +status-codes+
   '((:not-found 404)

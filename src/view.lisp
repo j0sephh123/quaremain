@@ -42,7 +42,6 @@
   (setf (getf (response-headers *response*) :content-type) "application/json")
   (encode-json object))
 
-
 (defpackage quaremain.djula
   (:documentation "HTML view.")
   (:use :cl)
@@ -50,3 +49,4 @@
                 :url-for))
 
 (setf djula:*djula-execute-package* (find-package :quaremain.djula))
+
