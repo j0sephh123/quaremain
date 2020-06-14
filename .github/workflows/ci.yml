@@ -38,8 +38,3 @@ jobs:
       run: |
         cd $HOME/.roswell/local-projects/quaremain
         $HOME/.roswell/bin/rove quaremain.asd
-        
-
-    - name: Building executable
-      run: |
-        cd $HOME/quicklisp/local-projects/quaremain; make;
