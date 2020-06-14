@@ -318,22 +318,22 @@
 
 
 (deftest create-stock
-    
-    (quaremain.models.stock.stock::create-stock
-     :stock-category :food
-     :name "RANMIZ"
-     :description "slurpy"
-     :amount 24
-     :cost-per-package 27.02d20
-     :calories-per-package 923)
+  
+  (quaremain.models.stock.stock::create-stock
+   '((:stock-category . "food")
+     (:name . "RANMIZ")
+     (:description . "slurpy")
+     (:amount . 24)
+     (:cost-per-package . 27.02d20)
+     (:calories-per-package . 923)))
 
   (quaremain.models.stock.stock::create-stock
-   :stock-category :water
-   :name "Fuviz"
-   :description "refreshing"
-   :amount 5
-   :cost-per-package 3.02d0
-   :millilitre-per-package 1100)
+   '((:stock-category . "water")
+     (:name . "Fuviz")
+     (:description . "refreshing")
+     (:amount . 5)
+     (:cost-per-package . 3.02d0)
+     (:millilitre-per-package . 1100)))
 
   (with-connection (db)
 
