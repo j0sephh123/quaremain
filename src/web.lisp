@@ -71,8 +71,11 @@
                      &key
                        (allow-origin "*")                       
                        (allow-headers "Content-Type"))
-  "Handling CORS requests. By default, accepts 'any' origin."
-  (set-header-origin response allow-origin "GET, POST, OPTIONS" allow-headers))
+  (set-header-origin
+   response
+   allow-origin
+   "GET, POST, OPTIONS"
+   allow-headers))
 
 (defroute "/api/app/*" ()
   (cors-handler *response*)
@@ -145,14 +148,15 @@
 ;; FIXME: amount is not received
 ;; workaround, uses stock-amount as parameter key
 ;; for route
-(defroute "/api/app/list/create" (&key
-                                  |stockCategory|
-                                  |name|
-                                  |description|
-                                  |stockAmount|
-                                  |costPerPackage|
-                                  |caloriesPerPackage|
-                                  |millilitrePerPackage|)
+(defroute "/api/app/list/create"
+    (&key
+     |stockCategory|
+     |name|
+     |description|
+     |stockAmount|
+     |costPerPackage|
+     |caloriesPerPackage|
+     |millilitrePerPackage|)
   (handler-case
       (progn
         (create-stock `((:stock-category . ,|stockCategory|)
@@ -186,15 +190,16 @@
                     :error "Stock with same name already exist! Duplication is not allowed!"
                     :status (get-status-code :not-found))))))
 
-(defroute "/api/app/list/update/:id" (&key
-                                      id
-                                      |stockCategory|
-                                      |name|
-                                      |description|
-                                      |stockAmount|
-                                      |costPerPackage|
-                                      |caloriesPerPackage|
-                                      |millilitrePerPackage|)
+(defroute "/api/app/list/update/:id"
+    (&key
+     id
+     |stockCategory|
+     |name|
+     |description|
+     |stockAmount|
+     |costPerPackage|
+     |caloriesPerPackage|
+     |millilitrePerPackage|)
   (handler-case
       (progn
         (update-stock-by-id
