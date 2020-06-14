@@ -16,11 +16,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install sbcl cl-quicklisp libsqlite3-dev zlib1g-dev build-essential pkg-config libwebkit2gtk-4.0-dev git automake libcurl4-openssl-dev
-    - name: Install and init quicklisp for system's SBCL
-      run: |
-        sbcl --load /usr/share/cl-quicklisp/quicklisp.lisp --eval '(quicklisp-quickstart:install)' --eval '(uiop:quit)'
-        echo '  #-quicklisp (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp" (user-homedir-pathname)))) (when (probe-file quicklisp-init) (load quicklisp-init)))' > $HOME/.sbclrc
+        sudo apt install libsqlite3-dev zlib1g-dev build-essential pkg-config libwebkit2gtk-4.0-dev git automake libcurl4-openssl-dev
     - name: Install and setup for roswell (SBCL and rove)
       run: |
         git clone -b release https://github.com/roswell/roswell.git
@@ -37,11 +33,12 @@ jobs:
         cd ..;
 
         cp -r quaremain $HOME/.roswell/local-projects/quaremain;
-        cp -r quaremain $HOME/quicklisp/local-projects/quaremain;
         
     - name: Testing
       run: |
-        cd $HOME/.roswell/local-projects/quaremain; make test-ci;
+        cd $HOME/.roswell/local-projects/quaremain
+        $HOME/.roswell/bin/rove quaremain.asd
+        
 
     - name: Building executable
       run: |
