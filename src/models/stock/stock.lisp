@@ -47,7 +47,7 @@
             (get-value :stock-category))))
       (with-connection (db)
         (create-datum
-            stock-category
+            :weapon
           :name (get-value :name)
           :description (get-value :description)
           :amount (get-value :amount)
