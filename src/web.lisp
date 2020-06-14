@@ -147,9 +147,9 @@
 ;; for route
 (defroute "/api/app/list/create" (&key
                                   |stockCategory|
-                                  |stockAmount|
                                   |name|
                                   |description|
+                                  |stockAmount|
                                   |costPerPackage|
                                   |caloriesPerPackage|
                                   |millilitrePerPackage|)

@@ -41,17 +41,35 @@
 
 (defun create-stock (stock)
   (flet ((get-value (key)
-           (car (assoc key stock))))
+           (cdr (assoc key stock))))
     (let ((stock-category
            (string->keyword
             (get-value :stock-category))))
       (with-connection (db)
-        (create-datum
-            :weapon
-          :name (get-value :name)
-          :description (get-value :description)
-          :amount (get-value :amount)
-          :cost-per-package (get-value :cost-per-package))))))
+        (cond
+          ((eql stock-category :food)
+           (create-datum
+               :food
+             :name (get-value :name)
+             :description (get-value :description)
+             :amount (get-value :amount)
+             :cost-per-package (get-value :cost-per-package)
+             :calories-per-package (get-value :calories-per-package)))
+          ((eql stock-category :water)
+           (create-datum
+               :water
+             :name (get-value :name)
+             :description (get-value :description)
+             :amount (get-value :amount)
+             :cost-per-package (get-value :cost-per-package)
+             :millilitre-per-package (get-value :millilitre-per-package)))
+          (t
+           (create-datum
+               stock-category
+             :name (get-value :name)
+             :description (get-value :description)
+             :amount (get-value :amount)
+             :cost-per-package (get-value :cost-per-package))))))))
 
 (defun sum-all-cost-per-stock (stocks)
   (dolist (stock stocks)
