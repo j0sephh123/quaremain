@@ -189,22 +189,23 @@
 (defroute "/api/app/list/update/:id" (&key
                                       id
                                       |stockCategory|
-                                      |stockAmount|
                                       |name|
                                       |description|
+                                      |stockAmount|
                                       |costPerPackage|
                                       |caloriesPerPackage|
                                       |millilitrePerPackage|)
   (handler-case
       (progn
-        (update-stock-by-id :stock-category |stockCategory|
-                            :id id
-                            :name |name|
-                            :description |description|
-                            :amount |stockAmount|
-                            :cost-per-package |costPerPackage|
-                            :calories-per-package |caloriesPerPackage|
-                            :millilitre-per-package |millilitrePerPackage|)
+        (update-stock-by-id
+         `((:stock-category . ,|stockCategory|)
+           (:id . ,id)
+           (:name . ,|name|)
+           (:description . ,|description|)
+           (:amount . ,|stockAmount|)
+           (:cost-per-package . ,|costPerPackage|)
+           (:calories-per-package . ,|caloriesPerPackage|)
+           (:millilitre-per-package . ,|millilitrePerPackage|)))
         (render-json (list
                       :status (get-status-code :success))))
     

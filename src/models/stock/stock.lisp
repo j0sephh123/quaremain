@@ -104,50 +104,45 @@
   stock)
 
 
-(defun update-stock-by-id (&key
-                             stock-category
-                             id
-                             name
-                             description
-                             amount
-                             cost-per-package
-                             calories-per-package
-                             millilitre-per-package)
-
-  (let ((table-name
-         (string->keyword stock-category)))
-    (with-connection (db)
-      (unless (row-exist-by-id? table-name id)
-        (error 'row-doesnt-exist-error
-               :table-name table-name
-               :id id))
-      (cond
-        ((eql table-name :food)
-         (update-datum-by-id
-             table-name
-             id
-             name
-             description
-             amount
-             cost-per-package
-           :calories-per-package calories-per-package))
-        ((eql table-name :water)
-         (update-datum-by-id
-             table-name
-             id
-             name
-             description
-             amount
-             cost-per-package
-           :millilitre-per-package millilitre-per-package))
-        (t
-         (update-datum-by-id
-             table-name
-             id
-             name
-             description
-             amount
-             cost-per-package))))))
+(defun update-stock-by-id (stock)
+  (flet ((get-value (key)
+           (cdr (assoc key stock))))
+    (let ((stock-category
+           (string->keyword
+            (get-value :stock-category)))
+          (id (get-value :id)))
+      (with-connection (db)
+        (unless (row-exist-by-id? stock-category id)
+          (error 'row-doesnt-exist-error
+                 :table-name stock-category
+                 :id id))
+        (cond
+          ((eql stock-category :food)
+           (update-datum-by-id
+               :food
+               id
+               (get-value :name)
+               (get-value :description)
+               (get-value :amount)
+               (get-value :cost-per-package)
+             :calories-per-package (get-value :calories-per-package)))
+          ((eql stock-category :water)
+           (update-datum-by-id
+               :water
+               id
+               (get-value :name)
+               (get-value :description)
+               (get-value :amount)
+               (get-value :cost-per-package)
+             :millilitre-per-package (get-value :millilitre-per-package)))
+          (t
+           (update-datum-by-id
+               stock-category
+               id
+               (get-value :name)
+               (get-value :description)
+               (get-value :amount)
+               (get-value :cost-per-package))))))))
 
 (defun get-stocks-sum (table-name)
   (let ((stocks
