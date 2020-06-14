@@ -155,13 +155,13 @@
                                   |millilitrePerPackage|)
   (handler-case
       (progn
-        (create-stock :stock-category |stockCategory|
-                      :name |name|
-                      :description |description|
-                      :amount |stockAmount|
-                      :cost-per-package |costPerPackage|
-                      :calories-per-package |caloriesPerPackage|
-                      :millilitre-per-package |millilitrePerPackage|)
+        (create-stock `((:stock-category . ,|stockCategory|)
+                        (:name . ,|name|)
+                        (:description . ,|description|)
+                        (:amount . ,|stockAmount|)
+                        (:cost-per-package . ,|costPerPackage|)
+                        (:calories-per-package . ,|caloriesPerPackage|)
+                        (:millilitre-per-package . ,|millilitrePerPackage|)))
         (render-json (list
                       :status (get-status-code :success)
                       :registered-stock

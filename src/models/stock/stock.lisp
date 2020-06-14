@@ -39,39 +39,19 @@
 
 (in-package :quaremain.models.stock.stock)
 
-(defun create-stock (&key
-                       stock-category
-                       name
-                       description
-                       amount
-                       cost-per-package
-                       calories-per-package
-                       millilitre-per-package)
-  
-  (with-connection (db)
-    (cond ((string-equal stock-category "food")
-           (create-datum
-               :food
-             :name name
-             :description description
-             :amount amount
-             :cost-per-package cost-per-package
-             :calories-per-package calories-per-package))
-          ((string-equal stock-category "water")
-           (create-datum
-               :water
-             :name name
-             :description description
-             :amount amount
-             :cost-per-package cost-per-package
-             :millilitre-per-package millilitre-per-package))
-          (t
-           (create-datum
-               (string->keyword stock-category)
-             :name name
-             :description description
-             :amount amount
-             :cost-per-package cost-per-package)))))
+(defun create-stock (stock)
+  (flet ((get-value (key)
+           (car (assoc key stock))))
+    (let ((stock-category
+           (string->keyword
+            (get-value :stock-category))))
+      (with-connection (db)
+        (create-datum
+            stock-category
+          :name (get-value :name)
+          :description (get-value :description)
+          :amount (get-value :amount)
+          :cost-per-package (get-value :cost-per-package))))))
 
 (defun sum-all-cost-per-stock (stocks)
   (dolist (stock stocks)
