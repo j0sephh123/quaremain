@@ -35,31 +35,31 @@
 ;;; quaremain.utilities.database
 
 (deftest database-migration-food-test
-    
-    (let* ((stock
-            (with-connection (db)
-              (quaremain.utilities.database::get-datum-by-id :food 1)))
-           (calories (getf stock :calories-per-package))
-           (id (getf stock :id))
-           (cost (getf stock :cost-per-package))
-           (description (getf stock :description))
-           (name (getf stock :name))
-           (amount (getf stock :amount)))
+  
+  (let* ((stock
+          (with-connection (db)
+            (quaremain.utilities.database::get-datum-by-id :food 1)))
+         (calories (getf stock :calories-per-package))
+         (id (getf stock :id))
+         (cost (getf stock :cost-per-package))
+         (description (getf stock :description))
+         (name (getf stock :name))
+         (amount (getf stock :amount)))
 
-      (testing "name of first row"
-               (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
+    (testing "name of first row"
+             (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
 
-      (testing "amount of first row"
-               (ok (= amount 12)))
+    (testing "amount of first row"
+             (ok (= amount 12)))
 
-      (testing "cost-per-package of first row"
-               (ok (= cost 12.02d0)))
+    (testing "cost-per-package of first row"
+             (ok (= cost 12.02d0)))
 
-      (testing "calories-per-package of first row"
-               (ok (= calories 1200)))
+    (testing "calories-per-package of first row"
+             (ok (= calories 1200)))
 
-      (testing "id of first row"
-               (ok (= id 1)))))
+    (testing "id of first row"
+             (ok (= id 1)))))
 
 (deftest database-migration-water-test
     
@@ -287,38 +287,35 @@
                    923))))))
 
 (deftest delete-datum-by-id
-    (with-connection (db)
+  (with-connection (db)
 
-      (quaremain.utilities.database::delete-datum-by-id :water 1)
-      (quaremain.utilities.database::delete-datum-by-id :medicine 1)
-      (quaremain.utilities.database::delete-datum-by-id :medicine 2)
+    (quaremain.utilities.database::delete-datum-by-id :water 1)
+    (quaremain.utilities.database::delete-datum-by-id :medicine 1)
+    (quaremain.utilities.database::delete-datum-by-id :medicine 2)
 
-      (testing "water first row"
-               (ng
-                (quaremain.utilities.database::get-datum-by-id :water 1)))
+    (testing "water first row"
+             (ng
+              (quaremain.utilities.database::get-datum-by-id :water 1)))
 
-      (testing "water second row"
-               (ok
-                (quaremain.utilities.database::get-datum-by-id :water 2)))
+    (testing "water second row"
+             (ok
+              (quaremain.utilities.database::get-datum-by-id :water 2)))
 
-      (testing "medicine first row"
-               (ng
-                (quaremain.utilities.database::get-datum-by-id :medicine 1)))
+    (testing "medicine first row"
+             (ng
+              (quaremain.utilities.database::get-datum-by-id :medicine 1)))
 
-      (testing "medicine second row"
-               (ng
-                (quaremain.utilities.database::get-datum-by-id :medicine 2)))
+    (testing "medicine second row"
+             (ng
+              (quaremain.utilities.database::get-datum-by-id :medicine 2)))
 
-      ;; reset database for next package testing
-      (quaremain.utilities.database::drop-tables)
-      (quaremain.utilities.database::migrate-tables)
-      (quaremain.utilities.database::migrate-seeds)))
+    ;; reset database for next package testing
+    (quaremain.utilities.database::drop-tables)
+    (quaremain.utilities.database::migrate-tables)
+    (quaremain.utilities.database::migrate-seeds)))
 
 ;;; quaremain.models.stock.stock
-
-
-(deftest create-stock
-  
+(deftest create-stock  
   (quaremain.models.stock.stock::create-stock
    '((:stock-category . "food")
      (:name . "RANMIZ")
@@ -326,7 +323,6 @@
      (:amount . 24)
      (:cost-per-package . 27.02d20)
      (:calories-per-package . 923)))
-
   (quaremain.models.stock.stock::create-stock
    '((:stock-category . "water")
      (:name . "Fuviz")
@@ -334,16 +330,13 @@
      (:amount . 5)
      (:cost-per-package . 3.02d0)
      (:millilitre-per-package . 1100)))
-
   (with-connection (db)
-
     (let* ((food-result
             (quaremain.utilities.database::get-datum-by-id :food 3))
            (food-amount
             (getf food-result :amount))
            (food-calories
             (getf food-result :calories-per-package))
-
            (water-result
             (quaremain.utilities.database::get-datum-by-id :water 3))
            (water-amount
@@ -352,32 +345,26 @@
             (getf water-result :millilitre-per-package))
            (water-cost
             (getf water-result :cost-per-package)))
-
       (testing "third row of food"
                (ok
                 (= food-amount
                    24)))
-
       (testing "third row of food"
                (ok
                 (= food-calories
                    923)))
-
       (testing "third row of water"
                (ok
                 (= water-amount
                    5)))
-
       (testing "third row of water"
                (ok
                 (= water-millilitre
                    1100)))
-
       (testing "third row of water"
                (ok
                 (= water-cost
                    3.02d0)))
-
       (quaremain.utilities.database::delete-datum-by-id
        :food 3)
       (quaremain.utilities.database::delete-datum-by-id
