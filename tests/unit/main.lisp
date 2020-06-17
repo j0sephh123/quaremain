@@ -19,65 +19,67 @@
 (defpackage quaremain/tests/unit/main
   (:use :cl
         :quaremain
-        :rove))
+        :rove)
+  (:local-nicknames (#:string-util #:quaremain.utilities.string))
+  (:local-nicknames (#:stock #:quaremain.models.stock.stock)))
 (in-package :quaremain/tests/unit/main)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :quaremain)' in your Lisp.
 
 (deftest quaremain.utilities.string
 
-  (testing ""
-           (ok
-            (eql
-             (quaremain.utilities.string::string->keyword "fruitz")
-             :fruitz))))
+    (testing ""
+             (ok
+              (eql
+               (string-util::string->keyword "fruitz")
+               :fruitz))))
 
 (deftest quaremain.models.stock.stock
-  (let* ((raw-result
-          (quaremain.models.stock.stock::sum-all-cost-per-stock
-           '((:cost-per-package 2.2 :amount 3))))
-         (total-cost (getf (car raw-result) :cost-per-package))
-         (amount (getf (car raw-result) :amount))
-         
-         (food-result
-          (quaremain.models.stock.stock::sum-all-calories-per-stock
-           '((:id 1 :amount 2 :calories-per-package 219))))
-         (calories-per-stock
-          (getf (car food-result) :calories-per-package))
+    (let* ((raw-result
+            (stock::sum-all-cost-per-stock
+             '((:cost-per-package 2.2 :amount 3))))
+           (total-cost (getf (car raw-result) :cost-per-package))
+           (amount (getf (car raw-result) :amount))
+           
+           (food-result
+            (stock::sum-all-calories-per-stock
+             '((:id 1 :amount 2 :calories-per-package 219))))
+           (calories-per-stock
+            (getf (car food-result) :calories-per-package))
 
-         (water-result
-          (quaremain.models.stock.stock::sum-all-millilitre-per-stock
-           '((:id 2 :amount 9 :millilitre-per-package 9293))))
-         (millilitre-per-stock
-          (getf (car water-result) :millilitre-per-package))
+           (water-result
+            (stock::sum-all-millilitre-per-stock
+             '((:id 2 :amount 9 :millilitre-per-package 9293))))
+           (millilitre-per-stock
+            (getf (car water-result) :millilitre-per-package))
 
-         (unique-property-result
-          (quaremain.models.stock.stock::sum-unique-property-value-by-amount
-           '(:id 1 :amount 3 :fire 9823) :fire)))
-    
-    (testing ""
-             (ok
-              (and (= total-cost 6.6000004)
-                   (= amount 3))))
+           (unique-property-result
+            (stock::sum-unique-property-value-by-amount
+             '(:id 1 :amount 3 :fire 9823) :fire)))
+      
+      (testing ""
+               (ok
+                (and (= total-cost 6.6000004)
+                     (= amount 3))))
 
-    (testing ""
-             (ok
-              (equal (quaremain.models.stock.stock::coerce-cost-per-stock
-                      '(:id 1 :amount 4 :cost-per-package 9239.84))
-                     '(:id 1 :amount 4 :cost-per-package 9239.84))))
+      (testing ""
+               (ok
+                (equal (stock::coerce-cost-per-stock
+                        '(:id 1 :amount 4 :cost-per-package 9239.84))
+                       '(:id 1 :amount 4 :cost-per-package 9239.84))))
 
-    (testing ""
-             (ok
-              (= calories-per-stock 438)))
+      (testing ""
+               (ok
+                (= calories-per-stock 438)))
 
-    (testing ""
-             (ok
-              (= millilitre-per-stock 83637)))
+      (testing ""
+               (ok
+                (= millilitre-per-stock 83637)))
 
-    (testing ""
-             (ok
-              (equal '(:id 1 :amount 3 :fire 29469)
-                     unique-property-result)))))
+      (testing ""
+               (ok
+                (equal '(:id 1 :amount 3 :fire 29469)
+                       unique-property-result)))))
 
 
 (deftest web-get-total-survival-days-alert-type
