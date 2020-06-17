@@ -7,14 +7,14 @@
 (in-package :quaremain/tests/functional/routes)
 
 (setup
-  (server:start :port 5000 :debug t)
-  (database::migrate-seeds))
+ (server:start :port 5001 :debug t)
+ (database::migrate-seeds))
 
 (teardown
   (database::drop-tables)
   (server:stop))
 
-(defparameter +root-host+ "http://localhost:5000")
+(defparameter +root-host+ "http://localhost:5001")
 
 (defun get-content (root-host route)
   (dex:get (format nil "~a~a" root-host route)))
