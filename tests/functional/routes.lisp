@@ -45,3 +45,10 @@
   (testing "weapon"
     (ok
      (get-ok "/api/app/list/weapon"))))
+
+(deftest show-stock
+  (testing "food"
+    (ok
+     (and
+      (get-ok "/api/app/list/show/1?stockCategory=food")
+      (get-content +root-host+ "/api/app/list/show/1?stockCategory=food")))))
