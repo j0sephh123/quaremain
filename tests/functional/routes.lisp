@@ -3,7 +3,6 @@
         :quaremain
         :rove)
   (:local-nicknames (#:server #:quaremain))
-  (:local-nicknames (#:routes #:quaremain.web))
   (:local-nicknames (#:database #:quaremain.utilities.database)))
 (in-package :quaremain/tests/functional/routes)
 
@@ -25,7 +24,24 @@
    (nth-value 1 (get-content +root-host+ route))
    200))
 
-(deftest index-or-experimental-route
-  (testing ""
+(deftest index-and-experimental-route
+  (testing "index"
     (ok
-     (get-ok "/"))))
+     (get-ok "/")))
+  (testing "experimental"
+    (ok
+     (get-ok "/experimental"))))
+
+(deftest stock-lists
+  (testing "food"
+    (ok
+     (get-ok "/api/app/list/food")))
+  (testing "water"
+    (ok
+     (get-ok "/api/app/list/water")))
+  (testing "medicine"
+    (ok
+     (get-ok "/api/app/list/medicine")))
+  (testing "weapon"
+    (ok
+     (get-ok "/api/app/list/weapon"))))
