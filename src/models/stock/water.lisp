@@ -2,7 +2,8 @@
   (:use :cl)
   (:import-from :quaremain.utilities.database
                 :with-connection
-                :db)
+                :db
+                :create-datum)
   (:export :create-water))
 (in-package :quaremain.models.stock.water)
 
@@ -11,7 +12,7 @@
            (cdr (assoc key water))))
     (with-connection (db)
       (create-datum
-       :food
+       :water
        :name (get-value :name)
        :description (get-value :description)
        :amount (get-value :amount)

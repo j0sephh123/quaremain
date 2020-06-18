@@ -2,7 +2,8 @@
   (:use :cl)
   (:import-from :quaremain.utilities.database
                 :with-connection
-                :db)
+                :db
+                :create-datum)
   (:export :create-food))
 (in-package :quaremain.models.stock.food)
 

@@ -2,7 +2,8 @@
   (:use :cl)
   (:import-from :quaremain.utilities.database
                 :with-connection
-                :db)
+                :db
+                :create-datum)
   (:export :create-medicine))
 (in-package :quaremain.models.stock.medicine)
 
@@ -11,7 +12,7 @@
            (cdr (assoc key medicine))))
     (with-connection (db)
       (create-datum
-       :food
+       :medicine
        :name (get-value :name)
        :description (get-value :description)
        :amount (get-value :amount)

@@ -49,16 +49,16 @@
 (in-package :quaremain.models.stock.stock)
 
 (defun create-stock (stock)
-  (let ((stock-category
-         (cdr (assoc key stock))))
-    (cond ((string= stock-category "food")
+  (flet ((get-value (key)
+           (cdr (assoc key stock))))
+    (cond ((string= (get-value :stock-category) "food")
            (create-food stock))
-          ((string= stock-category "water")
+          ((string= (get-value :stock-category) "water")
            (create-water stock))
-          ((string= stock-category "medicine")
+          ((string= (get-value :stock-category) "medicine")
            (create-medicine stock))
-          ((string= stock-category "water")
-           (create-water)))))
+          ((string= (get-value :stock-category) "weapon")
+           (create-weapon stock)))))
 
 (defun sum-all-cost-per-stock (stocks)
   (dolist (stock stocks)

@@ -2,7 +2,8 @@
   (:use :cl)
   (:import-from :quaremain.utilities.database
                 :with-connection
-                :db)
+                :db
+                :create-datum)
   (:export :create-weapon))
 (in-package :quaremain.models.stock.weapon)
 
@@ -11,7 +12,7 @@
            (cdr (assoc key weapon))))
     (with-connection (db)
       (create-datum
-       :food
+       :weapon
        :name (get-value :name)
        :description (get-value :description)
        :amount (get-value :amount)

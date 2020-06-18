@@ -47,7 +47,11 @@
                           ((:file "stock" :depends-on ("food"
                                                        "water"
                                                        "medicine"
-                                                       "weapon")))))
+                                                       "weapon"))
+                           (:file "food")
+                           (:file "water")
+                           (:file "medicine")
+                           (:file "weapon"))))
     :description "Manage your basic survival resources like food and water
 for preparation of emergency times"
 
