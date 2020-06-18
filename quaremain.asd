@@ -87,7 +87,10 @@ for preparation of emergency times"
   :depends-on ("quaremain"
                "rove"
                "dexador")
-  :components ((:module "tests/functional"
+  :components ((:module "tests/functional/utilities"
+                        :components
+                        ((:file "database")))
+               (:module "tests/functional"
                         :components
                         ((:file "main")
                          (:file "web"))))
