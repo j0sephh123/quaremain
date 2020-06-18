@@ -1,22 +1,23 @@
-(defpackage quaremain/tests/functional/main
+(defpackage quaremain/tests/functional/models/stock
   (:use :cl
-        :quaremain
         :rove)
   (:import-from :quaremain.utilities.database
+                :migrate-tables
+                :migrate-seeds
+                :drop-tables
                 :with-connection
                 :db)
   (:local-nicknames (#:database #:quaremain.utilities.database))
   (:local-nicknames (#:stock #:quaremain.models.stock.stock)))
-(in-package :quaremain/tests/functional/main)
+(in-package :quaremain/tests/functional/models/stock)
 
 (setup
- (database::migrate-tables)
- (database::migrate-seeds))
+ (migrate-tables)
+ (migrate-seeds))
 
 (teardown
- (database::drop-tables))
+ (drop-tables))
 
-;;; quaremain.models.stock.stock
 (deftest create-stock  
     (stock::create-stock
      '((:stock-category . "food")
