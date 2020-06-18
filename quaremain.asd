@@ -69,9 +69,15 @@ for preparation of emergency times"
   :license "GPL-3.0-or-later"
   :depends-on ("quaremain"
                "rove")
-  :components ((:module "tests/unit"
+  :components ((:module "tests/unit/utilities"
                         :components
-                        ((:file "main"))))
+                        ((:file "string")))
+               (:module "tests/unit/models/stock"
+                        :components
+                        ((:file "stock")))
+               (:module "tests/unit"
+                        :components
+                        ((:file "web"))))
   :description "Unit test system for quaremain"
   :perform (test-op (op c) (symbol-call :rove :run c)))
 
