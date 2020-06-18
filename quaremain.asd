@@ -66,7 +66,7 @@ for preparation of emergency times"
 
 (defsystem "quaremain/tests/unit"
   :author "Momozor"
-  :license "GPL-3.0-or-later"
+  :license "MIT"
   :depends-on ("quaremain"
                "rove")
   :components ((:module "tests/unit/utilities"
