@@ -1,10 +1,10 @@
-(defpackage quaremain/tests/functional/routes
+(defpackage quaremain/tests/functional/web
   (:use :cl
         :quaremain
         :rove)
   (:local-nicknames (#:server #:quaremain))
   (:local-nicknames (#:database #:quaremain.utilities.database)))
-(in-package :quaremain/tests/functional/routes)
+(in-package :quaremain/tests/functional/web)
 
 (setup
  (server:start :port 5001 :debug t)

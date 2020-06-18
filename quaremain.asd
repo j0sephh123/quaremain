@@ -90,6 +90,6 @@ for preparation of emergency times"
   :components ((:module "tests/functional"
                         :components
                         ((:file "main")
-                         (:file "routes"))))
+                         (:file "web"))))
   :description "Functional test system for quaremain"
   :perform (test-op (op c) (symbol-call :rove :run c)))
