@@ -1,5 +1,7 @@
 (defpackage quaremain.models.stock.medicine
   (:use :cl)
+  (:import-from :quaremain.utilities.string
+                :get-key-value)
   (:import-from :quaremain.utilities.database
                 :with-connection
                 :db
@@ -8,12 +10,18 @@
 (in-package :quaremain.models.stock.medicine)
 
 (defun create-medicine (medicine)
-  (flet ((get-value (key)
-           (cdr (assoc key medicine))))
+  (let ((name
+         (get-key-value medicine :name))
+        (description
+         (get-key-value medicine :description))
+        (amount
+         (get-key-value medicine :amount))
+        (cost-per-package
+         (get-key-value medicine :cost-per-package)))
     (with-connection (db)
       (create-datum
-       :medicine
-       :name (get-value :name)
-       :description (get-value :description)
-       :amount (get-value :amount)
-       :cost-per-package (get-value :cost-per-package)))))
+       :medicine 
+       :name name
+       :description description
+       :amount amount
+       :cost-per-package cost-per-package))))

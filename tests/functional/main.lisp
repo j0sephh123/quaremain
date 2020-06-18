@@ -314,6 +314,18 @@
      (:amount . 5)
      (:cost-per-package . 3.02d0)
      (:millilitre-per-package . 1100)))
+  (stock:create-stock
+   '((:stock-category . "medicine")
+     (:name . "Paremw")
+     (:description . "")
+     (:amount . 9)
+     (:cost-per-package . 9.02d0)))
+  (stock:create-stock
+   '((:stock-category . "weapon")
+     (:name . "JRYZ")
+     (:description . "")
+     (:amount . 4)
+     (:cost-per-package . 2300.00d0)))
   (with-connection (db)
     (let* ((food-result
             (database::get-datum-by-id :food 3))
@@ -328,7 +340,15 @@
            (water-millilitre
             (getf water-result :millilitre-per-package))
            (water-cost
-            (getf water-result :cost-per-package)))
+            (getf water-result :cost-per-package))
+           (medicine-result
+            (database::get-datum-by-id :medicine 3))
+           (medicine-amount
+            (getf medicine-result :amount))
+           (weapon-result
+            (database::get-datum-by-id :weapon 3))
+           (weapon-name
+            (getf weapon-result :name)))
       (testing "third row of food"
                (ok
                 (= food-amount
@@ -349,10 +369,22 @@
                (ok
                 (= water-cost
                    3.02d0)))
+      (testing "third row of medicine"
+               (ok
+                (= medicine-amount
+                   9)))
+      (testing "third row of weapon"
+               (ok
+                (string= weapon-name
+                         "JRYZ")))
       (database::delete-datum-by-id
        :food 3)
       (database::delete-datum-by-id
-       :water 3))))
+       :water 3)
+      (database::delete-datum-by-id
+       :medicine 3)
+      (database::delete-datum-by-id
+       :weapon 3))))
 
 (deftest get-stocks-sum
     (let* ((food-result

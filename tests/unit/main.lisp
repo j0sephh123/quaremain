@@ -27,12 +27,15 @@
 ;; NOTE: To run this test file, execute `(asdf:test-system :quaremain)' in your Lisp.
 
 (deftest quaremain.utilities.string
-
     (testing ""
              (ok
               (eql
                (string-util::string->keyword "fruitz")
-               :fruitz))))
+               :fruitz))
+             (ok
+              (string=
+               (string-util::get-key-value '((:fire . "ash")) :fire)
+               "ash"))))
 
 (deftest quaremain.models.stock.stock
     (let* ((raw-result

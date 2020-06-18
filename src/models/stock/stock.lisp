@@ -19,7 +19,8 @@
                 :create-weapon)
   
   (:import-from :quaremain.utilities.string
-                :string->keyword)
+                :string->keyword
+                :get-key-value)
   
   (:import-from :quaremain.utilities.database
                 :db
@@ -49,15 +50,15 @@
 (in-package :quaremain.models.stock.stock)
 
 (defun create-stock (stock)
-  (flet ((get-value (key)
-           (cdr (assoc key stock))))
-    (cond ((string= (get-value :stock-category) "food")
+  (let ((stock-category
+         (get-key-value stock :stock-category)))
+    (cond ((string= stock-category "food")
            (create-food stock))
-          ((string= (get-value :stock-category) "water")
+          ((string= stock-category "water")
            (create-water stock))
-          ((string= (get-value :stock-category) "medicine")
+          ((string= stock-category "medicine")
            (create-medicine stock))
-          ((string= (get-value :stock-category) "weapon")
+          ((string= stock-category "weapon")
            (create-weapon stock)))))
 
 (defun sum-all-cost-per-stock (stocks)

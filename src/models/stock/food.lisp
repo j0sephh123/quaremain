@@ -1,5 +1,7 @@
 (defpackage quaremain.models.stock.food
   (:use :cl)
+  (:import-from :quaremain.utilities.string
+                :get-key-value)
   (:import-from :quaremain.utilities.database
                 :with-connection
                 :db
@@ -8,13 +10,21 @@
 (in-package :quaremain.models.stock.food)
 
 (defun create-food (food)
-  (flet ((get-value (key)
-           (cdr (assoc key food))))
+  (let ((name
+         (get-key-value food :name))
+        (description
+         (get-key-value food :description))
+        (amount
+         (get-key-value food :amount))
+        (cost-per-package
+         (get-key-value food :cost-per-package))
+        (calories-per-package
+         (get-key-value food :calories-per-package)))
     (with-connection (db)
       (create-datum
        :food
-       :name (get-value :name)
-       :description (get-value :description)
-       :amount (get-value :amount)
-       :cost-per-package (get-value :cost-per-package)
-       :calories-per-package (get-value :calories-per-package)))))
+       :name name
+       :description description
+       :amount amount
+       :cost-per-package cost-per-package
+       :calories-per-package calories-per-package))))
