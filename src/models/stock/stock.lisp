@@ -9,8 +9,18 @@
 (defpackage quaremain.models.stock.stock
   (:documentation "Stock abstract model related procedures.")
   (:use :cl)
+  (:import-from :quaremain.models.stock.food
+                :create-food)
+  (:import-from :quaremain.models.stock.water
+                :create-water)
+  (:import-from :quaremain.models.stock.medicine
+                :create-medicine)
+  (:import-from :quaremain.models.stock.weapon
+                :create-weapon)
+  
   (:import-from :quaremain.utilities.string
-                :string->keyword)
+                :string->keyword
+                :get-key-value)
   
   (:import-from :quaremain.utilities.database
                 :db
@@ -40,36 +50,16 @@
 (in-package :quaremain.models.stock.stock)
 
 (defun create-stock (stock)
-  (flet ((get-value (key)
-           (cdr (assoc key stock))))
-    (let ((stock-category
-           (string->keyword
-            (get-value :stock-category))))
-      (with-connection (db)
-        (cond
-          ((eql stock-category :food)
-           (create-datum
-               :food
-             :name (get-value :name)
-             :description (get-value :description)
-             :amount (get-value :amount)
-             :cost-per-package (get-value :cost-per-package)
-             :calories-per-package (get-value :calories-per-package)))
-          ((eql stock-category :water)
-           (create-datum
-               :water
-             :name (get-value :name)
-             :description (get-value :description)
-             :amount (get-value :amount)
-             :cost-per-package (get-value :cost-per-package)
-             :millilitre-per-package (get-value :millilitre-per-package)))
-          (t
-           (create-datum
-               stock-category
-             :name (get-value :name)
-             :description (get-value :description)
-             :amount (get-value :amount)
-             :cost-per-package (get-value :cost-per-package))))))))
+  (let ((stock-category
+         (get-key-value stock :stock-category)))
+    (cond ((string= stock-category "food")
+           (create-food stock))
+          ((string= stock-category "water")
+           (create-water stock))
+          ((string= stock-category "medicine")
+           (create-medicine stock))
+          ((string= stock-category "weapon")
+           (create-weapon stock)))))
 
 (defun sum-all-cost-per-stock (stocks)
   (dolist (stock stocks)

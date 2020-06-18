@@ -9,9 +9,13 @@
 (defpackage quaremain.utilities.string
   (:documentation "String utilities.")
   (:use :cl)
-  (:export :string->keyword))
+  (:export :string->keyword
+           :get-key-value))
 (in-package :quaremain.utilities.string)
 
 (defun string->keyword (string)
   (read-from-string
    (format nil ":~A" string)))
+
+(defun get-key-value (alist keyword)
+  (cdr (assoc keyword alist)))
