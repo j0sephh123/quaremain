@@ -70,9 +70,9 @@
                     (search "hunchentoot"
                             (bt:thread-name thread)))
                   (bt:all-threads)))    
-    (#+sbcl sb-sys:interactive-interrupt
-      () (progn
-           (log:info "Aborting")
-           (stop)
-           (uiop:quit)))))
+    (sb-sys:interactive-interrupt
+        () (progn
+             (log:info "Aborting")
+             (stop)
+             (uiop:quit)))))
 

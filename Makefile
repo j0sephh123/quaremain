@@ -1,5 +1,5 @@
 EXECUTABLE=quaremain
-LISP ?= sbcl
+LISP = sbcl
 PREFIX=/opt
 DESTDIR=$(PREFIX)/$(EXECUTABLE)
 DATABASE=$(DESTDIR)/var/$(EXECUTABLE).db
