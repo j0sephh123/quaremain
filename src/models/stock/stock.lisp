@@ -16,9 +16,11 @@
                 :create-water
                 :update-water)
   (:import-from :quaremain.models.stock.medicine
-                :create-medicine)
+                :create-medicine
+                :update-medicine)
   (:import-from :quaremain.models.stock.weapon
-                :create-weapon)
+                :create-weapon
+                :update-weapon)
   
   (:import-from :quaremain.utilities.string
                 :string->keyword
@@ -113,14 +115,10 @@
            (update-food stock id))
           ((eql stock-category :water)
            (update-water stock id))
-          (t
-           (update-datum-by-id
-               stock-category
-               id
-               (get-value :name)
-               (get-value :description)
-               (get-value :amount)
-               (get-value :cost-per-package))))))))
+          ((eql stock-category :medicine)
+           (update-medicine stock id))
+          ((eql stock-category :weapon)
+           (update-weapon stock id)))))))
 
 (defun get-stocks-sum (table-name)
   (let ((stocks
