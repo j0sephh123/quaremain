@@ -1,3 +1,4 @@
+#-sbcl (error "This software only runnable on SBCL implementation.")
 (defsystem "quaremain"
     :version "0.8.5"
     :author "Momozor"
