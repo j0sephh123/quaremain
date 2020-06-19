@@ -10,7 +10,8 @@
   (:documentation "Stock abstract model related procedures.")
   (:use :cl)
   (:import-from :quaremain.models.stock.food
-                :create-food)
+                :create-food
+                :update-food)
   (:import-from :quaremain.models.stock.water
                 :create-water)
   (:import-from :quaremain.models.stock.medicine
@@ -108,14 +109,7 @@
                  :id id))
         (cond
           ((eql stock-category :food)
-           (update-datum-by-id
-               :food
-               id
-               (get-value :name)
-               (get-value :description)
-               (get-value :amount)
-               (get-value :cost-per-package)
-             :calories-per-package (get-value :calories-per-package)))
+           (update-food stock id))
           ((eql stock-category :water)
            (update-datum-by-id
                :water
