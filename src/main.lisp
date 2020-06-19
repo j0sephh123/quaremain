@@ -71,10 +71,6 @@
                             (bt:thread-name thread)))
                   (bt:all-threads)))    
     (#+sbcl sb-sys:interactive-interrupt
-      #+ccl ccl:interrupt-signal-condition
-      #+clisp system::simple-interrupt-condition
-      #+ecl ext:interactive-interrupt
-      #+allegro excl:interrupt-signal
       () (progn
            (log:info "Aborting")
            (stop)
