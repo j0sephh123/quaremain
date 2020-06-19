@@ -7,7 +7,8 @@
                 :db
                 :create-datum
                 :update-datum-by-id)
-  (:export :create-food))
+  (:export :create-food
+           :update-food))
 (in-package :quaremain.models.stock.food)
 
 (defun create-food (food)

@@ -13,7 +13,8 @@
                 :create-food
                 :update-food)
   (:import-from :quaremain.models.stock.water
-                :create-water)
+                :create-water
+                :update-water)
   (:import-from :quaremain.models.stock.medicine
                 :create-medicine)
   (:import-from :quaremain.models.stock.weapon
@@ -111,14 +112,7 @@
           ((eql stock-category :food)
            (update-food stock id))
           ((eql stock-category :water)
-           (update-datum-by-id
-               :water
-               id
-               (get-value :name)
-               (get-value :description)
-               (get-value :amount)
-               (get-value :cost-per-package)
-             :millilitre-per-package (get-value :millilitre-per-package)))
+           (update-water stock id))
           (t
            (update-datum-by-id
                stock-category
