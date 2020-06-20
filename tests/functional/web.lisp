@@ -19,29 +19,29 @@
 (defun get-content (root-host route)
   (dex:get (format nil "~a~a" root-host route)))
 
-(defun get-ok (route)
+(defun get-ok? (route)
   (eql
    (nth-value 1 (get-content +root-host+ route))
    200))
 
 (deftest index-and-experimental-route
-  (testing "index"
-    (ok
-     (get-ok "/")))
+    (testing "index"
+             (ok
+              (get-ok? "/")))
   (testing "experimental"
-    (ok
-     (get-ok "/experimental"))))
+           (ok
+            (get-ok? "/experimental"))))
 
 (deftest stock-lists
-  (testing "food"
-    (ok
-     (get-ok "/api/app/list/food")))
+    (testing "food"
+             (ok
+              (get-ok? "/api/app/list/food")))
   (testing "water"
-    (ok
-     (get-ok "/api/app/list/water")))
+           (ok
+            (get-ok? "/api/app/list/water")))
   (testing "medicine"
-    (ok
-     (get-ok "/api/app/list/medicine")))
+           (ok
+            (get-ok? "/api/app/list/medicine")))
   (testing "weapon"
-    (ok
-     (get-ok "/api/app/list/weapon"))))
+           (ok
+            (get-ok? "/api/app/list/weapon"))))
