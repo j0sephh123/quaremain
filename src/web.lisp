@@ -281,18 +281,6 @@
                     :status (get-status-code
                              :not-found))))))
 
-(defun get-total-survival-days-alert-type (total-survival-days)
-  (let ((week 7)
-        (month 30))
-    (cond
-      ((<= total-survival-days week)
-       "warning")
-      ((and (> total-survival-days week)
-            (<= total-survival-days month))
-       "info")
-      ((> total-survival-days month)
-       "success"))))
-
 (defroute "/api/app/list/total-survival-days" ()
   (cors-handler *response*)
   (handler-case
@@ -303,7 +291,7 @@
                :status (get-status-code
                         :success)
                :survival-alert-type
-               (get-total-survival-days-alert-type total-survival-days))))
+               (survival-days-type total-survival-days))))
     
     (total-required-survival-resources-is-too-low-error (exception)
       (log:error "~A" exception)
