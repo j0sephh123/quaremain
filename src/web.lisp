@@ -26,8 +26,11 @@
                 :get-stocks-sum
                 :get-coerced-stock-cost-by-id
                 :delete-stock-by-id
-                :get-total-survival-days
                 :get-all-stocks)
+  
+  (:import-from :quaremain.models.stock.survival
+                :get-total-survival-days
+                :survival-days-type)
 
   (:import-from :quaremain.utilities.database
                 :migrate-tables

@@ -53,7 +53,7 @@
                          (:file "water")
                          (:file "medicine")
                          (:file "weapon")
-                         (:file "survival"))))
+                         (:file "survival" :depends-on ("stock")))))
   :description "Manage your basic survival resources like food and water
 for preparation of emergency times"
 
@@ -92,7 +92,8 @@ for preparation of emergency times"
                         ((:file "database")))
                (:module "tests/functional/models/stock"
                         :components
-                        ((:file "stock")))
+                        ((:file "stock")
+                         (:file "survival")))
                (:module "tests/functional"
                         :components
                         ((:file "web"))))

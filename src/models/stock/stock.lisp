@@ -41,15 +41,13 @@
                 :stock-missing-property-value-error
                 :row-doesnt-exist-error
                 :row-with-same-name-already-exist-error
-                :total-required-survival-resources-is-too-low-error
                 :all-stocks-empty-error)
   
   (:export :create-stock
            :update-stock-by-id
            :get-stocks-sum
            :get-coerced-stock-cost-by-id
-           :delete-stock-by-id
-           :get-total-survival-days))
+           :delete-stock-by-id))
 
 (in-package :quaremain.models.stock.stock)
 
@@ -181,36 +179,6 @@
      :millilitre-per-package
      (sum-all-millilitre-per-stock
       (get-all-datum :water)))))
-
-(defun calculate-total-survival-days (calories-sum
-                                      millilitre-sum)
-  (let ((minimal-calories-per-day 1500)
-        (minimal-millilitre-per-day 2300))
-    (when
-        ;; Less than minimum
-        (or (<= calories-sum minimal-calories-per-day)
-            (<= millilitre-sum minimal-millilitre-per-day))
-      (error 'total-required-survival-resources-is-too-low-error))
-
-    
-    ;; Calculate water intake first due to how
-    ;; important it is to sustain a life of
-    ;; a human being. A human being can survive
-    ;; far longer with enough water even without
-    ;; food compared to vice-versa (unless the
-    ;; food contains enough water)
-    (if (< millilitre-sum calories-sum)
-        (floor
-         millilitre-sum
-         minimal-millilitre-per-day)
-        (floor
-         calories-sum
-         minimal-calories-per-day))))
-
-(defun get-total-survival-days ()
-  (calculate-total-survival-days
-   (get-total-food-calories)
-   (get-total-water-millilitre)))
 
 (defun get-all-stocks ()
   (with-connection (db)

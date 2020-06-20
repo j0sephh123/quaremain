@@ -176,80 +176,48 @@
                    15400)))))
 
 (deftest get-total-water-millilitre
-    (let* ((result
-            (stock::get-total-water-millilitre)))
+  (let* ((result
+          (stock::get-total-water-millilitre)))
 
-      (testing ""
-               (ok
-                (= result
-                   22615)))))
-
-(deftest calculate-total-survival-days
-    (let* ((result
-            (stock::calculate-total-survival-days
-             (stock::get-total-food-calories)
-             (stock::get-total-water-millilitre)))
-
-           (result-two
-            (stock::calculate-total-survival-days
-             (- (stock::get-total-food-calories)
-                3000)
-             (- (stock::get-total-water-millilitre)
-                4000))))
-
-      (testing ""
-               (ok
-                (= result
-                   10)))
-
-      (testing ""
-               (ok
-                (= result-two
-                   8)))))
-
-(deftest get-total-survival-days
-    (let ((result
-           (stock::get-total-survival-days)))
-
-      (testing ""
-               (ok
-                (= result
-                   10)))))
+    (testing ""
+             (ok
+              (= result
+                 22615)))))
 
 (deftest get-all-stocks
-    (let ((result
-           (stock::get-all-stocks)))
+  (let ((result
+         (stock::get-all-stocks)))
 
-      (testing ""
-               (ok
-                (equal result
+    (testing ""
+             (ok
+              (equal result
 
-                       '(:FOOD
-                         ((:ID 1 :NAME "Sed neque. Sed eget lacus. Mauris" :DESCRIPTION
-                           "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
-                           :AMOUNT 12 :COST-PER-PACKAGE 12.02d0 :CALORIES-PER-PACKAGE
-                           1200)
-                          (:ID 2 :NAME "Cashews from Jerry's" :DESCRIPTION "" :AMOUNT 5
-                           :COST-PER-PACKAGE 12.02d0 :CALORIES-PER-PACKAGE 200))
-                         :WATER
-                         ((:ID 1 :NAME "Tasty drinking water" :DESCRIPTION
-                           "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
-                           :AMOUNT 12 :COST-PER-PACKAGE 12.02d0 :MILLILITRE-PER-PACKAGE
-                           1500)
-                          (:ID 2 :NAME "ICOLITE from Jerry's" :DESCRIPTION "" :AMOUNT 5
-                           :COST-PER-PACKAGE 12.02d0 :MILLILITRE-PER-PACKAGE 923))
-                         :MEDICINE
-                         ((:ID 1 :NAME "Penicilin IoX" :DESCRIPTION
-                           "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
-                           :AMOUNT 4 :COST-PER-PACKAGE 12.02d0)
-                          (:ID 2 :NAME "Paracetamol" :DESCRIPTION "For fever (ASAP)"
-                           :AMOUNT 5 :COST-PER-PACKAGE 3.02d0))
-                         :WEAPON
-                         ((:ID 1 :NAME "AK-47" :DESCRIPTION
-                           "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
-                           :AMOUNT 1 :COST-PER-PACKAGE 1200.0d0)
-                          (:ID 2 :NAME "Magnum-192" :DESCRIPTION "Poweful shockburst"
-                           :AMOUNT 2 :COST-PER-PACKAGE 900.78d0))))))))
+                     '(:FOOD
+                       ((:ID 1 :NAME "Sed neque. Sed eget lacus. Mauris" :DESCRIPTION
+                         "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                         :AMOUNT 12 :COST-PER-PACKAGE 12.02d0 :CALORIES-PER-PACKAGE
+                         1200)
+                        (:ID 2 :NAME "Cashews from Jerry's" :DESCRIPTION "" :AMOUNT 5
+                         :COST-PER-PACKAGE 12.02d0 :CALORIES-PER-PACKAGE 200))
+                       :WATER
+                       ((:ID 1 :NAME "Tasty drinking water" :DESCRIPTION
+                         "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                         :AMOUNT 12 :COST-PER-PACKAGE 12.02d0 :MILLILITRE-PER-PACKAGE
+                         1500)
+                        (:ID 2 :NAME "ICOLITE from Jerry's" :DESCRIPTION "" :AMOUNT 5
+                         :COST-PER-PACKAGE 12.02d0 :MILLILITRE-PER-PACKAGE 923))
+                       :MEDICINE
+                       ((:ID 1 :NAME "Penicilin IoX" :DESCRIPTION
+                         "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                         :AMOUNT 4 :COST-PER-PACKAGE 12.02d0)
+                        (:ID 2 :NAME "Paracetamol" :DESCRIPTION "For fever (ASAP)"
+                         :AMOUNT 5 :COST-PER-PACKAGE 3.02d0))
+                       :WEAPON
+                       ((:ID 1 :NAME "AK-47" :DESCRIPTION
+                         "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                         :AMOUNT 1 :COST-PER-PACKAGE 1200.0d0)
+                        (:ID 2 :NAME "Magnum-192" :DESCRIPTION "Poweful shockburst"
+                         :AMOUNT 2 :COST-PER-PACKAGE 900.78d0))))))))
 
 
 (deftest update-stock-by-id
