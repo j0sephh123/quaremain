@@ -92,7 +92,8 @@ for preparation of emergency times"
                         ((:file "database")))
                (:module "tests/functional/models/stock"
                         :components
-                        ((:file "stock")
+                        ((:file "food")
+                         (:file "stock")
                          (:file "survival")))
                (:module "tests/functional"
                         :components
