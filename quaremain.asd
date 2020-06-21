@@ -1,6 +1,6 @@
 #-sbcl (error "This software only runnable on SBCL implementation.")
 (defsystem "quaremain"
-  :version "0.8.5"
+  :version "0.8.6"
   :author "Momozor"
   :license "MIT"
   :depends-on ("clack"
