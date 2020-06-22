@@ -6,8 +6,10 @@
                 :stop)
   (:import-from :quaremain.utilities.database
                 :migrate-seeds
-                :drop-tables)
-  (:local-nicknames (#:server #:quaremain)))
+                :drop-tables
+                :with-connection
+                :db
+                :get-datum-by-id))
 (in-package :quaremain/tests/functional/web)
 
 (setup
@@ -67,3 +69,32 @@
         "/api/app/list/create?stockCategory=food&name=fire&description=owo&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
 
        "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"food\",\"name\":\"fire\",\"description\":\"owo\",\"amount\":\"923\",\"costPerPackage\":\"14.04\",\"caloriesPerPackage\":\"899\",\"millilitrePerPackage\":\"\"}}")))))
+
+(deftest update-stock
+  (with-connection (db)
+    (let* ((food-result
+            (get-datum-by-id :food 1))
+           (food-amount
+            (getf food-result :amount)))
+      (testing "food (row 1) before update"
+        (ok
+         (= food-amount
+            12)))
+      (testing "food-access-before-update"
+        (ok
+         (and
+          (get-ok? "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
+          (string=
+           (get-content
+            +root-host+
+            "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
+           "{\"status\":200}")))))
+
+    (let* ((food-result
+            (get-datum-by-id :food 1))
+           (food-amount
+            (getf food-result :amount)))
+      (testing "food (row 1) after -update"
+        (ok
+         (= food-amount
+            4))))))
