@@ -98,3 +98,20 @@
         (ok
          (= food-amount
             4))))))
+
+(deftest delete-stock
+  (testing "food-delete"
+    (ok
+     (string=
+      (get-content
+       +root-host+
+       "/api/app/list/delete/3?stockCategory=food")
+      "{\"status\":200}")))
+
+  (testing "food-after-delete"
+    (ok
+     (string=
+      (get-content
+       +root-host+
+       "/api/app/list/delete/3?stockCategory=food")
+      "{\"error\":\"Item doesn't exist to be deleted!\",\"status\":404}"))))
