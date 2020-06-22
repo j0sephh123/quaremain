@@ -42,11 +42,12 @@
          (get-key-value food :cost-per-package))
         (calories-per-package
          (get-key-value food :calories-per-package)))
-    (update-datum-by-id
-        :food
-        id
-        name
-        description
-        amount
-        cost-per-package
-      :calories-per-package calories-per-package)))
+    (with-connection (db)
+      (update-datum-by-id
+       :food
+       id
+       name
+       description
+       amount
+       cost-per-package
+       :calories-per-package calories-per-package))))

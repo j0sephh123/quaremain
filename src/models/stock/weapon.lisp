@@ -37,10 +37,11 @@
          (get-key-value weapon :amount))
         (cost-per-package
          (get-key-value weapon :cost-per-package)))
-    (update-datum-by-id
-        :weapon
-        id
-        name
-        description
-        amount
-        cost-per-package)))
+    (with-connection (db)
+      (update-datum-by-id
+       :weapon
+       id
+       name
+       description
+       amount
+       cost-per-package))))

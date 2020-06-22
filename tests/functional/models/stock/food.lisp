@@ -8,7 +8,9 @@
                 :migrate-seeds
                 :drop-tables)
   (:import-from :quaremain.models.stock.food
-                :create-food))
+                :create-food
+                :update-food)
+  (:local-nicknames (#:database #:quaremain.utilities.database)))
 (in-package :quaremain/tests/functional/models/stock/food)
 
 (setup
@@ -17,3 +19,36 @@
 
 (teardown
  (drop-tables))
+
+(deftest create-food
+    (create-food
+     '((:name . "memi")
+       (:description . "delicious instant bread")
+       (:amount . 3)
+       (:cost-per-package . 12.20d2)
+       (:calories-per-package . 1200)))
+  (with-connection (db)
+    (let* ((result (database:get-datum-by-id :food 3))
+           (amount
+            (getf result :amount)))
+      (testing ""
+               (ok
+                (= amount
+                   3))))))
+
+(deftest update-food
+    (update-food
+     '((:name . "memoz")
+       (:description . "musto")
+       (:amount . 9293)
+       (:cost-per-package . 90.00d2)
+       (:calories-per-package . 9200))
+     1)
+  (with-connection (db)
+    (let* ((result (database::get-datum-by-id :food 1))
+           (amount
+            (getf result :amount)))
+      (testing ""
+               (ok
+                (= amount
+                   9293))))))

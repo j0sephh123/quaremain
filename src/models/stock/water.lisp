@@ -42,11 +42,12 @@
          (get-key-value water :cost-per-package))
         (millilitre-per-package
          (get-key-value water :millilitre-per-package)))
-    (update-datum-by-id
-        :water
-        id
-        name
-        description
-        amount
-        cost-per-package
-      :millilitre-per-package millilitre-per-package)))
+    (with-connection (db)
+      (update-datum-by-id
+       :water
+       id
+       name
+       description
+       amount
+       cost-per-package
+       :millilitre-per-package millilitre-per-package))))

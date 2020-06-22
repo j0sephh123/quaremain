@@ -37,10 +37,11 @@
          (get-key-value medicine :amount))
         (cost-per-package
          (get-key-value medicine :cost-per-package)))
-    (update-datum-by-id
-        :medicine
-        id
-        name
-        description
-        amount
-        cost-per-package)))
+    (with-connection (db)
+      (update-datum-by-id
+       :medicine
+       id
+       name
+       description
+       amount
+       cost-per-package))))

@@ -93,6 +93,9 @@ for preparation of emergency times"
                (:module "tests/functional/models/stock"
                         :components
                         ((:file "food")
+                         (:file "water")
+                         (:file "medicine")
+                         (:file "weapon")
                          (:file "stock")
                          (:file "survival")))
                (:module "tests/functional"
