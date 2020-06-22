@@ -115,3 +115,25 @@
        +root-host+
        "/api/app/list/delete/3?stockCategory=food")
       "{\"error\":\"Item doesn't exist to be deleted!\",\"status\":404}"))))
+
+(deftest total-survival-days
+  (migrate-seeds)
+  (migrate-seeds)
+  (testing "empty"
+    (ok
+     (string=
+      (get-content +root-host+ "/api/app/list/total-survival-days")
+      "{\"totalSurvivalDays\":29,\"status\":200,\"survivalAlertType\":\"info\"}")))
+
+  (migrate-seeds)
+  (migrate-seeds)
+  (testing "full"
+    (ok
+     (string=
+      (get-content +root-host+ "/api/app/list/total-survival-days")
+      "{\"totalSurvivalDays\":49,\"status\":200,\"survivalAlertType\":\"success\"}"))))
+
+(deftest reset-database
+  (testing "reset"
+    (ok
+     (get-ok? "/api/app/list/reset-database"))))
