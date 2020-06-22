@@ -45,9 +45,6 @@
 
 (defparameter *session* (make-hash-table))
 
-(defroute "/" ()
-  (render #p"experimental.html"))
-
 (defroute "/experimental" ()
   (render #p"experimental.html"))
 

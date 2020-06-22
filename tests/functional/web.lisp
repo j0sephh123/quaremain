@@ -24,13 +24,10 @@
    (nth-value 1 (get-content +root-host+ route))
    200))
 
-(deftest index-and-experimental-route
-    (testing "index"
+(deftest experimental-route
+    (testing "experimental"
              (ok
-              (get-ok? "/")))
-  (testing "experimental"
-           (ok
-            (get-ok? "/experimental"))))
+              (get-ok? "/experimental"))))
 
 (deftest stock-lists
     (testing "food"
