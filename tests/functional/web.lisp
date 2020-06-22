@@ -48,7 +48,6 @@
             (get-ok? "/api/app/list/weapon"))))
 
 (deftest show
-  (princ (get-content +root-host+ "/api/app/list/show/1?stockCategory=food"))
   (testing "food"
     (ok
      (and
@@ -56,3 +55,15 @@
       (string=
        (get-content +root-host+ "/api/app/list/show/1?stockCategory=food")
        "{\"stock\":[{\"id\":1,\"name\":\"Sed neque. Sed eget lacus. Mauris\",\"description\":\"mauris id sapien. Cras dolor dolor, tempus non, lacinia at,\",\"amount\":12,\"costPerPackage\":12.02,\"caloriesPerPackage\":1200}],\"status\":200}")))))
+
+(deftest create-stock
+  (testing "food"
+    (ok
+     (and
+      (get-ok? "/api/app/list/create?stockCategory=food&name=fire&description=owo&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
+      (string=
+       (get-content
+        +root-host+
+        "/api/app/list/create?stockCategory=food&name=fire&description=owo&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
+
+       "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"food\",\"name\":\"fire\",\"description\":\"owo\",\"amount\":\"923\",\"costPerPackage\":\"14.04\",\"caloriesPerPackage\":\"899\",\"millilitrePerPackage\":\"\"}}")))))
