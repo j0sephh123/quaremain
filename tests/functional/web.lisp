@@ -60,44 +60,49 @@
 
 (deftest create-stock
   (testing "food"
-    (ok
-     (and
-      (get-ok? "/api/app/list/create?stockCategory=food&name=fire&description=owo&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
-      (string=
-       (get-content
-        +root-host+
-        "/api/app/list/create?stockCategory=food&name=fire&description=owo&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
+             (ok
+              (string=
+               (get-content
+                +root-host+
+                "/api/app/list/create?stockCategory=food&name=fire&description=owo&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
 
-       "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"food\",\"name\":\"fire\",\"description\":\"owo\",\"amount\":\"923\",\"costPerPackage\":\"14.04\",\"caloriesPerPackage\":\"899\",\"millilitrePerPackage\":\"\"}}")))))
+               "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"food\",\"name\":\"fire\",\"description\":\"owo\",\"amount\":\"923\",\"costPerPackage\":\"14.04\",\"caloriesPerPackage\":\"899\",\"millilitrePerPackage\":\"\"}}")))
+  (testing "water"
+           (ok
+            (string=
+             (get-content
+              +root-host+
+              "/api/app/list/create?stockCategory=water&name=fuli&description=meta&costPerPackage=2.02&stockAmount=14&millilitrePerPackage=1200&caloriesPerPackage=")
+             "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"water\",\"name\":\"fuli\",\"description\":\"meta\",\"amount\":\"14\",\"costPerPackage\":\"2.02\",\"caloriesPerPackage\":\"\",\"millilitrePerPackage\":\"1200\"}}"))))
 
 (deftest update-stock
-  (with-connection (db)
-    (let* ((food-result
-            (get-datum-by-id :food 1))
-           (food-amount
-            (getf food-result :amount)))
-      (testing "food (row 1) before update"
-        (ok
-         (= food-amount
-            12)))
-      (testing "food-access-before-update"
-        (ok
-         (and
-          (get-ok? "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
-          (string=
-           (get-content
-            +root-host+
-            "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
-           "{\"status\":200}")))))
+    (with-connection (db)
+      (let* ((food-result
+              (get-datum-by-id :food 1))
+             (food-amount
+              (getf food-result :amount)))
+        (testing "food (row 1) before update"
+                 (ok
+                  (= food-amount
+                     12)))
+        (testing "food-access-before-update"
+                 (ok
+                  (and
+                   (get-ok? "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
+                   (string=
+                    (get-content
+                     +root-host+
+                     "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
+                    "{\"status\":200}")))))
 
-    (let* ((food-result
-            (get-datum-by-id :food 1))
-           (food-amount
-            (getf food-result :amount)))
-      (testing "food (row 1) after -update"
-        (ok
-         (= food-amount
-            4))))))
+      (let* ((food-result
+              (get-datum-by-id :food 1))
+             (food-amount
+              (getf food-result :amount)))
+        (testing "food (row 1) after -update"
+                 (ok
+                  (= food-amount
+                     4))))))
 
 (deftest delete-stock
   (testing "food-delete"
@@ -120,18 +125,18 @@
   (migrate-seeds)
   (migrate-seeds)
   (testing "empty"
-    (ok
-     (string=
-      (get-content +root-host+ "/api/app/list/total-survival-days")
-      "{\"totalSurvivalDays\":29,\"status\":200,\"survivalAlertType\":\"info\"}")))
+           (ok
+            (string=
+             (get-content +root-host+ "/api/app/list/total-survival-days")
+             "{\"totalSurvivalDays\":23,\"status\":200,\"survivalAlertType\":\"info\"}")))
 
   (migrate-seeds)
   (migrate-seeds)
   (testing "full"
-    (ok
-     (string=
-      (get-content +root-host+ "/api/app/list/total-survival-days")
-      "{\"totalSurvivalDays\":49,\"status\":200,\"survivalAlertType\":\"success\"}"))))
+           (ok
+            (string=
+             (get-content +root-host+ "/api/app/list/total-survival-days")
+              "{\"totalSurvivalDays\":43,\"status\":200,\"survivalAlertType\":\"success\"}"))))
 
 (deftest reset-database
   (testing "reset"
