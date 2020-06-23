@@ -14,6 +14,7 @@
 
 (setup
  (start :port 5001 :debug t)
+ (sleep 2)
  (migrate-seeds))
 
 (teardown
