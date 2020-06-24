@@ -65,7 +65,7 @@
               (string=
                (get-content
                 +root-host+
-                "/api/app/list/create?stockCategory=food&name=fire&description=owo&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
+                "/api/app/list/create?stockCategory=food&name=firenzoautomato&description=qwertyuiopasdfgghjklzxcvbnm&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
 
                "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"food\",\"name\":\"fire\",\"description\":\"owo\",\"amount\":\"923\",\"costPerPackage\":\"14.04\",\"caloriesPerPackage\":\"899\",\"millilitrePerPackage\":\"\"}}")))
   (testing "water"
@@ -73,7 +73,7 @@
             (string=
              (get-content
               +root-host+
-              "/api/app/list/create?stockCategory=water&name=fuli&description=meta&costPerPackage=2.02&stockAmount=14&millilitrePerPackage=1200&caloriesPerPackage=")
+              "/api/app/list/create?stockCategory=water&name=fulizometazo&description=&costPerPackage=2.02&stockAmount=14&millilitrePerPackage=1200&caloriesPerPackage=")
              "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"water\",\"name\":\"fuli\",\"description\":\"meta\",\"amount\":\"14\",\"costPerPackage\":\"2.02\",\"caloriesPerPackage\":\"\",\"millilitrePerPackage\":\"1200\"}}"))))
 
 (deftest update-stock

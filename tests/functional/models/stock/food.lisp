@@ -22,7 +22,7 @@
 
 (deftest create-food
     (create-food
-     '((:name . "memi")
+     '((:name . "memizomuweuanwnean")
        (:description . "delicious instant bread")
        (:amount . 3)
        (:cost-per-package . 12.20d2)
@@ -38,8 +38,8 @@
 
 (deftest update-food
     (update-food
-     '((:name . "memoz")
-       (:description . "musto")
+     '((:name . "memozhahwhe8237hgwa")
+       (:description . "")
        (:amount . 9293)
        (:cost-per-package . 90.00d2)
        (:calories-per-package . 9200))

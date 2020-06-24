@@ -30,7 +30,7 @@
         (error 'user-input-doesnt-satisfy-constraint-error)))
 
     (unless (and
-             (satisfies-length-constraint? name 10 250)
+             (satisfies-length-constraint? name 5 250)
              (satisfies-length-constraint? amount 1 999999999)
              (satisfies-length-constraint? cost-per-package 1 9999999999999)
              (satisfies-length-constraint? millilitre-per-package 1 9999999999999))
@@ -62,7 +62,7 @@
         (error 'user-input-doesnt-satisfy-constraint-error)))
 
     (unless (and
-             (satisfies-length-constraint? name 10 250)
+             (satisfies-length-constraint? name 5 250)
              (satisfies-length-constraint? amount 1 999999999)
              (satisfies-length-constraint? cost-per-package 1 9999999999999)
              (satisfies-length-constraint? millilitre-per-package 1 9999999999999))

@@ -22,7 +22,7 @@
 
 (deftest create-water
     (create-water
-     '((:name . "fjki")
+     '((:name . "fjki7hhawhehawhe")
        (:description . "")
        (:amount . 9)
        (:cost-per-package . 3.20d2)
@@ -38,8 +38,8 @@
 
 (deftest update-water
     (update-water
-     '((:name . "fireppe")
-       (:description . "mustoz")
+     '((:name . "fireppe882u3u23283")
+       (:description . "mustoz82838283283823")
        (:amount . 14)
        (:cost-per-package . 1.00d2)
        (:millilitre-per-package . 1900))

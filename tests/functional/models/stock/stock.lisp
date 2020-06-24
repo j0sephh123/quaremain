@@ -22,14 +22,14 @@
     (stock::create-stock
      '((:stock-category . "food")
        (:name . "RANMIZ")
-       (:description . "slurpy")
+       (:description . "slurpy727372hhawhebawhsaws")
        (:amount . 24)
        (:cost-per-package . 27.02d20)
        (:calories-per-package . 923)))
   (stock::create-stock
    '((:stock-category . "water")
      (:name . "Fuviz")
-     (:description . "refreshing")
+     (:description . "refreshingawheawhehjahjehawehahwjehjahwje")
      (:amount . 5)
      (:cost-per-package . 3.02d0)
      (:millilitre-per-package . 1100)))
