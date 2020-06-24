@@ -25,7 +25,7 @@
      '((:name . "Paracetamol")
        (:description . "")
        (:amount . 90)
-       (:cost-per-package . 12.20d2)))
+       (:cost-per-package . 12.20d0)))
   (with-connection (db)
     (let* ((result (database:get-datum-by-id :medicine 3))
            (amount
@@ -38,9 +38,9 @@
 (deftest update-medicine
     (update-medicine
      '((:name . "aspirin")
-       (:description . "for headache")
+       (:description . "for very very very severe headache")
        (:amount . 27)
-       (:cost-per-package . 3.00d2))
+       (:cost-per-package . 3.00d0))
      1)
   (with-connection (db)
     (let* ((result (database::get-datum-by-id :medicine 1))

@@ -23,9 +23,9 @@
 (deftest create-weapon
     (create-weapon
      '((:name . "AR-15")
-       (:description . "Powerful automatic rifle")
+       (:description . "Powerful automatic rifle. medium calibre, suitable for long range combat")
        (:amount . 1)
-       (:cost-per-package . 3200.20d2)))
+       (:cost-per-package . 3200.20d0)))
   (with-connection (db)
     (let* ((result (database:get-datum-by-id :weapon 3))
            (amount
@@ -37,10 +37,10 @@
 
 (deftest update-weapon
     (update-weapon
-     '((:name . "FAL")
-       (:description . "Piercing semi-automatic rifle")
+     '((:name . "FAL1092-NATO")
+       (:description . "")
        (:amount . 3)
-       (:cost-per-package . 2600.00d2))
+       (:cost-per-package . 2600.00d0))
      1)
   (with-connection (db)
     (let* ((result (database::get-datum-by-id :weapon 1))

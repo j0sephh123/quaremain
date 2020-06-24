@@ -52,8 +52,8 @@
                          (:file "constraint")
                          (:file "food" :depends-on ("constraint"))
                          (:file "water" :depends-on ("constraint"))
-                         (:file "medicine")
-                         (:file "weapon")
+                         (:file "medicine" :depends-on ("constraint"))
+                         (:file "weapon" :depends-on ("constraint"))
                          (:file "survival" :depends-on ("stock")))))
   :description "Manage your basic survival resources like food and water
 for preparation of emergency times"
