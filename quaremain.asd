@@ -49,8 +49,9 @@
                                                      "water"
                                                      "medicine"
                                                      "weapon"))
-                         (:file "food")
-                         (:file "water")
+                         (:file "constraint")
+                         (:file "food" :depends-on ("constraint"))
+                         (:file "water" :depends-on ("constraint"))
                          (:file "medicine")
                          (:file "weapon")
                          (:file "survival" :depends-on ("stock")))))

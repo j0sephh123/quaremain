@@ -14,7 +14,8 @@
            :row-with-same-name-already-exist-error
            :no-database-tables-to-be-found-error
            :total-required-survival-resources-is-too-low-error
-           :all-stocks-empty-error))
+           :all-stocks-empty-error
+           :user-input-doesnt-satisfy-constraint-error))
 (in-package :quaremain.utilities.exception)
 
 (define-condition quaremain-error (simple-error)
@@ -22,43 +23,43 @@
 
 (define-condition stock-missing-property-value-error (quaremain-error)
   ((property-value
-    :reader property-value
+    :reader get-property-value
     :initarg :property-value
     :initform nil))
   (:report (lambda (condition stream)
              (format stream
                      "Property value of ~A is empty."
-                     (property-value condition)))))
+                     (get-property-value condition)))))
 
 (define-condition row-doesnt-exist-error (quaremain-error)
   ((table-name
-    :reader table-name
+    :reader get-table-name
     :initarg :table-name
     :initform nil)
    (id
-    :reader id
+    :reader get-id
     :initarg :id
     :initform nil))
   (:report (lambda (condition stream)
              (format stream
                      "Row with unique ID ~A from TABLE ~A doesn't exist!"
-                     (id condition)
-                     (table-name condition)))))
+                     (get-id condition)
+                     (get-table-name condition)))))
 
 (define-condition row-with-same-name-already-exist-error (quaremain-error)
   ((table-name
-    :reader table-name
+    :reader get-table-name
     :initarg :table-name
     :initform nil)
    (name
-    :reader name
+    :reader get-name
     :initarg :name
     :initform nil))
   (:report (lambda (condition stream)
              (format stream
                      "Row with NAME ~A from TABLE ~A already exist! No duplication allowed!"
-                     (name condition)
-                     (table-name condition)))))
+                     (get-name condition)
+                     (get-table-name condition)))))
 
 
 (define-condition no-database-tables-to-be-found-error (quaremain-error)
@@ -78,3 +79,10 @@
   (:report (lambda (condition stream)
              (declare (ignore condition))
              (format stream "All stocks are empty!"))))
+
+(define-condition user-input-doesnt-satisfy-constraint-error (quaremain-error)
+  ()
+  (:report (lambda (condition stream)
+             (declare (ignore condition))
+             (format stream
+                     "User input doesn't satisfy constraint!"))))
