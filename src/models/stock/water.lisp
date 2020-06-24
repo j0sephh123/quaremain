@@ -7,6 +7,8 @@
                 :db
                 :create-datum
                 :update-datum-by-id)
+  (:import-from :quaremain.utilities.exception
+                :user-input-doesnt-satisfy-constraint-error)
   (:import-from :quaremain.models.stock.constraint
                 :satisfies-length-constraint?)
   (:export :create-water
