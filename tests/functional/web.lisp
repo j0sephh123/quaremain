@@ -66,15 +66,14 @@
                (get-content
                 +root-host+
                 "/api/app/list/create?stockCategory=food&name=firenzoautomato&description=qwertyuiopasdfgghjklzxcvbnm&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
-
-               "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"food\",\"name\":\"fire\",\"description\":\"owo\",\"amount\":\"923\",\"costPerPackage\":\"14.04\",\"caloriesPerPackage\":\"899\",\"millilitrePerPackage\":\"\"}}")))
+               "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"food\",\"name\":\"firenzoautomato\",\"description\":\"qwertyuiopasdfgghjklzxcvbnm\",\"amount\":\"923\",\"costPerPackage\":\"14.04\",\"caloriesPerPackage\":\"899\",\"millilitrePerPackage\":\"\"}}")))
   (testing "water"
            (ok
             (string=
              (get-content
               +root-host+
               "/api/app/list/create?stockCategory=water&name=fulizometazo&description=&costPerPackage=2.02&stockAmount=14&millilitrePerPackage=1200&caloriesPerPackage=")
-             "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"water\",\"name\":\"fuli\",\"description\":\"meta\",\"amount\":\"14\",\"costPerPackage\":\"2.02\",\"caloriesPerPackage\":\"\",\"millilitrePerPackage\":\"1200\"}}"))))
+             "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"water\",\"name\":\"fulizometazo\",\"description\":\"\",\"amount\":\"14\",\"costPerPackage\":\"2.02\",\"caloriesPerPackage\":\"\",\"millilitrePerPackage\":\"1200\"}}"))))
 
 (deftest update-stock
     (with-connection (db)
@@ -89,18 +88,19 @@
         (testing "food-access-before-update"
                  (ok
                   (and
-                   (get-ok? "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
+                   (get-ok?
+                    "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
                    (string=
                     (get-content
                      +root-host+
-                     "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
+                     "/api/app/list/update/1?stockCategory=food&name=tacosnawne&description=jkajwkeawhjehawehawhjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjajehwaje&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
                     "{\"status\":200}")))))
 
       (let* ((food-result
               (get-datum-by-id :food 1))
              (food-amount
               (getf food-result :amount)))
-        (testing "food (row 1) after -update"
+        (testing "food (row 1) after update"
                  (ok
                   (= food-amount
                      4))))))

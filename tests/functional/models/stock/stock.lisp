@@ -21,14 +21,14 @@
 (deftest create-stock  
     (stock::create-stock
      '((:stock-category . "food")
-       (:name . "RANMIZ")
+       (:name . "RANMIZ02030")
        (:description . "slurpy727372hhawhebawhsaws")
        (:amount . 24)
        (:cost-per-package . 27.02d20)
        (:calories-per-package . 923)))
   (stock::create-stock
    '((:stock-category . "water")
-     (:name . "Fuviz")
+     (:name . "Fuvizz")
      (:description . "refreshingawheawhehjahjehawehahwjehjahwje")
      (:amount . 5)
      (:cost-per-package . 3.02d0)
@@ -225,15 +225,15 @@
       (stock::update-stock-by-id
        `((:stock-category . "weapon")
          (:id . 1)
-         (:name . "Firenzo")
-         (:description . "Ranimoul")
+         (:name . "Firenzozzzz")
+         (:description . "")
          (:amount . 2)
          (:cost-per-package . 198.02d0)))
       (stock::update-stock-by-id
        `((:stock-category . "water")
          (:id . 1)
-         (:name . "Yaml")
-         (:description . "Farapa")
+         (:name . "Yamlzzzww")
+         (:description . "")
          (:amount . 5)
          (:cost-per-package . 192.02d0)
          (:millilitre-per-package . 912)))
