@@ -8,23 +8,19 @@
 
 (deftest length-constraints
   (testing "double-float"
-           (ok
-            (not
-             (null (satisfies-length-constraint?
+           (ok (satisfies-length-constraint?
                    1727.04d0
                    1
-                   99999999999)))))
+                   99999999999)))
   (testing "integer"
            (ok
-            (not
-             (null (satisfies-length-constraint?
+            (satisfies-length-constraint?
                     97723
                     1
-                    99999999999)))))
+                    99999999999)))
   (testing "string-1"
            (ok
-            (not
-             (null (satisfies-length-constraint?
+            (satisfies-length-constraint?
                     "meto om mato!"
                     1
-                    99999999999))))))
+                    99999999999))))
