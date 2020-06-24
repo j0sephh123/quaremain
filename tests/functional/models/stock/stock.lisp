@@ -24,7 +24,7 @@
        (:name . "RANMIZ02030")
        (:description . "slurpy727372hhawhebawhsaws")
        (:amount . 24)
-       (:cost-per-package . 27.02d20)
+       (:cost-per-package . 27.02d0)
        (:calories-per-package . 923)))
   (stock::create-stock
    '((:stock-category . "water")

@@ -37,7 +37,7 @@
              (satisfies-length-constraint? cost-per-package 1 9999999999999)
              (satisfies-length-constraint? calories-per-package 1 9999999999999))
       (error 'user-input-doesnt-satisfy-constraint-error))
-    
+
     (with-connection (db)
       (create-datum
           :food
@@ -60,11 +60,11 @@
          (get-key-value food :calories-per-package)))
 
     (unless (= (length description) 0)
-      (unless (satisfies-length-constraint? description 5 1500)
+      (unless (satisfies-length-constraint? description 20 1500)
         (error 'user-input-doesnt-satisfy-constraint-error)))
 
     (unless (and
-             (satisfies-length-constraint? name 10 250)
+             (satisfies-length-constraint? name 5 250)
              (satisfies-length-constraint? amount 1 999999999)
              (satisfies-length-constraint? cost-per-package 1 9999999999999)
              (satisfies-length-constraint? calories-per-package 1 9999999999999))
