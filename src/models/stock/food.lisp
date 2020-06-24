@@ -6,8 +6,10 @@
                 :with-connection
                 :db
                 :create-datum
-                :update-datum-by-id)
+                :update-datum-by-id
+                :row-exist-by-name?)
   (:import-from :quaremain.utilities.exception
+                :row-with-same-name-already-exist-error
                 :user-input-doesnt-satisfy-constraint-error)
   (:import-from :quaremain.models.stock.constraint
                 :satisfies-length-constraint?)
@@ -27,6 +29,11 @@
         (calories-per-package
          (get-key-value food :calories-per-package)))
 
+    (when (row-exist-by-name? :food name)
+      (error 'row-with-same-name-already-exist-error
+             :name name
+             :table-name :food))
+
     (unless (= (length description) 0)
       (unless (satisfies-length-constraint? description 20 1500)
         (error 'user-input-doesnt-satisfy-constraint-error)))
@@ -40,12 +47,12 @@
 
     (with-connection (db)
       (create-datum
-          :food
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package
-        :calories-per-package calories-per-package))))
+       :food
+       :name name
+       :description description
+       :amount amount
+       :cost-per-package cost-per-package
+       :calories-per-package calories-per-package))))
 
 (defun update-food (food id)
   (let ((name
@@ -72,10 +79,10 @@
     
     (with-connection (db)
       (update-datum-by-id
-          :food
-          id
-          name
-          description
-          amount
-          cost-per-package
-        :calories-per-package calories-per-package))))
+       :food
+       id
+       name
+       description
+       amount
+       cost-per-package
+       :calories-per-package calories-per-package))))

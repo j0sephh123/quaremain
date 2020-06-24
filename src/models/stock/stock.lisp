@@ -38,7 +38,6 @@
                 :row-exist-by-id?)
 
   (:import-from :quaremain.utilities.exception
-                :stock-missing-property-value-error
                 :row-doesnt-exist-error
                 :row-with-same-name-already-exist-error
                 :all-stocks-empty-error)

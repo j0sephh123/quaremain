@@ -9,8 +9,7 @@
 (defpackage quaremain.utilities.exception
   (:documentation "High level and concrete custom exceptions.")
   (:use :cl)
-  (:export :stock-missing-property-value-error
-           :row-doesnt-exist-error
+  (:export :row-doesnt-exist-error
            :row-with-same-name-already-exist-error
            :no-database-tables-to-be-found-error
            :total-required-survival-resources-is-too-low-error
@@ -20,16 +19,6 @@
 
 (define-condition quaremain-error (simple-error)
   ())
-
-(define-condition stock-missing-property-value-error (quaremain-error)
-  ((property-value
-    :reader get-property-value
-    :initarg :property-value
-    :initform nil))
-  (:report (lambda (condition stream)
-             (format stream
-                     "Property value of ~A is empty."
-                     (get-property-value condition)))))
 
 (define-condition row-doesnt-exist-error (quaremain-error)
   ((table-name

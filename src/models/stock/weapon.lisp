@@ -6,8 +6,10 @@
                 :with-connection
                 :db
                 :create-datum
-                :update-datum-by-id)
+                :update-datum-by-id
+                :row-exist-by-name?)
   (:import-from :quaremain.utilities.exception
+                :row-with-same-name-already-exist-error
                 :user-input-doesnt-satisfy-constraint-error)
   (:import-from :quaremain.models.stock.constraint
                 :satisfies-length-constraint?)
@@ -25,6 +27,11 @@
         (cost-per-package
          (get-key-value weapon :cost-per-package)))
 
+    (when (row-exist-by-name? :weapon name)
+      (error 'row-with-same-name-already-exist-error
+             :name name
+             :table-name :weapon))
+
     (unless (= (length description) 0)
       (unless (satisfies-length-constraint? description 20 1500)
         (error 'user-input-doesnt-satisfy-constraint-error)))
@@ -37,11 +44,11 @@
     
     (with-connection (db)
       (create-datum
-          :weapon
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package))))
+       :weapon
+       :name name
+       :description description
+       :amount amount
+       :cost-per-package cost-per-package))))
 
 (defun update-weapon (weapon id)
   (let ((name
@@ -65,9 +72,9 @@
     
     (with-connection (db)
       (update-datum-by-id
-          :weapon
-          id
-          name
-          description
-          amount
-          cost-per-package))))
+       :weapon
+       id
+       name
+       description
+       amount
+       cost-per-package))))

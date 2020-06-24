@@ -6,8 +6,10 @@
                 :with-connection
                 :db
                 :create-datum
-                :update-datum-by-id)
+                :update-datum-by-id
+                :row-exist-by-name?)
   (:import-from :quaremain.utilities.exception
+                :row-with-same-name-already-exist-error
                 :user-input-doesnt-satisfy-constraint-error)
   (:import-from :quaremain.models.stock.constraint
                 :satisfies-length-constraint?)
@@ -24,6 +26,11 @@
          (get-key-value medicine :amount))
         (cost-per-package
          (get-key-value medicine :cost-per-package)))
+
+    (when (row-exist-by-name? :medicine name)
+      (error 'row-with-same-name-already-exist-error
+             :name name
+             :table-name :medicine))
     
     (unless (= (length description) 0)
       (unless (satisfies-length-constraint? description 20 1500)
@@ -37,11 +44,11 @@
     
     (with-connection (db)
       (create-datum
-          :medicine 
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package))))
+       :medicine 
+       :name name
+       :description description
+       :amount amount
+       :cost-per-package cost-per-package))))
 
 (defun update-medicine (medicine id)
   (let ((name
@@ -65,9 +72,9 @@
     
     (with-connection (db)
       (update-datum-by-id
-          :medicine
-          id
-          name
-          description
-          amount
-          cost-per-package))))
+       :medicine
+       id
+       name
+       description
+       amount
+       cost-per-package))))

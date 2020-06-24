@@ -14,7 +14,6 @@
         :quaremain.view)
   
   (:import-from :quaremain.utilities.exception
-                :stock-missing-property-value-error
                 :row-doesnt-exist-error
                 :row-with-same-name-already-exist-error
                 :no-database-tables-to-be-found-error
@@ -180,12 +179,6 @@
                        :cost-per-package |costPerPackage|
                        :calories-per-package |caloriesPerPackage|
                        :millilitre-per-package |millilitrePerPackage|))))
-    
-    (stock-missing-property-value-error (exception)
-      (log:error "~A" exception)
-      (render-json (list
-                    :error "Stock is missing unique property value!"
-                    :status (get-status-code :not-found))))
 
     (row-with-same-name-already-exist-error (exception)
       (log:error "~A" exception)

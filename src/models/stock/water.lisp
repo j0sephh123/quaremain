@@ -6,8 +6,10 @@
                 :with-connection
                 :db
                 :create-datum
-                :update-datum-by-id)
+                :update-datum-by-id
+                :row-exist-by-name?)
   (:import-from :quaremain.utilities.exception
+                :row-with-same-name-already-exist-error
                 :user-input-doesnt-satisfy-constraint-error)
   (:import-from :quaremain.models.stock.constraint
                 :satisfies-length-constraint?)
@@ -26,6 +28,11 @@
          (get-key-value water :cost-per-package))
         (millilitre-per-package
          (get-key-value water :millilitre-per-package)))
+    
+    (when (row-exist-by-name? :water name)
+      (error 'row-with-same-name-already-exist-error
+             :name name
+             :table-name :water))
 
     (unless (= (length description) 0)
       (unless (satisfies-length-constraint? description 20 1500)
@@ -40,12 +47,12 @@
     
     (with-connection (db)
       (create-datum
-          :water
-        :name name
-        :description description
-        :amount amount
-        :cost-per-package cost-per-package
-        :millilitre-per-package millilitre-per-package))))
+       :water
+       :name name
+       :description description
+       :amount amount
+       :cost-per-package cost-per-package
+       :millilitre-per-package millilitre-per-package))))
 
 (defun update-water (water id)
   (let ((name
@@ -72,10 +79,10 @@
     
     (with-connection (db)
       (update-datum-by-id
-          :water
-          id
-          name
-          description
-          amount
-          cost-per-package
-        :millilitre-per-package millilitre-per-package))))
+       :water
+       id
+       name
+       description
+       amount
+       cost-per-package
+       :millilitre-per-package millilitre-per-package))))

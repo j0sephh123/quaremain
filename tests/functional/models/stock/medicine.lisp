@@ -22,7 +22,7 @@
 
 (deftest create-medicine
     (create-medicine
-     '((:name . "Paracetamol")
+     '((:name . "ParacetamolXY")
        (:description . "")
        (:amount . 90)
        (:cost-per-package . 12.20d0)))
