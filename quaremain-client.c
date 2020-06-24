@@ -76,9 +76,9 @@ int main(int argc, char* argv[]) {
   char address_buffer[80];
   char* port = getenv("QUAREMAIN_PORT");
 
-  sprintf(address_buffer, "%s:%s", DEFAULT_HOST, DEFAULT_PORT);
+  sprintf(address_buffer, "%s:%s/experimental", DEFAULT_HOST, DEFAULT_PORT);
   if (port != NULL) {
-    sprintf(address_buffer, "%s:%s", DEFAULT_HOST, port);
+    sprintf(address_buffer, "%s:%s/experimental", DEFAULT_HOST, port);
   }
   
   // Load a web page into the browser instance
