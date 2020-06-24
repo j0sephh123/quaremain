@@ -77,7 +77,8 @@ for preparation of emergency times"
                         ((:file "string")))
                (:module "tests/unit/models/stock"
                         :components
-                        ((:file "stock")
+                        ((:file "constraint")
+                         (:file "stock")
                          (:file "survival"))))
   :description "Unit test system for quaremain"
   :perform (test-op (op c) (symbol-call :rove :run c)))
