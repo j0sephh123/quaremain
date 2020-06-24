@@ -41,7 +41,7 @@
      (:cost-per-package . 9.02d0)))
   (stock:create-stock
    '((:stock-category . "weapon")
-     (:name . "JRYZ")
+     (:name . "JRYZJ")
      (:description . "")
      (:amount . 4)
      (:cost-per-package . 2300.00d0)))
@@ -95,7 +95,7 @@
       (testing "third row of weapon"
                (ok
                 (string= weapon-name
-                         "JRYZ")))
+                         "JRYZJ")))
       (database::delete-datum-by-id
        :food 3)
       (database::delete-datum-by-id
