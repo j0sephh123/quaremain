@@ -16,7 +16,7 @@ all: server webkit-client
 	mkdir -p bin/var
 	cp bin/$(EXECUTABLE) .
 	cp -f $(CLIENT_EXECUTABLE) bin/
-	cp dist-data/* bin/
+	cp data/* bin/
 	cp -r static/ bin/
 	cp -r templates bin/
 	cp Quaremain bin/
@@ -77,7 +77,7 @@ all-tarballs: ubuntu20.04-tarball opensusetumbleweed-tarball
 
 manpage: README.md
 	ronn -r README.md
-	mv README dist-data/quaremain.1
+	mv README data/quaremain.1
 
 migrate-client:
 	cd client;npm run build;cd ..

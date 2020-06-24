@@ -39,7 +39,7 @@ https://github\.com/momozor/quaremain/releases/tag/0\.7\.8
 For server
 .
 .IP "\(bu" 4
-sbcl (or ccl from Clozure Common Lisp official website)
+sbcl
 .
 .IP "\(bu" 4
 quicklisp (manually install and download from Quicklisp\'s official website)
@@ -73,7 +73,7 @@ webkit2gtk3\-devel
 For server
 .
 .IP "\(bu" 4
-sbcl (or ccl from Clozure Common Lisp official website)
+sbcl
 .
 .IP "\(bu" 4
 quicklisp (manually install and download from Quicklisp\'s official website)
@@ -104,7 +104,7 @@ libwebkit2gtk\-4\.0\-dev
 For server
 .
 .IP "\(bu" 4
-sbcl (or ccl from Clozure Common Lisp official website)
+sbcl
 .
 .IP "\(bu" 4
 quicklisp (manually install and download from Quicklisp\'s official website)
@@ -136,21 +136,6 @@ This project depends on submodule at https://github\.com/momozor/quaremain\-vue\
 .
 .P
 Use \fBgit clone \-\-recursive https://github\.com/momozor/quaremain\fR to clone this project with the submodule automatically\.
-.
-.P
-By default, Quaremain uses SBCL compiler to build a small sized self\-contained executable with the trade off of high\-memory usage\.
-.
-.P
-If you prefer lower memory usage, use CCL (Clozure implementation) to build, but with the result of bigger executable\.
-.
-.P
-Deployment tarball size shouldn\'t really matter, if you distribute it as a compressed archive\.
-.
-.P
-By default, uses SBCL to compile\.
-.
-.P
-Replace with make LISP=lx86cl64 to use CCL\.
 .
 .P
 \fB$ make\fR
@@ -195,13 +180,6 @@ or
 .P
 if you want to build for OpenSUSE Tumbleweed\.
 .
-.SH "Known Issues"
-.
-.IP "\(bu" 4
-You always need to (slime\-cd) in SLIME to the project directory\. This should be resolved soon since it seems Deploy handles the relative path for the end executable automatically\. We can go back to use merge\-pathnames and current project directory if my assumption about Deploy is correct\.
-.
-.IP "" 0
-.
 .SH "Contributing and reporting issues"
 If you want to report a bug, to discuss features, to ask questions, or to send improvement patches, please open an issue or pull request at https://github\.com/momozor/quaremain
 .
@@ -215,7 +193,14 @@ Quaremain uses git as the primary version control system\.
 The back\-end system is largely made in Common Lisp\.
 .
 .P
-The front\-end system is mostly made with Vue + nodejs ecosystem, HTML5, CSS3 and Javascript\.
+The front\-end system is mostly made with Vue + NodeJS ecosystem, HTML5, CSS3 and Javascript\.
+.
+.SH "See Also"
+.
+.IP "\(bu" 4
+https://github\.com/momozor/quaremain\-vue\-client
+.
+.IP "" 0
 .
 .SH "Maintainers"
 .

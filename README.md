@@ -11,7 +11,6 @@ Spend and stock wisely for the unexpected with Quaremain.
 
 Available on GNU/Linux Ubuntu 20.04 as a graphical desktop application.
 
-
 ## Version
 0.8.7
 
@@ -35,7 +34,7 @@ Unstable
 
 For server
 
-- sbcl (or ccl from Clozure Common Lisp official website)
+- sbcl
 - quicklisp (manually install and download from Quicklisp's official website)
 - sqlite3-devel
 - zlib-devel
@@ -51,7 +50,7 @@ For client
 
 For server
 
-- sbcl (or ccl from Clozure Common Lisp official website)
+- sbcl
 - quicklisp (manually install and download from Quicklisp's official website)
 - libsqlite3-dev
 - zlib1g-dev
@@ -66,7 +65,7 @@ For client
 
 For server
 
-- sbcl (or ccl from Clozure Common Lisp official website)
+- sbcl
 - quicklisp (manually install and download from Quicklisp's official website)
 - libsqlite3-dev
 - zlib1g-dev
@@ -78,7 +77,7 @@ For client
 - libwebkit2gtk-3.0-dev
 
 
-#### Git Cloning
+#### Cloning
 
 This project depends on submodule at https://github.com/momozor/quaremain-vue-client
 
@@ -87,18 +86,7 @@ this project with the submodule automatically.
 
 ##### Build And Run
 
-By default, Quaremain uses SBCL compiler to build a small sized
-self-contained executable with the trade off of high-memory usage.
-
-If you prefer lower memory usage, use CCL (Clozure implementation) to build,
-but with the result of bigger executable.
-
-Deployment tarball size shouldn't really matter,
-if you distribute it as a compressed archive.
-
-By default, uses SBCL to compile.
-
-Replace with make LISP=lx86cl64 to use CCL.
+> Quaremain is currently depending on SBCL's specific features.
 
 `$ make`
 
@@ -134,14 +122,6 @@ or
 
 if you want to build for OpenSUSE Tumbleweed.
 
-## Known Issues
-
-- You always need to (slime-cd) in SLIME to the project directory. This
-should be resolved soon since it seems Deploy handles the relative
-path for the end executable automatically. We can go back to
-use merge-pathnames and current project directory if my
-assumption about Deploy is correct.
-
 ## Contributing and reporting issues
 
 If you want to report a bug, to discuss features,
@@ -160,7 +140,11 @@ The back-end system is largely
 made in Common Lisp.
 
 The front-end system is mostly
-made with Vue + nodejs ecosystem, HTML5, CSS3 and Javascript.
+made with Vue + NodeJS ecosystem, HTML5, CSS3 and Javascript.
+
+## See Also
+
+-  https://github.com/momozor/quaremain-vue-client
 
 
 ## Maintainers

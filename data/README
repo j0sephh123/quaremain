@@ -35,7 +35,7 @@ The back-end system is largely
 made in Common Lisp.
 
 The front-end system is mostly
-made with Vue + nodejs ecosystem, HTML5, CSS3 and Javascript.
+made with Vue + NodeJS ecosystem, HTML5, CSS3 and Javascript.
 
 Author
 ------
@@ -48,7 +48,7 @@ Author
 
 License
 
-This software is released under the GPL-3.0 or later license.
+This software is released under the MIT license.
 For further information, see COPYING.quaremain.
 
 For libz.so license, see COPYING.libz file.
