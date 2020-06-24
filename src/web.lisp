@@ -18,7 +18,8 @@
                 :row-doesnt-exist-error
                 :row-with-same-name-already-exist-error
                 :no-database-tables-to-be-found-error
-                :total-required-survival-resources-is-too-low-error)
+                :total-required-survival-resources-is-too-low-error
+                :user-input-doesnt-satisfy-constraint-error)
   
   (:import-from :quaremain.models.stock.stock
                 :create-stock
@@ -190,6 +191,11 @@
       (log:error "~A" exception)
       (render-json (list
                     :error "Stock with same name already exist! Duplication is not allowed!"
+                    :status (get-status-code :not-found))))
+    (user-input-doesnt-satisfy-constraint-error (exception)
+      (log:error "~A" exception)
+      (render-json (list
+                    :error "User input doesn't satisfy constraint!"
                     :status (get-status-code :not-found))))))
 
 (defroute "/api/app/list/update/:id"
@@ -221,6 +227,11 @@
       (log:error "~A" exception)
       (render-json (list
                     :error "Cannot update stock that doesn't exist!"
+                    :status (get-status-code :not-found))))
+    (user-input-doesnt-satisfy-constraint-error (exception)
+      (log:error "~A" exception)
+      (render-json (list
+                    :error "User input doesn't satisfy constraint!"
                     :status (get-status-code :not-found))))
     (error (exception)
       (log:error "~A" exception)

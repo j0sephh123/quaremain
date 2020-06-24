@@ -73,7 +73,14 @@
              (get-content
               +root-host+
               "/api/app/list/create?stockCategory=water&name=fulizometazo&description=&costPerPackage=2.02&stockAmount=14&millilitrePerPackage=1200&caloriesPerPackage=")
-             "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"water\",\"name\":\"fulizometazo\",\"description\":\"\",\"amount\":\"14\",\"costPerPackage\":\"2.02\",\"caloriesPerPackage\":\"\",\"millilitrePerPackage\":\"1200\"}}"))))
+             "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"water\",\"name\":\"fulizometazo\",\"description\":\"\",\"amount\":\"14\",\"costPerPackage\":\"2.02\",\"caloriesPerPackage\":\"\",\"millilitrePerPackage\":\"1200\"}}")))
+  (testing "weapon with name fire"
+           (ok
+            (string=
+             (get-content
+              +root-host+
+              "/api/app/list/create?stockCategory=weapon&name=fire&description=&costPerPackage=2.02&stockAmount=14&millilitrePerPackage=&caloriesPerPackage=")
+             "{\"error\":\"User input doesn't satisfy constraint!\",\"status\":404}"))))
 
 (deftest update-stock
     (with-connection (db)
@@ -103,7 +110,15 @@
         (testing "food (row 1) after update"
                  (ok
                   (= food-amount
-                     4))))))
+                     4))))
+
+      (testing "medicine update with ozu as description"
+               (ok
+                (string=
+                 (get-content
+                  +root-host+
+                  "/api/app/list/update/1?stockCategory=medicine&name=amoeba&description=ozu&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=&millilitrePerPackage=")
+                 "{\"error\":\"User input doesn't satisfy constraint!\",\"status\":404}")))))
 
 (deftest delete-stock
   (testing "food-delete"
