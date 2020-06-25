@@ -65,21 +65,21 @@
               (string=
                (get-content
                 +root-host+
-                "/api/app/list/create?stockCategory=food&name=firenzoautomato&description=qwertyuiopasdfgghjklzxcvbnm&costPerPackage=14.04&stockAmount=923&caloriesPerPackage=899&millilitrePerPackage=")
+                "/api/app/list/create?stockCategory=food&name=firenzoautomato&description=qwertyuiopasdfgghjklzxcvbnm&costPerPackage=14.04&amount=923&caloriesPerPackage=899&millilitrePerPackage=")
                "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"food\",\"name\":\"firenzoautomato\",\"description\":\"qwertyuiopasdfgghjklzxcvbnm\",\"amount\":\"923\",\"costPerPackage\":\"14.04\",\"caloriesPerPackage\":\"899\",\"millilitrePerPackage\":\"\"}}")))
   (testing "water"
            (ok
             (string=
              (get-content
               +root-host+
-              "/api/app/list/create?stockCategory=water&name=fulizometazo&description=&costPerPackage=2.02&stockAmount=14&millilitrePerPackage=1200&caloriesPerPackage=")
+              "/api/app/list/create?stockCategory=water&name=fulizometazo&description=&costPerPackage=2.02&amount=14&millilitrePerPackage=1200&caloriesPerPackage=")
              "{\"status\":200,\"registeredStock\":{\"stockCategory\":\"water\",\"name\":\"fulizometazo\",\"description\":\"\",\"amount\":\"14\",\"costPerPackage\":\"2.02\",\"caloriesPerPackage\":\"\",\"millilitrePerPackage\":\"1200\"}}")))
   (testing "weapon with name fire"
            (ok
             (string=
              (get-content
               +root-host+
-              "/api/app/list/create?stockCategory=weapon&name=fire&description=&costPerPackage=2.02&stockAmount=14&millilitrePerPackage=&caloriesPerPackage=")
+              "/api/app/list/create?stockCategory=weapon&name=fire&description=&costPerPackage=2.02&amount=14&millilitrePerPackage=&caloriesPerPackage=")
              "{\"error\":\"User input doesn't satisfy constraint!\",\"status\":404}"))))
 
 (deftest update-stock
@@ -96,11 +96,11 @@
                  (ok
                   (and
                    (get-ok?
-                    "/api/app/list/update/1?stockCategory=food&name=tacos&description=&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
+                    "/api/app/list/update/1?stockCategory=food&name=tacos&description=&amount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
                    (string=
                     (get-content
                      +root-host+
-                     "/api/app/list/update/1?stockCategory=food&name=tacosnawne&description=jkajwkeawhjehawehawhjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjajehwaje&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
+                     "/api/app/list/update/1?stockCategory=food&name=tacosnawne&description=jkajwkeawhjehawehawhjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjajehwaje&amount=4&costPerPackage=3.20&caloriesPerPackage=800&millilitrePerPackage=")
                     "{\"status\":200}")))))
 
       (let* ((food-result
@@ -117,7 +117,7 @@
                 (string=
                  (get-content
                   +root-host+
-                  "/api/app/list/update/1?stockCategory=medicine&name=amoeba&description=ozu&stockAmount=4&costPerPackage=3.20&caloriesPerPackage=&millilitrePerPackage=")
+                  "/api/app/list/update/1?stockCategory=medicine&name=amoeba&description=ozu&amount=4&costPerPackage=3.20&caloriesPerPackage=&millilitrePerPackage=")
                  "{\"error\":\"User input doesn't satisfy constraint!\",\"status\":404}")))))
 
 (deftest delete-stock

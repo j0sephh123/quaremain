@@ -146,15 +146,12 @@
                     :error "There was an error when executing this process!"
                     :status (get-status-code :not-found))))))
 
-;; FIXME: amount is not received
-;; workaround, uses stock-amount as parameter key
-;; for route
 (defroute "/api/app/list/create"
     (&key
      |stockCategory|
      |name|
      |description|
-     |stockAmount|
+     |amount|
      |costPerPackage|
      |caloriesPerPackage|
      |millilitrePerPackage|)
@@ -164,7 +161,7 @@
         (create-stock `((:stock-category . ,|stockCategory|)
                         (:name . ,|name|)
                         (:description . ,|description|)
-                        (:amount . ,|stockAmount|)
+                        (:amount . ,|amount|)
                         (:cost-per-package . ,|costPerPackage|)
                         (:calories-per-package . ,|caloriesPerPackage|)
                         (:millilitre-per-package . ,|millilitrePerPackage|)))
@@ -175,7 +172,7 @@
                        :stock-category |stockCategory|
                        :name |name|
                        :description |description|
-                       :amount |stockAmount|
+                       :amount |amount|
                        :cost-per-package |costPerPackage|
                        :calories-per-package |caloriesPerPackage|
                        :millilitre-per-package |millilitrePerPackage|))))
@@ -197,7 +194,7 @@
      |stockCategory|
      |name|
      |description|
-     |stockAmount|
+     |amount|
      |costPerPackage|
      |caloriesPerPackage|
      |millilitrePerPackage|)
@@ -209,7 +206,7 @@
            (:id . ,id)
            (:name . ,|name|)
            (:description . ,|description|)
-           (:amount . ,|stockAmount|)
+           (:amount . ,|amount|)
            (:cost-per-package . ,|costPerPackage|)
            (:calories-per-package . ,|caloriesPerPackage|)
            (:millilitre-per-package . ,|millilitrePerPackage|)))
