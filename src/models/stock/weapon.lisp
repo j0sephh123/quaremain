@@ -24,8 +24,8 @@
          (get-key-value weapon :description))
         (amount
          (get-key-value weapon :amount))
-        (cost-per-package
-         (get-key-value weapon :cost-per-package)))
+        (cost-per-stock
+         (get-key-value weapon :cost-per-stock)))
 
     (when (row-exist-by-name? :weapon name)
       (error 'row-with-same-name-already-exist-error
@@ -39,7 +39,7 @@
     (unless (and
              (satisfies-length-constraint? name 5 250)
              (satisfies-length-constraint? amount 1 999999999)
-             (satisfies-length-constraint? cost-per-package 1 9999999999999))
+             (satisfies-length-constraint? cost-per-stock 1 9999999999999))
       (error 'user-input-doesnt-satisfy-constraint-error))
     
     (with-connection (db)
@@ -48,7 +48,7 @@
        :name name
        :description description
        :amount amount
-       :cost-per-package cost-per-package))))
+       :cost-per-stock cost-per-stock))))
 
 (defun update-weapon (weapon id)
   (let ((name
@@ -57,8 +57,8 @@
          (get-key-value weapon :description))
         (amount
          (get-key-value weapon :amount))
-        (cost-per-package
-         (get-key-value weapon :cost-per-package)))
+        (cost-per-stock
+         (get-key-value weapon :cost-per-stock)))
 
     (unless (= (length description) 0)
       (unless (satisfies-length-constraint? description 20 1500)
@@ -67,7 +67,7 @@
     (unless (and
              (satisfies-length-constraint? name 5 250)
              (satisfies-length-constraint? amount 1 999999999)
-             (satisfies-length-constraint? cost-per-package 1 9999999999999))
+             (satisfies-length-constraint? cost-per-stock 1 9999999999999))
       (error 'user-input-doesnt-satisfy-constraint-error))
     
     (with-connection (db)
@@ -77,4 +77,4 @@
        name
        description
        amount
-       cost-per-package))))
+       cost-per-stock))))

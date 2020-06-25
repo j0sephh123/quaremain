@@ -24,13 +24,13 @@
   (let* ((result
           (calculate-total-survival-days
            (stock::get-total-food-calories)
-           (stock::get-total-water-millilitre)))
+           (stock::get-total-water-millilitres)))
 
          (result-two
           (calculate-total-survival-days
            (- (stock::get-total-food-calories)
               3000)
-           (- (stock::get-total-water-millilitre)
+           (- (stock::get-total-water-millilitres)
               4000))))
     (testing ""
              (ok

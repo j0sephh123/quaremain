@@ -64,9 +64,9 @@
 
 (defun sum-all-cost-per-stock (stocks)
   (dolist (stock stocks)
-    (setf (getf stock :cost-per-package)
+    (setf (getf stock :cost-per-stock)
           (coerce (* (getf stock :amount)
-                     (getf stock :cost-per-package))
+                     (getf stock :cost-per-stock))
                   'single-float)))
   stocks)
 
@@ -78,19 +78,19 @@
 
 (defun sum-all-calories-per-stock (stocks)
   (dolist (stock stocks)
-    (sum-unique-property-value-by-amount stock :calories-per-package))
+    (sum-unique-property-value-by-amount stock :calories-per-stock))
   stocks)
 
-(defun sum-all-millilitre-per-stock (stocks)
+(defun sum-all-millilitres-per-stock (stocks)
   (dolist (stock stocks)
-    (sum-unique-property-value-by-amount stock :millilitre-per-package))
+    (sum-unique-property-value-by-amount stock :millilitres-per-stock))
   stocks)
 
 
 (defun coerce-cost-per-stock (stock)
   (let ((cost-per-stock
-         (getf stock :cost-per-package)))
-    (setf (getf stock :cost-per-package)
+         (getf stock :cost-per-stock)))
+    (setf (getf stock :cost-per-stock)
           (coerce cost-per-stock 'single-float)))
   stock)
 
@@ -127,7 +127,7 @@
             (sum-all-calories-per-stock stocks)
             stocks)           
            ((eql table-name :water)
-            (sum-all-millilitre-per-stock stocks)
+            (sum-all-millilitres-per-stock stocks)
             stocks)
            (t
             stocks)))
@@ -168,15 +168,15 @@
 (defun get-total-food-calories ()
   (with-connection (db)
     (get-total-unique-property-stock-value-sum
-     :calories-per-package
+     :calories-per-stock
      (sum-all-calories-per-stock
       (get-all-datum :food)))))
 
-(defun get-total-water-millilitre ()
+(defun get-total-water-millilitres ()
   (with-connection (db)
     (get-total-unique-property-stock-value-sum
-     :millilitre-per-package
-     (sum-all-millilitre-per-stock
+     :millilitres-per-stock
+     (sum-all-millilitres-per-stock
       (get-all-datum :water)))))
 
 (defun get-all-stocks ()

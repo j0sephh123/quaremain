@@ -73,7 +73,7 @@
 (defmacro deftable (table-name &body sxql-column-specifier-forms)
   "Define a basic base table for new model. Remember that
    this will inherit id, name, description, amount and
-   cost-per-package column specifiers as well. Only suitable
+   cost-per-stock column specifiers as well. Only suitable
    for tables that are related to market products.
 
    Example: (deftable :user 
@@ -86,7 +86,7 @@
                (name :type 'text :not-null t)
                (description :type 'text)
                (amount :type 'integer :not-null t)
-               (cost-per-package :type 'real :not-null t)
+               (cost-per-stock :type 'real :not-null t)
                ,@sxql-column-specifier-forms))))
      generated-sxql-schema))
 
@@ -98,11 +98,11 @@
           (mapcar (lambda (generated-sxql-schema)
                     (execute generated-sxql-schema))
                   (list (deftable :food
-                          (calories-per-package
+                          (calories-per-stock
                            :type 'integer
                            :not-null t))
                         (deftable :water
-                          (millilitre-per-package
+                          (millilitres-per-stock
                            :type 'integer
                            :not-null t))
                         (deftable :medicine)
@@ -161,7 +161,7 @@
                               name
                               description
                               amount
-                              cost-per-package
+                              cost-per-stock
                               &body sxql-column-specifier-forms)
   `(execute
     (update ,table-name
@@ -169,7 +169,7 @@
                   :description ,description
 
                   :amount ,amount
-                  :cost-per-package ,cost-per-package
+                  :cost-per-stock ,cost-per-stock
                   ,@sxql-column-specifier-forms)
             (where (:= :id ,id)))))
 
@@ -204,7 +204,7 @@
              :name (assoc-value seed :name)
              :description (assoc-value seed :description)
              :amount (assoc-value seed :amount)
-             :cost-per-package (assoc-value seed :cost-per-package)))
+             :cost-per-stock (assoc-value seed :cost-per-stock)))
        parsed-from-json-seeds))))
 
 (defun food-seed-migrator ()
@@ -220,8 +220,8 @@
              :name (alexandria:assoc-value item :name)
              :description (alexandria:assoc-value item :description)
              :amount (alexandria:assoc-value item :amount)
-             :cost-per-package (alexandria:assoc-value item :cost-per-package)
-             :calories-per-package (alexandria:assoc-value item :calories-per-package)))
+             :cost-per-stock (alexandria:assoc-value item :cost-per-stock)
+             :calories-per-stock (alexandria:assoc-value item :calories-per-stock)))
        
        json-data))))
 
@@ -238,8 +238,8 @@
              :name (alexandria:assoc-value item :name)
              :description (alexandria:assoc-value item :description)
              :amount (alexandria:assoc-value item :amount)
-             :cost-per-package (alexandria:assoc-value item :cost-per-package)
-             :millilitre-per-package (alexandria:assoc-value item :millilitre-per-package)))
+             :cost-per-stock (alexandria:assoc-value item :cost-per-stock)
+             :millilitres-per-stock (alexandria:assoc-value item :millilitres-per-stock)))
        json-data))))
 
 (defun medicine-seed-migrator ()

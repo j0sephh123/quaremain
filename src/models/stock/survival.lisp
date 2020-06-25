@@ -9,20 +9,20 @@
   (:use :cl)
   (:import-from :quaremain.models.stock.stock
                 :get-total-food-calories
-                :get-total-water-millilitre)
+                :get-total-water-millilitres)
   (:import-from :quaremain.utilities.exception
                 :total-required-survival-resources-is-too-low-error)
   (:export :survival-days-type))
 (in-package :quaremain.models.stock.survival)
 
 (defun calculate-total-survival-days (calories-sum
-                                      millilitre-sum)
+                                      millilitres-sum)
   (let ((minimal-calories-per-day 1500)
-        (minimal-millilitre-per-day 2300))
+        (minimal-millilitres-per-day 2300))
     (when
         ;; Less than minimum
         (or (<= calories-sum minimal-calories-per-day)
-            (<= millilitre-sum minimal-millilitre-per-day))
+            (<= millilitres-sum minimal-millilitres-per-day))
       (error 'total-required-survival-resources-is-too-low-error))
 
     
@@ -32,10 +32,10 @@
     ;; far longer with enough water even without
     ;; food compared to vice-versa (unless the
     ;; food contains enough water)
-    (if (< millilitre-sum calories-sum)
+    (if (< millilitres-sum calories-sum)
         (floor
-         millilitre-sum
-         minimal-millilitre-per-day)
+         millilitres-sum
+         minimal-millilitres-per-day)
         (floor
          calories-sum
          minimal-calories-per-day))))
@@ -43,7 +43,7 @@
 (defun get-total-survival-days ()
   (calculate-total-survival-days
    (get-total-food-calories)
-   (get-total-water-millilitre)))
+   (get-total-water-millilitres)))
 
 (defun survival-days-type (total-survival-days)
   (let ((week 7)

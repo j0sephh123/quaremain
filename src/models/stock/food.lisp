@@ -24,10 +24,10 @@
          (get-key-value food :description))
         (amount
          (get-key-value food :amount))
-        (cost-per-package
-         (get-key-value food :cost-per-package))
-        (calories-per-package
-         (get-key-value food :calories-per-package)))
+        (cost-per-stock
+         (get-key-value food :cost-per-stock))
+        (calories-per-stock
+         (get-key-value food :calories-per-stock)))
 
     (when (row-exist-by-name? :food name)
       (error 'row-with-same-name-already-exist-error
@@ -41,8 +41,8 @@
     (unless (and
              (satisfies-length-constraint? name 5 250)
              (satisfies-length-constraint? amount 1 999999999)
-             (satisfies-length-constraint? cost-per-package 1 9999999999999)
-             (satisfies-length-constraint? calories-per-package 1 9999999999999))
+             (satisfies-length-constraint? cost-per-stock 1 9999999999999)
+             (satisfies-length-constraint? calories-per-stock 1 9999999999999))
       (error 'user-input-doesnt-satisfy-constraint-error))
 
     (with-connection (db)
@@ -51,8 +51,8 @@
        :name name
        :description description
        :amount amount
-       :cost-per-package cost-per-package
-       :calories-per-package calories-per-package))))
+       :cost-per-stock cost-per-stock
+       :calories-per-stock calories-per-stock))))
 
 (defun update-food (food id)
   (let ((name
@@ -61,10 +61,10 @@
          (get-key-value food :description))
         (amount
          (get-key-value food :amount))
-        (cost-per-package
-         (get-key-value food :cost-per-package))
-        (calories-per-package
-         (get-key-value food :calories-per-package)))
+        (cost-per-stock
+         (get-key-value food :cost-per-stock))
+        (calories-per-stock
+         (get-key-value food :calories-per-stock)))
 
     (unless (= (length description) 0)
       (unless (satisfies-length-constraint? description 20 1500)
@@ -73,8 +73,8 @@
     (unless (and
              (satisfies-length-constraint? name 5 250)
              (satisfies-length-constraint? amount 1 999999999)
-             (satisfies-length-constraint? cost-per-package 1 9999999999999)
-             (satisfies-length-constraint? calories-per-package 1 9999999999999))
+             (satisfies-length-constraint? cost-per-stock 1 9999999999999)
+             (satisfies-length-constraint? calories-per-stock 1 9999999999999))
       (error 'user-input-doesnt-satisfy-constraint-error))
     
     (with-connection (db)
@@ -84,5 +84,5 @@
        name
        description
        amount
-       cost-per-package
-       :calories-per-package calories-per-package))))
+       cost-per-stock
+       :calories-per-stock calories-per-stock))))

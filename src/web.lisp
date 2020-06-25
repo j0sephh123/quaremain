@@ -152,9 +152,9 @@
      |name|
      |description|
      |amount|
-     |costPerPackage|
-     |caloriesPerPackage|
-     |millilitrePerPackage|)
+     |costPerStock|
+     |caloriesPerStock|
+     |millilitresPerStock|)
   (cors-handler *response*)
   (handler-case
       (progn
@@ -162,9 +162,9 @@
                         (:name . ,|name|)
                         (:description . ,|description|)
                         (:amount . ,|amount|)
-                        (:cost-per-package . ,|costPerPackage|)
-                        (:calories-per-package . ,|caloriesPerPackage|)
-                        (:millilitre-per-package . ,|millilitrePerPackage|)))
+                        (:cost-per-stock . ,|costPerStock|)
+                        (:calories-per-stock . ,|caloriesPerStock|)
+                        (:millilitres-per-stock . ,|millilitresPerStock|)))
         (render-json (list
                       :status (get-status-code :success)
                       :registered-stock
@@ -173,9 +173,9 @@
                        :name |name|
                        :description |description|
                        :amount |amount|
-                       :cost-per-package |costPerPackage|
-                       :calories-per-package |caloriesPerPackage|
-                       :millilitre-per-package |millilitrePerPackage|))))
+                       :cost-per-stock |costPerStock|
+                       :calories-per-stock |caloriesPerStock|
+                       :millilitres-per-stock |millilitresPerStock|))))
 
     (row-with-same-name-already-exist-error (exception)
       (log:error "~A" exception)
@@ -195,9 +195,9 @@
      |name|
      |description|
      |amount|
-     |costPerPackage|
-     |caloriesPerPackage|
-     |millilitrePerPackage|)
+     |costPerStock|
+     |caloriesPerStock|
+     |millilitresPerStock|)
   (cors-handler *response*)
   (handler-case
       (progn
@@ -207,9 +207,9 @@
            (:name . ,|name|)
            (:description . ,|description|)
            (:amount . ,|amount|)
-           (:cost-per-package . ,|costPerPackage|)
-           (:calories-per-package . ,|caloriesPerPackage|)
-           (:millilitre-per-package . ,|millilitrePerPackage|)))
+           (:cost-per-stock . ,|costPerStock|)
+           (:calories-per-stock . ,|caloriesPerStock|)
+           (:millilitres-per-stock . ,|millilitresPerStock|)))
         (render-json (list
                       :status (get-status-code :success))))
     

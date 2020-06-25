@@ -3,15 +3,15 @@
         "name": "Tasty drinking water",
         "description": "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,",
         "amount": 12,
-        "costPerPackage": "12.02",
-        "millilitrePerPackage": 1500
+        "costPerStock": "12.02",
+        "millilitresPerStock": 1500
     },
 
     {
         "name": "ICOLITE from Jerry's",
         "description": "",
         "amount": 5,
-        "costPerPackage": "12.02",
-        "millilitrePerPackage": 923
+        "costPerStock": "12.02",
+        "millilitresPerStock": 923
     }
 ]

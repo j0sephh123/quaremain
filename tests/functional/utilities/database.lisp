@@ -22,9 +22,9 @@
     (let* ((stock
             (with-connection (db)
               (database::get-datum-by-id :food 1)))
-           (calories (getf stock :calories-per-package))
+           (calories (getf stock :calories-per-stock))
            (id (getf stock :id))
-           (cost (getf stock :cost-per-package))
+           (cost (getf stock :cost-per-stock))
            (description (getf stock :description))
            (name (getf stock :name))
            (amount (getf stock :amount)))
@@ -35,10 +35,10 @@
       (testing "amount of first row"
                (ok (= amount 12)))
 
-      (testing "cost-per-package of first row"
+      (testing "cost-per-stock of first row"
                (ok (= cost 12.02d0)))
 
-      (testing "calories-per-package of first row"
+      (testing "calories-per-stock of first row"
                (ok (= calories 1200)))
 
       (testing "id of first row"
@@ -49,17 +49,17 @@
     (let* ((stock
             (with-connection (db)
               (database::get-datum-by-id :water 2)))
-           (millilitre (getf stock :millilitre-per-package))
+           (millilitres (getf stock :millilitres-per-stock))
            (id (getf stock :id))
-           (cost (getf stock :cost-per-package))
+           (cost (getf stock :cost-per-stock))
            (amount (getf stock :amount))
            (name (getf stock :name))
            (description (getf stock :description)))
 
-      (testing "millilitre-per-package of second row"
-               (ok (= millilitre 923)))
+      (testing "millilitres-per-stock of second row"
+               (ok (= millilitres 923)))
 
-      (testing "cost-per-package of second row"
+      (testing "cost-per-stock of second row"
                (ok (= cost 12.02d0)))
 
       (testing "amount of second row"
@@ -80,7 +80,7 @@
             (with-connection (db)
               (database::get-datum-by-id :medicine 1)))
            (id (getf stock :id))
-           (cost (getf stock :cost-per-package))
+           (cost (getf stock :cost-per-stock))
            (description (getf stock :description))
            (name (getf stock :name))
            (amount (getf stock :amount)))
@@ -91,7 +91,7 @@
       (testing "amount of first row"
                (ok (= amount 4)))
 
-      (testing "cost-per-package of first row"
+      (testing "cost-per-stock of first row"
                (ok (= cost 12.02d0)))
 
       (testing "id of first row"
@@ -103,7 +103,7 @@
             (with-connection (db)
               (database::get-datum-by-id :weapon 2)))
            (id (getf stock :id))
-           (cost (getf stock :cost-per-package))
+           (cost (getf stock :cost-per-stock))
            (description (getf stock :description))
            (name (getf stock :name))
            (amount (getf stock :amount)))
@@ -114,7 +114,7 @@
       (testing "amount of second row"
                (ok (= amount 2)))
 
-      (testing "cost-per-package of second row"
+      (testing "cost-per-stock of second row"
                (ok (= cost 900.78d0)))
 
       (testing "id of second row"
@@ -137,7 +137,7 @@
                      :name "AK-47"
                      :description "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
                      :amount 1
-                     :cost-per-package 1200.0d0)
+                     :cost-per-stock 1200.0d0)
                    )))
 
         (testing "second row of weapon"
@@ -148,7 +148,7 @@
                      :name "Magnum-192"
                      :description "Poweful shockburst"
                      :amount 2
-                     :cost-per-package 900.78d0)))))))
+                     :cost-per-stock 900.78d0)))))))
 
 (deftest get-datum-by-id
     (with-connection (db)
@@ -212,8 +212,8 @@
        :name "Jaguar"
        :description "Food"
        :amount 3
-       :cost-per-package 12.0
-       :calories-per-package 1492))
+       :cost-per-stock 12.0
+       :calories-per-stock 1492))
 
   (with-connection (db)
     (let* ((food-result
@@ -237,7 +237,7 @@
        "Slurp"
        223
        12.0
-       :millilitre-per-package 1000)
+       :millilitres-per-stock 1000)
       
       (database::update-datum-by-id
        :medicine
@@ -249,18 +249,18 @@
 
       (let* ((water-result
               (database::get-datum-by-id :water 2))
-             (water-millilitre
-              (getf water-result :millilitre-per-package))
+             (water-millilitres
+              (getf water-result :millilitres-per-stock))
              
              (medicine-result
               (database::get-datum-by-id :medicine 1))
              (medicine-amount
               (getf medicine-result :amount)))
 
-        (testing "water millilitre-per-package of second row"
+        (testing "water millilitres-per-stock of second row"
                  (ok
                   (=
-                   water-millilitre
+                   water-millilitres
                    1000)))
 
         (testing "medicine amount of first row"

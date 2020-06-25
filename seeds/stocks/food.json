@@ -3,15 +3,15 @@
         "name": "Sed neque. Sed eget lacus. Mauris",
         "description": "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,",
         "amount": 12,
-        "costPerPackage": "12.02",
-        "caloriesPerPackage": 1200
+        "costPerStock": "12.02",
+        "caloriesPerStock": 1200
     },
 
     {
         "name": "Cashews from Jerry's",
         "description": "",
         "amount": 5,
-        "costPerPackage": "12.02",
-        "caloriesPerPackage": 200
+        "costPerStock": "12.02",
+        "caloriesPerStock": 200
     }
 ]
