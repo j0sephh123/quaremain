@@ -24,8 +24,8 @@
     (create-weapon
      '((:name . "AR-15")
        (:description . "Powerful automatic rifle. medium calibre, suitable for long range combat")
-       (:amount . 1)
-       (:cost-per-stock . 3200.20d0)))
+       (:amount . "1")
+       (:cost-per-stock . "3200.20")))
   (with-connection (db)
     (let* ((result (database:get-datum-by-id :weapon 3))
            (amount
@@ -39,8 +39,8 @@
     (update-weapon
      '((:name . "FAL1092-NATO")
        (:description . "")
-       (:amount . 3)
-       (:cost-per-stock . 2600.00d0))
+       (:amount . "3")
+       (:cost-per-stock . "2600.00"))
      1)
   (with-connection (db)
     (let* ((result (database::get-datum-by-id :weapon 1))

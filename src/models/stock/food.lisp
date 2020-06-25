@@ -12,10 +12,40 @@
                 :row-with-same-name-already-exist-error
                 :user-input-doesnt-satisfy-constraint-error)
   (:import-from :quaremain.models.stock.constraint
-                :satisfies-length-constraint?)
+                :satisfies-length-constraint?
+                :satisfies-integer-constraint?
+                :satisfies-decimal-constraint?
+                :satisfies-string-constraint?)
   (:export :create-food
            :update-food))
 (in-package :quaremain.models.stock.food)
+
+;; TODO: Differentiate between constraints errors
+(defun satisfies-constraints?
+    (name
+     description
+     amount
+     cost
+     calories)
+  (let ((max-constraint 9999999999999))
+    (unless (= (length description) 0)
+      (unless (and (satisfies-length-constraint? description 20 1500)
+                   (satisfies-string-constraint? description))
+        (error 'user-input-doesnt-satisfy-constraint-error)))
+
+    (unless (and
+             (satisfies-length-constraint? name 5 250)
+             (satisfies-string-constraint? name)
+             
+             (satisfies-length-constraint? amount 1 max-constraint)
+             (satisfies-integer-constraint? amount)
+             
+             (satisfies-length-constraint? cost 1 max-constraint)
+             (satisfies-decimal-constraint? cost)
+             
+             (satisfies-length-constraint? calories 1 max-constraint)
+             (satisfies-integer-constraint? calories))
+      (error 'user-input-doesnt-satisfy-constraint-error))))
 
 (defun create-food (food)
   (let ((name
@@ -34,25 +64,21 @@
              :name name
              :table-name :food))
 
-    (unless (= (length description) 0)
-      (unless (satisfies-length-constraint? description 20 1500)
-        (error 'user-input-doesnt-satisfy-constraint-error)))
-
-    (unless (and
-             (satisfies-length-constraint? name 5 250)
-             (satisfies-length-constraint? amount 1 999999999)
-             (satisfies-length-constraint? cost-per-stock 1 9999999999999)
-             (satisfies-length-constraint? calories-per-stock 1 9999999999999))
-      (error 'user-input-doesnt-satisfy-constraint-error))
+    (satisfies-constraints?
+     name
+     description
+     amount
+     cost-per-stock
+     calories-per-stock)
 
     (with-connection (db)
       (create-datum
-       :food
-       :name name
-       :description description
-       :amount amount
-       :cost-per-stock cost-per-stock
-       :calories-per-stock calories-per-stock))))
+          :food
+        :name name
+        :description description
+        :amount amount
+        :cost-per-stock cost-per-stock
+        :calories-per-stock calories-per-stock))))
 
 (defun update-food (food id)
   (let ((name
@@ -66,23 +92,21 @@
         (calories-per-stock
          (get-key-value food :calories-per-stock)))
 
-    (unless (= (length description) 0)
-      (unless (satisfies-length-constraint? description 20 1500)
-        (error 'user-input-doesnt-satisfy-constraint-error)))
+    (satisfies-constraints?
+     name
+     description
+     amount
+     cost-per-stock
+     calories-per-stock)
 
-    (unless (and
-             (satisfies-length-constraint? name 5 250)
-             (satisfies-length-constraint? amount 1 999999999)
-             (satisfies-length-constraint? cost-per-stock 1 9999999999999)
-             (satisfies-length-constraint? calories-per-stock 1 9999999999999))
-      (error 'user-input-doesnt-satisfy-constraint-error))
     
     (with-connection (db)
       (update-datum-by-id
-       :food
-       id
-       name
-       description
-       amount
-       cost-per-stock
-       :calories-per-stock calories-per-stock))))
+          :food
+          id
+          name
+          description
+          amount
+          cost-per-stock
+        :calories-per-stock calories-per-stock))))
+

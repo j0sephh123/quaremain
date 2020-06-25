@@ -24,8 +24,8 @@
     (create-medicine
      '((:name . "ParacetamolXY")
        (:description . "")
-       (:amount . 90)
-       (:cost-per-stock . 12.20d0)))
+       (:amount . "90")
+       (:cost-per-stock . "12.20")))
   (with-connection (db)
     (let* ((result (database:get-datum-by-id :medicine 3))
            (amount
@@ -39,8 +39,8 @@
     (update-medicine
      '((:name . "aspirin")
        (:description . "for very very very severe headache")
-       (:amount . 27)
-       (:cost-per-stock . 3.00d0))
+       (:amount . "27")
+       (:cost-per-stock . "3.00"))
      1)
   (with-connection (db)
     (let* ((result (database::get-datum-by-id :medicine 1))

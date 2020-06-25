@@ -24,9 +24,9 @@
     (create-water
      '((:name . "fjki7hhawhehawhe")
        (:description . "")
-       (:amount . 9)
-       (:cost-per-stock . 3.20d2)
-       (:millilitres-per-stock . 1200)))
+       (:amount . "9")
+       (:cost-per-stock . "3.20")
+       (:millilitres-per-stock . "1200")))
   (with-connection (db)
     (let* ((result (database:get-datum-by-id :water 3))
            (amount
@@ -40,9 +40,9 @@
     (update-water
      '((:name . "fireppe882u3u23283")
        (:description . "mustoz82838283283823")
-       (:amount . 14)
-       (:cost-per-stock . 1.00d2)
-       (:millilitres-per-stock . 1900))
+       (:amount . "14")
+       (:cost-per-stock . "1.00")
+       (:millilitres-per-stock . "1900"))
      1)
   (with-connection (db)
     (let* ((result (database::get-datum-by-id :water 1))

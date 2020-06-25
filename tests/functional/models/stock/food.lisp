@@ -24,9 +24,9 @@
     (create-food
      '((:name . "memizomuweuanwnean")
        (:description . "delicious instant bread")
-       (:amount . 3)
-       (:cost-per-stock . 12.20d2)
-       (:calories-per-stock . 1200)))
+       (:amount . "3")
+       (:cost-per-stock . "12.20")
+       (:calories-per-stock . "1200")))
   (with-connection (db)
     (let* ((result (database:get-datum-by-id :food 3))
            (amount
@@ -40,9 +40,9 @@
     (update-food
      '((:name . "memozhahwhe8237hgwa")
        (:description . "")
-       (:amount . 9293)
-       (:cost-per-stock . 90.00d2)
-       (:calories-per-stock . 9200))
+       (:amount . "9293")
+       (:cost-per-stock . "90.00")
+       (:calories-per-stock . "9200"))
      1)
   (with-connection (db)
     (let* ((result (database::get-datum-by-id :food 1))
