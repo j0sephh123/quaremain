@@ -19,6 +19,8 @@
                 :no-database-tables-to-be-found-error
                 :total-required-survival-resources-is-too-low-error
                 :user-input-doesnt-satisfy-constraint-error)
+  (:import-from :quaremain.utilities.string
+                :get-key-value)
   
   (:import-from :quaremain.models.stock.stock
                 :create-stock
@@ -49,37 +51,57 @@
   (render #p"experimental.html"))
 
 (defparameter +status-codes+
-  '((:not-found 404)
-    (:success 200)))
+  '((:not-found . 404)
+    (:success . 200)))
 
 (defun get-status-code (key)
-  (second (assoc key +status-codes+)))
+  (get-key-value +status-codes+ key))
 
-(defun get-cors-headers (allow-origin allow-methods allow-headers)
+(defun get-cors-headers
+    (allow-origin
+     allow-methods
+     allow-headers)
   (list :access-control-allow-origin allow-origin
         :access-control-allow-methods allow-methods
         :access-control-allow-headers allow-headers))
 
-(defun set-header-origin (response allow-origin allow-methods allow-headers)
+(defun set-header-origin
+    (response
+     allow-origin
+     allow-methods
+     allow-headers)
   (setf (response-headers response)
         (append (response-headers response)
                 (get-cors-headers allow-origin
                                   allow-methods
                                   allow-headers))))
 
-(defun cors-handler (response
-                     &key
-                       (allow-origin "*")                       
-                       (allow-headers "Content-Type"))
+(defun cors-handler
+    (response
+     &key
+       (allow-origin "*")                       
+       (allow-headers "Content-Type"))
   (set-header-origin
    response
    allow-origin
    "GET, POST, OPTIONS"
    allow-headers))
 
-(defroute "/api/app/list/food" ()
-  (cors-handler *response*)
-  (let ((food-stocks (get-stocks-sum :food)))
+(defmacro defapi (route params &body body)
+  "Convenient macro to define API routes with CORS handling."
+  `(defroute ,route ,params
+     (cors-handler *response*)
+     ,@body))
+
+(defapi "/api/app/list/food"
+    (&key
+     (|fromRow| "1")
+     (|perPage| "10"))
+  (let ((food-stocks
+         (get-stocks-sum
+          :food
+          |fromRow|
+          |perPage|)))
     (if (null food-stocks)
         (render-json (list
                       :error "No food stocks available."
@@ -88,9 +110,15 @@
                       :stocks food-stocks
                       :status (get-status-code :success))))))
 
-(defroute "/api/app/list/water" ()
-  (cors-handler *response*)
-  (let ((water-stocks (get-stocks-sum :water)))
+(defapi "/api/app/list/water"
+    (&key
+     (|fromRow| "1")
+     (|perPage| "10"))
+  (let ((water-stocks
+         (get-stocks-sum
+          :water
+          |fromRow|
+          |perPage|)))
     (if (null water-stocks)
         (render-json (list
                       :error "No water stocks available."
@@ -99,9 +127,15 @@
                       :stocks water-stocks
                       :status (get-status-code :success))))))
 
-(defroute "/api/app/list/medicine" ()
-  (cors-handler *response*)
-  (let ((medicine-stocks (get-stocks-sum :medicine)))
+(defapi "/api/app/list/medicine"
+    (&key
+     (|fromRow| "1")
+     (|perPage| "10"))
+  (let ((medicine-stocks
+         (get-stocks-sum
+          :medicine
+          |fromRow|
+          |perPage|)))
     (if (null medicine-stocks)
         (render-json (list
                       :error "No medicine stocks available."
@@ -110,9 +144,15 @@
                       :stocks medicine-stocks
                       :status (get-status-code :success))))))
 
-(defroute "/api/app/list/weapon" ()
-  (cors-handler *response*)
-  (let ((weapon-stocks (get-stocks-sum :weapon)))
+(defapi "/api/app/list/weapon"
+    (&key
+     (|fromRow| "1")
+     (|perPage| "10"))
+  (let ((weapon-stocks
+         (get-stocks-sum
+          :weapon
+          |fromRow|
+          |perPage|)))
     (if (null weapon-stocks)
         (render-json (list
                       :error "No weapon stocks available."
@@ -121,10 +161,10 @@
                       :stocks weapon-stocks
                       :status (get-status-code :success))))))
 
-(defroute "/api/app/list/show/:id" (&key
-                                    id
-                                    |stockCategory|)
-  (cors-handler *response*)
+(defapi "/api/app/list/show/:id"
+    (&key
+     id
+     |stockCategory|)
   (handler-case
       (let ((stock
              (get-coerced-stock-cost-by-id
@@ -146,16 +186,15 @@
                     :error "There was an error when executing this process!"
                     :status (get-status-code :not-found))))))
 
-(defroute "/api/app/list/create"
+(defapi "/api/app/list/create"
     (&key
      |stockCategory|
      |name|
-     |description|
+     (|description| "")
      |amount|
      |costPerStock|
-     |caloriesPerStock|
-     |millilitresPerStock|)
-  (cors-handler *response*)
+     (|caloriesPerStock| "")
+     (|millilitresPerStock| ""))
   (handler-case
       (progn
         (create-stock `((:stock-category . ,|stockCategory|)
@@ -188,17 +227,16 @@
                     :error "User input doesn't satisfy constraint!"
                     :status (get-status-code :not-found))))))
 
-(defroute "/api/app/list/update/:id"
+(defapi "/api/app/list/update/:id"
     (&key
      id
      |stockCategory|
      |name|
-     |description|
+     (|description| "")
      |amount|
      |costPerStock|
-     |caloriesPerStock|
-     |millilitresPerStock|)
-  (cors-handler *response*)
+     (|caloriesPerStock| "")
+     (|millilitresPerStock| ""))
   (handler-case
       (progn
         (update-stock-by-id
@@ -226,11 +264,10 @@
     (error (exception)
       (log:error "~A" exception)
       (render-json (list
-                    :error "Updating stock list failed."
+                    :error "Updating stock list failed!"
                     :status (get-status-code :not-found))))))
 
-(defroute "/api/app/list/delete/:id" (&key id |stockCategory|)
-  (cors-handler *response*)
+(defapi "/api/app/list/delete/:id" (&key id |stockCategory|)
   (handler-case
       (progn
         (delete-stock-by-id |stockCategory| id)
@@ -244,8 +281,7 @@
                     :status (get-status-code
                              :not-found))))))
 
-(defroute "/api/app/list/get-all-stocks" ()
-  (cors-handler *response*)
+(defapi "/api/app/list/get-all-stocks" ()
   (handler-case
       (progn
         (render-json (list
@@ -259,8 +295,7 @@
                     :status (get-status-code
                              :not-found))))))
 
-(defroute "/api/app/list/reset-database" ()
-  (cors-handler *response*)
+(defapi "/api/app/list/reset-database" ()
   (handler-case
       (progn
         (drop-tables)
@@ -282,8 +317,7 @@
                     :status (get-status-code
                              :not-found))))))
 
-(defroute "/api/app/list/total-survival-days" ()
-  (cors-handler *response*)
+(defapi "/api/app/list/total-survival-days" ()
   (handler-case
       (let ((total-survival-days (get-total-survival-days)))
         (render-json

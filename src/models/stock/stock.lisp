@@ -30,6 +30,7 @@
                 :db
                 :with-connection
                 :create-datum
+                :get-all-paginated-datum
                 :get-all-datum
                 :get-datum-by-id
                 :update-datum-by-id
@@ -117,11 +118,17 @@
           ((eql stock-category :weapon)
            (update-weapon stock id)))))))
 
-(defun get-stocks-sum (table-name)
+(defun get-stocks-sum
+    (table-name
+     &optional
+       (from-row "1")
+       (per-page "10"))
   (let ((stocks
          (with-connection (db)
-           (get-all-datum table-name))))
-    
+           (get-all-paginated-datum
+            table-name
+            (read-from-string from-row)
+            (read-from-string per-page)))))
     (sum-all-cost-per-stock
      (cond ((eql table-name :food)
             (sum-all-calories-per-stock stocks)

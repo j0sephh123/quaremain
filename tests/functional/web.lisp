@@ -48,7 +48,22 @@
             (get-ok? "/api/app/list/medicine")))
   (testing "weapon"
            (ok
-            (get-ok? "/api/app/list/weapon"))))
+            (get-ok? "/api/app/list/weapon")))
+  (testing "weapon-paginated"
+           (ok
+            (string=
+             (get-content
+              +root-host+
+              "/api/app/list/weapon?fromRow=2")
+             "{\"stocks\":[{\"id\":2,\"name\":\"Magnum-192\",\"description\":\"Poweful shockburst\",\"amount\":2,\"costPerStock\":1801.56}],\"status\":200}")))
+  (testing "food-paginated"
+           (ok
+            (string=
+             (get-content
+              +root-host+
+              "/api/app/list/food?perPage=1")
+             "{\"stocks\":[{\"id\":1,\"name\":\"Sed neque. Sed eget lacus. Mauris\",\"description\":\"mauris id sapien. Cras dolor dolor, tempus non, lacinia at,\",\"amount\":12,\"costPerStock\":144.24,\"caloriesPerStock\":14400}],\"status\":200}"
+             ))))
 
 (deftest show
   (testing "food"

@@ -79,7 +79,10 @@ for preparation of emergency times"
                         :components
                         ((:file "constraint")
                          (:file "stock")
-                         (:file "survival"))))
+                         (:file "survival")))
+               (:module "tests/unit"
+                        :components
+                        ((:file "web"))))
   :description "Unit test system for quaremain"
   :perform (test-op (op c) (symbol-call :rove :run c)))
 

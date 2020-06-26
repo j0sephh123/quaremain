@@ -18,109 +18,131 @@
  (drop-tables))
 
 (deftest database-migration-food-test
-    
-    (let* ((stock
-            (with-connection (db)
-              (database::get-datum-by-id :food 1)))
-           (calories (getf stock :calories-per-stock))
-           (id (getf stock :id))
-           (cost (getf stock :cost-per-stock))
-           (description (getf stock :description))
-           (name (getf stock :name))
-           (amount (getf stock :amount)))
+  
+  (let* ((stock
+          (with-connection (db)
+            (database::get-datum-by-id :food 1)))
+         (calories (getf stock :calories-per-stock))
+         (id (getf stock :id))
+         (cost (getf stock :cost-per-stock))
+         (description (getf stock :description))
+         (name (getf stock :name))
+         (amount (getf stock :amount)))
 
-      (testing "name of first row"
-               (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
+    (testing "name of first row"
+             (ok (string= name "Sed neque. Sed eget lacus. Mauris")))
 
-      (testing "amount of first row"
-               (ok (= amount 12)))
+    (testing "amount of first row"
+             (ok (= amount 12)))
 
-      (testing "cost-per-stock of first row"
-               (ok (= cost 12.02d0)))
+    (testing "cost-per-stock of first row"
+             (ok (= cost 12.02d0)))
 
-      (testing "calories-per-stock of first row"
-               (ok (= calories 1200)))
+    (testing "calories-per-stock of first row"
+             (ok (= calories 1200)))
 
-      (testing "id of first row"
-               (ok (= id 1)))))
+    (testing "id of first row"
+             (ok (= id 1)))))
 
 (deftest database-migration-water-test
-    
-    (let* ((stock
-            (with-connection (db)
-              (database::get-datum-by-id :water 2)))
-           (millilitres (getf stock :millilitres-per-stock))
-           (id (getf stock :id))
-           (cost (getf stock :cost-per-stock))
-           (amount (getf stock :amount))
-           (name (getf stock :name))
-           (description (getf stock :description)))
+  
+  (let* ((stock
+          (with-connection (db)
+            (database::get-datum-by-id :water 2)))
+         (millilitres (getf stock :millilitres-per-stock))
+         (id (getf stock :id))
+         (cost (getf stock :cost-per-stock))
+         (amount (getf stock :amount))
+         (name (getf stock :name))
+         (description (getf stock :description)))
 
-      (testing "millilitres-per-stock of second row"
-               (ok (= millilitres 923)))
+    (testing "millilitres-per-stock of second row"
+             (ok (= millilitres 923)))
 
-      (testing "cost-per-stock of second row"
-               (ok (= cost 12.02d0)))
+    (testing "cost-per-stock of second row"
+             (ok (= cost 12.02d0)))
 
-      (testing "amount of second row"
-               (ok (= amount 5)))
+    (testing "amount of second row"
+             (ok (= amount 5)))
 
-      (testing "id of second row"
-               (ok (= id 2)))
+    (testing "id of second row"
+             (ok (= id 2)))
 
-      (testing "name of second row"
-               (ok (string= name "ICOLITE from Jerry's")))
+    (testing "name of second row"
+             (ok (string= name "ICOLITE from Jerry's")))
 
-      (testing "description of second row"
-               (ok (string= description "")))))
+    (testing "description of second row"
+             (ok (string= description "")))))
 
 (deftest database-migration-medicine-test
-    
-    (let* ((stock
-            (with-connection (db)
-              (database::get-datum-by-id :medicine 1)))
-           (id (getf stock :id))
-           (cost (getf stock :cost-per-stock))
-           (description (getf stock :description))
-           (name (getf stock :name))
-           (amount (getf stock :amount)))
+  
+  (let* ((stock
+          (with-connection (db)
+            (database::get-datum-by-id :medicine 1)))
+         (id (getf stock :id))
+         (cost (getf stock :cost-per-stock))
+         (description (getf stock :description))
+         (name (getf stock :name))
+         (amount (getf stock :amount)))
 
-      (testing "name of first row"
-               (ok (string= name "Penicilin IoX")))
+    (testing "name of first row"
+             (ok (string= name "Penicilin IoX")))
 
-      (testing "amount of first row"
-               (ok (= amount 4)))
+    (testing "amount of first row"
+             (ok (= amount 4)))
 
-      (testing "cost-per-stock of first row"
-               (ok (= cost 12.02d0)))
+    (testing "cost-per-stock of first row"
+             (ok (= cost 12.02d0)))
 
-      (testing "id of first row"
-               (ok (= id 1)))))
+    (testing "id of first row"
+             (ok (= id 1)))))
 
 (deftest database-migration-weapon-test
-    
-    (let* ((stock
-            (with-connection (db)
-              (database::get-datum-by-id :weapon 2)))
-           (id (getf stock :id))
-           (cost (getf stock :cost-per-stock))
-           (description (getf stock :description))
-           (name (getf stock :name))
-           (amount (getf stock :amount)))
+  
+  (let* ((stock
+          (with-connection (db)
+            (database::get-datum-by-id :weapon 2)))
+         (id (getf stock :id))
+         (cost (getf stock :cost-per-stock))
+         (description (getf stock :description))
+         (name (getf stock :name))
+         (amount (getf stock :amount)))
 
-      (testing "name of second row"
-               (ok (string= name "Magnum-192")))
+    (testing "name of second row"
+             (ok (string= name "Magnum-192")))
 
-      (testing "amount of second row"
-               (ok (= amount 2)))
+    (testing "amount of second row"
+             (ok (= amount 2)))
 
-      (testing "cost-per-stock of second row"
-               (ok (= cost 900.78d0)))
+    (testing "cost-per-stock of second row"
+             (ok (= cost 900.78d0)))
 
-      (testing "id of second row"
-               (ok (= id 2)))))
+    (testing "id of second row"
+             (ok (= id 2)))))
 
-(deftest get-all-datum
+(deftest get-all-paginated-datum
+  (with-connection (db)
+    (let* ((results-1
+            (database::get-all-paginated-datum :food))
+           (results-2
+            (database::get-all-paginated-datum :food 2)))
+      (testing "pagination 1"
+               (ok
+                (equal results-1
+                       '((:ID 1 :NAME "Sed neque. Sed eget lacus. Mauris" :DESCRIPTION
+                          "mauris id sapien. Cras dolor dolor, tempus non, lacinia at,"
+                          :AMOUNT 12 :COST-PER-STOCK 12.02d0 :CALORIES-PER-STOCK 1200)
+                         (:ID 2 :NAME "Cashews from Jerry's" :DESCRIPTION "" :AMOUNT 5
+                          :COST-PER-STOCK 12.02d0 :CALORIES-PER-STOCK 200))
+                       )))
+      (testing "pagination 2"
+               (ok
+                (equal results-2
+                       '((:ID 2 :NAME "Cashews from Jerry's" :DESCRIPTION "" :AMOUNT 5
+                          :COST-PER-STOCK 12.02d0 :CALORIES-PER-STOCK 200))
+                       ))))))
+
+  (deftest get-all-datum
     (with-connection (db)
       (let* ((results
               (database::get-all-datum :weapon))
@@ -150,7 +172,7 @@
                      :amount 2
                      :cost-per-stock 900.78d0)))))))
 
-(deftest get-datum-by-id
+  (deftest get-datum-by-id
     (with-connection (db)
       (let* ((result
               (database::get-datum-by-id
@@ -162,7 +184,7 @@
                   (= amount
                      4))))))
 
-(deftest get-datum-by-name
+  (deftest get-datum-by-name
     (with-connection (db)
       (let* ((result
               (database::get-datum-by-name
@@ -175,7 +197,7 @@
                   (= amount
                      5))))))
 
-(deftest row-exist-by-id?
+  (deftest row-exist-by-id?
     (with-connection (db)
       (let* ((food-result
               (database::row-exist-by-id? :food 1))
@@ -188,7 +210,7 @@
         (testing "second row of food"
                  (ok weapon-result)))))
 
-(deftest row-exist-by-name?
+  (deftest row-exist-by-name?
     (with-connection (db)
       (let* ((food-result
               (database::row-exist-by-name?
@@ -205,47 +227,47 @@
         (testing "by name Magnum-192"
                  (ok weapon-result)))))
 
-(deftest create-new-row
+  (deftest create-new-row
     (with-connection (db)
       (database::create-datum
-       :food
-       :name "Jaguar"
-       :description "Food"
-       :amount 3
-       :cost-per-stock 12.0
-       :calories-per-stock 1492))
+          :food
+        :name "Jaguar"
+        :description "Food"
+        :amount 3
+        :cost-per-stock 12.0
+        :calories-per-stock 1492))
 
-  (with-connection (db)
-    (let* ((food-result
-            (database::get-datum-by-id :food 3))
-           (food-description
-            (getf food-result :description)))
+    (with-connection (db)
+      (let* ((food-result
+              (database::get-datum-by-id :food 3))
+             (food-description
+              (getf food-result :description)))
 
-      (testing "food"
-               (ok
-                (string=
-                 food-description
-                 "Food"))))))
+        (testing "food"
+                 (ok
+                  (string=
+                   food-description
+                   "Food"))))))
 
-(deftest update-datum-by-id
+  (deftest update-datum-by-id
     (with-connection (db)
 
       (database::update-datum-by-id
-       :water
-       2
-       "Fuvi"
-       "Slurp"
-       223
-       12.0
-       :millilitres-per-stock 1000)
+          :water
+          2
+          "Fuvi"
+          "Slurp"
+          223
+          12.0
+        :millilitres-per-stock 1000)
       
       (database::update-datum-by-id
-       :medicine
-       1
-       "Cough-ed"
-       "Healer"
-       923
-       14.0)
+          :medicine
+          1
+          "Cough-ed"
+          "Healer"
+          923
+          14.0)
 
       (let* ((water-result
               (database::get-datum-by-id :water 2))
@@ -269,7 +291,7 @@
                    medicine-amount
                    923))))))
 
-(deftest delete-datum-by-id
+  (deftest delete-datum-by-id
     (with-connection (db)
 
       (database::delete-datum-by-id :water 1)

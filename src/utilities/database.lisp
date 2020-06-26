@@ -36,7 +36,9 @@
                 :delete-from
                 :insert-into
                 :set=
-                :update)
+                :update
+                :order-by
+                :limit)
   (:import-from :quaremain.utilities.config
                 :+database-path+
                 :+seeds-directory+)
@@ -54,6 +56,7 @@
            :migrate-tables
            :drop-tables
            :create-datum
+           :get-all-paginated-datum
            :get-all-datum
            :get-datum-by-id
            :get-datum-by-name
@@ -140,6 +143,26 @@
   `(execute
     (insert-into ,table-name
       (set= ,@key-and-value))))
+
+#|(defmacro get-all-datum (table-name &optional (page 1) (per-page 10))
+  `(retrieve-all
+    (select :*
+      (from ,table-name)
+      (where (:> ,page ,per-page))
+      (order-by ,page)
+      (limit ,per-page))))|#
+
+(defmacro get-all-paginated-datum
+    (table-name
+     &optional
+       (from-row 1)
+       (per-page 10))
+  `(retrieve-all
+    (select :*
+      (from ,table-name)
+      (where (:>= :id ,from-row))
+      (order-by :id)
+      (limit ,per-page))))
 
 (defmacro get-all-datum (table-name)
   `(retrieve-all
