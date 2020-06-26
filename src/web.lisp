@@ -24,7 +24,7 @@
   
   (:import-from :quaremain.models.stock.stock
                 :create-stock
-                :update-stock-by-id
+                :update-stock
                 :get-stocks-sum
                 :get-coerced-stock-cost-by-id
                 :delete-stock-by-id
@@ -239,7 +239,7 @@
      (|millilitresPerStock| ""))
   (handler-case
       (progn
-        (update-stock-by-id
+        (update-stock
          `((:stock-category . ,|stockCategory|)
            (:id . ,id)
            (:name . ,|name|)

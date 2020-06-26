@@ -44,7 +44,7 @@
                 :all-stocks-empty-error)
   
   (:export :create-stock
-           :update-stock-by-id
+           :update-stock
            :get-stocks-sum
            :get-coerced-stock-cost-by-id
            :delete-stock-by-id))
@@ -96,7 +96,7 @@
   stock)
 
 
-(defun update-stock-by-id (stock)
+(defun update-stock (stock)
   (flet ((get-value (key)
            (cdr (assoc key stock))))
     (let ((stock-category

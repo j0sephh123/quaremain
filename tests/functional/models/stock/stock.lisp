@@ -220,16 +220,16 @@
                          :AMOUNT 2 :COST-PER-STOCK 900.78d0))))))))
 
 
-(deftest update-stock-by-id
+(deftest update-stock
     (with-connection (db)    
-      (stock::update-stock-by-id
+      (stock::update-stock
        `((:stock-category . "weapon")
          (:id . 1)
          (:name . "Firenzozzzz")
          (:description . "")
          (:amount . "2")
          (:cost-per-stock . "198.02")))
-      (stock::update-stock-by-id
+      (stock::update-stock
        `((:stock-category . "water")
          (:id . 1)
          (:name . "Yamlzzzww")

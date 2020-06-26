@@ -33,4 +33,4 @@
 
 (defun satisfies-string-constraint?
     (input)
-  (regex:scan "^[a-zA-Z]+[a-zA-Z0-9\\.\\s!?\\-_\\$@&,]*$" input))
+  (regex:scan "^[a-zA-Z]+[a-zA-Z0-9\\.\\s!\\?\\-_\\$@&,]*$" input))
